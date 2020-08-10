@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Role;
 use App\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -13,6 +14,8 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    private $cache_for = 1440;
+
     public function getUser($id) 
     {
         return Cache::rememberForever('User:' . $id, function() use($id) {
@@ -22,7 +25,7 @@ class Controller extends BaseController
 
     public function getUsers()
     {
-        return Cache::rememberForever('Users', function() {
+        return Cache::remember('Users', $this->cache_for, function() {
             return User::all();
         });
     }
@@ -31,6 +34,13 @@ class Controller extends BaseController
     {
         return Cache::rememberForever('Users:count', function() {
             return User::all()->count();
+        });
+    }
+
+    public function getGlobalRoles()
+    {
+        return Cache::rememberForever('Roles:global', function() {
+            return Role::where('context', '=', 'global')->get();
         });
     }
 

@@ -44,4 +44,13 @@ class AdminTest extends TestCase
         $response = $this->get('/acp');
         $response->assertSee(__('user.count', ['count' => '3']));
     }
+
+    /** @test */
+    public function user_profile_links_from_acp_user_widget()
+    {
+        $user = $this->createUser();
+
+        $response = $this->get('/acp');
+        $response->assertSee(route('profile', $user->id));
+    }
 }

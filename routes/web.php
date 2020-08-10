@@ -20,4 +20,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/profile/{id}', 'UserController@show')->name('profile');
+Route::post('/profile/{id}/addRole', 'UserController@addRole')->name('add-role');
+
 Route::get('/acp', 'HomeController@acp')->name('acp');

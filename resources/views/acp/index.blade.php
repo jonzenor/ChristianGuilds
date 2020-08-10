@@ -6,12 +6,12 @@
         <div class="">
             <ul>
                 @foreach ($users as $user)
-                    <li class="m-3"> {{ $user->name }}
+                    <li class="m-3"> <a href="{{ route('profile', $user->id) }}" class="no-underline hover:underline text-blue-600 hover:text-blue-800"> <i class="fal fa-user px-2"></i> {{ $user->name }}</a>
                 @endforeach
             </ul>
             <br />
             <div class="w-full text-right m-2">
-                <span class="font-bold p-8"> {{ __('user.count', ['count' => $userCount]) }}</span>
+                <span class="font-bold p-8"> <i class="fal fa-users"></i> {{ __('user.count', ['count' => $userCount]) }}</span>
             </div>
         </div>
     </div>
