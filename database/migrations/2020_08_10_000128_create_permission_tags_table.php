@@ -17,6 +17,7 @@ class CreatePermissionTagsTable extends Migration
             $table->id();
             $table->text('name');
             $table->text('color');
+            $table->text('context');
             $table->timestamps();
         });
     }
