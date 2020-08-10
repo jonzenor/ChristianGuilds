@@ -27,6 +27,12 @@ class HomeController extends Controller
 
     public function acp()
     {
-        return view('acp.index');
+        $users = $this->getUsers();
+        $userCount = $this->getUserCount();
+
+        return view('acp.index')->with([
+            'users' => $users,
+            'userCount' => $userCount,
+        ]);
     }
 }
