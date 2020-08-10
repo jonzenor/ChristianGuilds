@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <div id="admin-box" class="m-6 border border-gray-300 rounded-t-md w-full md:w-1/2 lg:w-1/4">
+    <div id="admin-box" class="m-6 border border-gray-300 rounded-t-md w-11/12 md:w-1/2 lg:w-1/4">
         <div class="bg-blue-50 text-blue-900 rounded-t-md text-lg font-bold text-center p-2">{{ __('user.users') }}</div>
         <div class="">
             <ul>
