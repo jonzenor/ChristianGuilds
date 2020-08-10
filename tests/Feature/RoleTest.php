@@ -43,7 +43,7 @@ class RoleTest extends TestCase
     {
         $user = $this->createUser();
 
-        $response = $this->actingAs($user)->post(route('add-role', $user->id), ['id' => '1']);
+        $response = $this->actingAs($user)->post(route('add-role', $user->id), ['role' => '1']);
         
         $data['user_id'] = $user->id;
         $data['role_id'] = 1;
