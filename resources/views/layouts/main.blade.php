@@ -15,35 +15,39 @@
     
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Markazi+Text&family=Noto+Sans+HK&display=swap" rel="stylesheet">
+
+
 </head>
-<body class="h-screen antialiased leading-none">
+<body class="h-screen antialiased leading-none bg-cgblack text-cgwhite font-body">
     <nav class="w-full">
-        <div class="bg-gray-800 w-full">
+        <div class="bg-cgblack-900 w-full">
             <div class="w-full mx-auto lg:w-1/2">
                 <img src="{{ asset('images/ChristianGuilds.png') }}">
             </div>
         </div>
         <ul class="flex pl-3 pt-4">
             <li class="mr-6">
-                <a class="text-blue-500 hover:text-blue-800" href="{{ route('home') }}">Home</a>
+                <a class="nav-links" href="{{ route('home') }}">Home</a>
             </li>
             <li class="mr-6">
-                <a class="text-blue-500 hover:text-blue-800" href="{{ route('acp') }}">ACP</a>
+                <a class="nav-links" href="{{ route('acp') }}">ACP</a>
             </li>
 
             @guest
                 <li class="mr-6">
-                    <a class="text-blue-500 hover:text-blue-800" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    <a class="nav-links" href="{{ route('login') }}">{{ __('Login') }}</a>
                 </li>
 
                 @if (Route::has('register'))
                     <li class="mr-6">
-                        <a class="text-blue-500 hover:text-blue-800" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        <a class="nav-links" href="{{ route('register') }}">{{ __('Register') }}</a>
                     </li>
                 @endif
             @else
                 <li class="mr-6">
-                    <a href="{{ route('logout') }}" class="text-blue-500 hover:text-blue-800"
+                    <a href="{{ route('logout') }}" class="nav-links"
                         onclick="event.preventDefault();
                         document.getElementById('logout-form').submit();">{{ __('Logout') }}
                     </a>
@@ -53,7 +57,7 @@
                 </form>
 
                 <li class="mr-6">
-                    <span class="text-blue-500 hover:text-blue-800">{{ Auth::user()->name }}</span>
+                    <a class="nav-links" href="{{ route('profile', Auth::user()->id) }}">{{ Auth::user()->name }}</a>
                 </li>
             @endguest
         </ul>

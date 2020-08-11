@@ -3,3 +3,80 @@
 @import "tailwindcss/components";
 
 @import "tailwindcss/utilities";
+
+.font-title {
+    /** font-family: 'Baloo Tamma 2', Arial; */
+    font-family: 'Markazi Text', serif;
+}
+
+.font-nav {
+    font-family: 'Markazi Text', serif;
+}
+
+.font-body {
+    font-family: 'Noto Sans HK', sans-serif;
+}
+
+.nav-links {
+    @apply text-cgwhite text-xl font-nav;
+}
+
+.nav-links:hover {
+    @apply font-bold text-cggreen-500;
+}
+
+.link {
+    @apply text-cggreen-500 no-underline;
+}
+
+.link:hover {
+    @apply text-cggreen-300 underline;
+}
+
+.page-header {
+    @apply text-cgwhite text-6xl px-6 py-3 my-6 font-title;
+}
+
+.page-subheader {
+    @apply text-cgwhite text-2xl px-6 py-3 my-3 font-body;
+}
+
+.page-subheader-h3 {
+    @apply text-xl text-cgwhite px-6 py-3 my-3 font-body;
+}
+
+.page-section {
+    @apply p-3 m-3 w-11/12 mx-auto leading-loose;
+}
+
+.page-section:md {
+    @apply w-1/2;
+}
+
+.list-item {
+    @apply my-2;
+}
+
+.highlight {
+    @apply text-cgpink-500;
+}
+
+.form-field {
+    @apply bg-cgwhite text-cggray-900 rounded-lg px-3 py-1;
+}
+
+.form-row {
+    @apply w-full py-2;
+}
+
+.button-primary {
+    @apply py-1 px-4 bg-cgpink-500 text-white font-bold rounded-lg cursor-pointer;
+}
+
+.button-primary:hover {
+    @apply bg-cgpink-900;
+}
+
+hr {
+    @apply text-cgpink-500 border-cgpink-500 w-11/12 mx-auto;
+}
