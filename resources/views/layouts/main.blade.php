@@ -62,6 +62,7 @@
             @endguest
         </ul>
     </nav>
+    @include('sweetalert::alert')
 
     @yield('content')
 
