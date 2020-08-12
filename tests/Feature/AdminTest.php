@@ -19,6 +19,13 @@ class AdminTest extends TestCase
     }
 
     /** Guest users cannot access acp */
+    /**  */
+    public function guests_cannot_load_acp()
+    {
+        $response = $this->get('/acp');
+
+        $response->assertRedirect('home');
+    }
 
     /** Normal users cannot access acp */
 
