@@ -38,15 +38,15 @@
 }
 
 .page-subheader {
-    @apply text-cgwhite text-2xl px-6 py-3 my-3 font-body;
+    @apply text-cgwhite text-2xl mx-2 px-6 py-3 my-3 font-body;
 }
 
 .page-subheader-h3 {
-    @apply text-xl text-cgwhite px-6 py-3 my-3 font-body;
+    @apply text-xl text-cgwhite mx-2 px-6 py-3 my-3 font-body;
 }
 
 .page-section {
-    @apply p-3 m-3 w-11/12 mx-auto leading-loose;
+    @apply py-3 my-2 w-11/12 mx-auto leading-loose;
 }
 
 .page-section:md {
@@ -70,11 +70,35 @@
 }
 
 .button-primary {
-    @apply py-1 px-4 bg-cgpink-500 text-white font-bold rounded-lg cursor-pointer;
+    @apply px-4 bg-cgpink-500 text-white font-bold rounded-lg cursor-pointer mr-3;
 }
 
 .button-primary:hover {
     @apply bg-cgpink-900;
+}
+
+input.button-primary {
+    @apply py-1;
+}
+
+a.button-primary {
+    @apply py-2;
+}
+
+.button-secondary {
+    @apply px-4 bg-cggray-700 text-white font-bold rounded-lg cursor-pointer mr-3;
+}
+
+.button-secondary:hover {
+    @apply bg-cggray-900;
+}
+
+a.button-secondary {
+    @apply py-2;
+}
+
+input.button-secondary {
+    @apply py-1;
 }
 
 hr {

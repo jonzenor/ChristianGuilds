@@ -10,7 +10,6 @@ class RoleTest extends TestCase
 
     use RefreshDatabase;
 
-    /** Add role Button loads on profile page */
     /** @test */
     public function user_profile_page_has_add_role_button()
     {
@@ -37,7 +36,6 @@ class RoleTest extends TestCase
 
     /** Guests cannot see user roles */
 
-    /** Adding roles works */
     /** @test */
     public function user_is_added_to_role_from_form()
     {
@@ -60,5 +58,32 @@ class RoleTest extends TestCase
     /** Admin cannot remove admin from himself */
 
     /** Removing roles works */
+    /** @test */
+    public function removing_user_from_role_works()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = $this->createAdminUser();
+
+        $response = $this->get(route('remove-role', ['id' => $user->id, 'role' => 1]));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('site.confirm');
+
+        $See[] = $user->name;
+        $See[] = __('user.confirm_remove_button');
+
+        $response->assertSeeInOrder($See);
+
+        $response = $this->post(route('remove-role', ['id' => $user->id, 'role' => 1]), ['confirm' => true]);
+
+        $data['user_id'] = $user->id;
+        $data['role_id'] = 1;
+
+        $this->assertDatabaseMissing('user_role', $data);
+
+        $response->assertRedirect(route('profile', $user->id));
+
+    }
 
 }

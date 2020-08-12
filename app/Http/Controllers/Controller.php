@@ -44,5 +44,12 @@ class Controller extends BaseController
         });
     }
 
+    public function getRole($id)
+    {
+        return Cache::rememberForever('Role:' . $id, function() use($id) {
+            return Role::find($id);
+        });
+    }
+
 }
 

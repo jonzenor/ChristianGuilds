@@ -7,8 +7,8 @@
 
     <h2 class="page-subheader">{{ __('user.roles') }}</h2>
     <div class="page-section">
-        @foreach ($user->role as $role)
-            <span class="px-2 my-2 bg-{{ $role->color }} text-white rounded-full text-xs">{{ $role->name }}</span>
+        @foreach ($user->roles as $role)
+            <span class="px-2 my-2 bg-{{ $role->color }} text-white rounded-full text-xs"><a href="{{ route('remove-role', ['id' => $user->id, 'role' => $role->id]) }}">{{ $role->name }} <i class="fal fa-times-circle ml-2"></i></a></span>
         @endforeach      
     </div>
 
