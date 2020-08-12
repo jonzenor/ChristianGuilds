@@ -6,6 +6,8 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 
+use App\Role;
+
 class AuthServiceProvider extends ServiceProvider
 {
     /**
@@ -29,6 +31,20 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('view-acp', function ($user) {
+            if ($this->isAdmin($user)) { return true; }
+            return false;
+        });
+
+        Gate::define('add-global-role', function ($user) {
+            if ($this->isAdmin($user)) { return true; }
+            return false;
+        });
+
+        Gate::define('view-roles', function ($user) {
+            return true;
+        });
+
+        Gate::define('manage-user-roles', function ($user) {
             if ($this->isAdmin($user)) { return true; }
             return false;
         });

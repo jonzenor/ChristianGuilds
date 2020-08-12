@@ -28,4 +28,5 @@ class UserTest extends TestCase
 
         $response->assertSee($user->name);
     }
+
 }

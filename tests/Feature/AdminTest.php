@@ -12,32 +12,38 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_page_loads()
     {
-        $response = $this->get('/acp');
+        $admin = $this->createAdminUser();
+        $response = $this->actingAs($admin)->get('/acp');
 
         $response->assertStatus(200);
         $response->assertViewIs('acp.index');
     }
 
-    /** Guest users cannot access acp */
-    /**  */
+    /** @test */
     public function guests_cannot_load_acp()
     {
         $response = $this->get('/acp');
 
-        $response->assertRedirect('home');
+        $response->assertRedirect('login');
     }
 
-    /** Normal users cannot access acp */
+    /** @test */
+    public function users_cannot_load_acp()
+    {
+        $user = $this->createUser();
 
-    /** Admin users can access acp */
+        $response = $this->actingAs($user)->followingRedirects()->get(route('acp'));
 
-    /** Users show in the ACP widget */
+        $response->assertSee(__('site.permission_denied'));
+    }
+
     /** @test */
     public function users_show_in_acp_widget()
     {
         $user = $this->createUser();
+        $admin = $this->createAdminUser();
 
-        $response = $this->get('/acp');
+        $response = $this->actingAs($admin)->get('/acp');
         $response->assertSee($user->name);
     }
 
@@ -47,17 +53,20 @@ class AdminTest extends TestCase
         $this->createUser();
         $this->createUser();
         $this->createUser();
+        $admin = $this->createAdminUser();
 
-        $response = $this->get('/acp');
-        $response->assertSee(__('user.count', ['count' => '3']));
+
+        $response = $this->actingAs($admin)->get('/acp');
+        $response->assertSee(__('user.count', ['count' => '4']));
     }
 
     /** @test */
     public function user_profile_links_from_acp_user_widget()
     {
         $user = $this->createUser();
+        $admin = $this->createAdminUser();
 
-        $response = $this->get('/acp');
+        $response = $this->actingAs($admin)->get('/acp');
         $response->assertSee(route('profile', $user->id));
     }
 }

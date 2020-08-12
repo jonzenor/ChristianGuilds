@@ -11,26 +11,28 @@ class RoleTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_profile_page_has_add_role_button()
-    {
-        $user = $this->createUser();
-
-        $response = $this->get(route('profile', $user->id));
-        $response->assertSee(__('user.add_role'));
-    }
-
-    /** @test */
     public function user_profile_page_shows_global_roles()
     {
         $user = $this->createUser();
+        $admin = $this->createAdminUser();
 
-        $response = $this->get(route('profile', $user->id));
+        $response = $this->actingAs($admin)->get(route('profile', $user->id));
         $response->assertSee("Admin");
     }
 
-    /** Users cannot see Add role Button */
+    /** @test */
+    public function add_roles_only_shows_for_admins()
+    {
+        $user = $this->createUser();
+        $admin = $this->createAdminUser();
 
-    /** Guests cannot see add role Button */
+        $response = $this->actingAs($user)->get(route('profile', $user->id));
+        $response->assertDontSee(__('user.add_role'));
+
+        $response = $this->actingAs($admin)->get(route('profile', $user->id));
+        $response->assertSee(__('user.add_role'));
+
+    }
 
     /** User's role tags show in profile */
 
@@ -40,8 +42,9 @@ class RoleTest extends TestCase
     public function user_is_added_to_role_from_form()
     {
         $user = $this->createUser();
+        $admin = $this->createAdminUser();
 
-        $response = $this->actingAs($user)->post(route('add-role', $user->id), ['role' => '1']);
+        $response = $this->actingAs($admin)->post(route('add-role', $user->id), ['role' => '1']);
         
         $data['user_id'] = $user->id;
         $data['role_id'] = 1;
@@ -57,6 +60,8 @@ class RoleTest extends TestCase
 
     /** Admin cannot remove admin from himself */
 
+    /** Removing role checks for admin permissions */
+
     /** Removing roles works */
     /** @test */
     public function removing_user_from_role_works()
@@ -64,8 +69,9 @@ class RoleTest extends TestCase
         $this->withoutExceptionHandling();
 
         $user = $this->createAdminUser();
+        $admin = $this->createAdminUser();
 
-        $response = $this->get(route('remove-role', ['id' => $user->id, 'role' => 1]));
+        $response = $this->actingAs($admin)->get(route('remove-role', ['id' => $user->id, 'role' => 1]));
 
         $response->assertStatus(200);
         $response->assertViewIs('site.confirm');
@@ -75,7 +81,7 @@ class RoleTest extends TestCase
 
         $response->assertSeeInOrder($See);
 
-        $response = $this->post(route('remove-role', ['id' => $user->id, 'role' => 1]), ['confirm' => true]);
+        $response = $this->actingAs($admin)->post(route('remove-role', ['id' => $user->id, 'role' => 1]), ['confirm' => true]);
 
         $data['user_id'] = $user->id;
         $data['role_id'] = 1;
@@ -83,7 +89,6 @@ class RoleTest extends TestCase
         $this->assertDatabaseMissing('user_role', $data);
 
         $response->assertRedirect(route('profile', $user->id));
-
     }
 
 }

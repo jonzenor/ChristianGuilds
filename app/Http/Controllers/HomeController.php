@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+//use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
+use Gate;
 
 class HomeController extends Controller
 {
@@ -27,6 +29,11 @@ class HomeController extends Controller
 
     public function acp()
     {
+        if (Gate::denies('view-acp')) {
+            Alert::toast('Permission Denied', 'warning');
+            return redirect('/');
+        }
+
         $users = $this->getUsers();
         $userCount = $this->getUserCount();
 

@@ -25,4 +25,4 @@ Route::post('/profile/{id}/addRole', 'UserController@addRole')->name('add-role')
 Route::get('/profile/{id}/delRole/{role}', 'UserController@delRole')->name('remove-role');
 Route::post('/profile/{id}/delRole/{role}', 'UserController@delRoleConfirm')->name('remove-role-confirm');
 
-Route::get('/acp', 'HomeController@acp')->name('acp');
+Route::get('/acp', 'HomeController@acp')->name('acp')->middleware('auth');
