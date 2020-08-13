@@ -54,6 +54,17 @@ class RoleTest extends TestCase
         $response->assertRedirect(route('profile', $user->id));
     }
 
+    /** @test */
+    public function adding_role_gives_success_message()
+    {
+        $user = $this->createUser();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->followingRedirects()->post(route('add-role', $user->id), ['role' => '1']);
+        
+        $response->assertSee(__('user.role_add_success'));
+    }
+
     /** Adding a role checks for if the user is already in that role */
     /** @test */
     public function user_cannot_be_added_to_a_duplicate_role()
@@ -143,6 +154,16 @@ class RoleTest extends TestCase
         $this->assertDatabaseMissing('user_role', $data);
 
         $response->assertRedirect(route('profile', $user->id));
+    }
+
+    /** @test */
+    public function removing_user_from_role_gives_message()
+    {
+        $user = $this->createAdminUser();
+        $admin = $this->createAdminUser();
+
+        $response = $this->followingRedirects()->actingAs($admin)->post(route('remove-role', ['id' => $user->id, 'role' => 1]), ['confirm' => true]);
+        $response->assertSee(__('user.role_del_success'));
     }
 
 }

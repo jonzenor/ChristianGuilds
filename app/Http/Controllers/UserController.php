@@ -60,6 +60,8 @@ class UserController extends Controller
 
         $user->roles()->attach($request->role);
 
+        toast(__('user.role_add_success'), 'success');
+
         return redirect()->route('profile', $user->id);
     }
 
@@ -92,6 +94,8 @@ class UserController extends Controller
         $role = $this->getRole($role_id);
 
         $user->roles()->detach($role->id);
+
+        toast(__('user.role_del_success'), 'success');
 
         return redirect()->route('profile', $user->id);
     }

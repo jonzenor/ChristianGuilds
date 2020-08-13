@@ -13,4 +13,6 @@ return [
     'confirm_remove_button' => 'Remove Role',
     'duplicate_role'        => 'User is already in that role. Cannot add duplicate role.',
     'invalid_role'          => 'Invalid or unknown role.',
+    'role_add_success'      => 'Role Added!',
+    'role_del_success'      => 'Role Removed!',
 ];
