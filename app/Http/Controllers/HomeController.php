@@ -31,7 +31,7 @@ class HomeController extends Controller
     {
         if (Gate::denies('view-acp')) {
             toast('Permission Denied', 'warning');
-            return redirect('/');
+            return redirect()->route('home');
         }
 
         $users = $this->getUsers();
