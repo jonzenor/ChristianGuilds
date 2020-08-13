@@ -30,7 +30,7 @@ class HomeController extends Controller
     public function acp()
     {
         if (Gate::denies('view-acp')) {
-            Alert::toast('Permission Denied', 'warning');
+            toast('Permission Denied', 'warning');
             return redirect('/');
         }
 

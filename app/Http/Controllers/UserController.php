@@ -60,6 +60,8 @@ class UserController extends Controller
 
         $user->roles()->attach($request->role);
 
+        Cache::forget('user:' . $user->id . ':is:' . $role->name);
+
         toast(__('user.role_add_success'), 'success');
 
         return redirect()->route('profile', $user->id);
