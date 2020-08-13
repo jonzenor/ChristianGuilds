@@ -21,8 +21,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/profile/{id}', 'UserController@show')->name('profile');
-Route::post('/profile/{id}/addRole', 'UserController@addRole')->name('add-role');
-Route::get('/profile/{id}/delRole/{role}', 'UserController@delRole')->name('remove-role');
-Route::post('/profile/{id}/delRole/{role}', 'UserController@delRoleConfirm')->name('remove-role-confirm');
+Route::post('/profile/{id}/addRole', 'UserController@addRole')->name('add-role')->middleware('auth');
+Route::get('/profile/{id}/delRole/{role}', 'UserController@delRole')->name('remove-role')->middleware('auth');
+Route::post('/profile/{id}/delRole/{role}', 'UserController@delRoleConfirm')->name('remove-role-confirm')->middleware('auth');
 
 Route::get('/acp', 'HomeController@acp')->name('acp')->middleware('auth');

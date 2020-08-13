@@ -91,6 +91,26 @@ class RoleTest extends TestCase
     }
 
     /** Adding a role checks for admin permission */
+    /** @test */
+    public function add_role_verifies_permission()
+    {
+        $user = $this->createUser();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($user)->followingRedirects()->post(route('add-role', $user->id), ['role' => '1']);
+        $response->assertSee(__('site.permission_denied'));
+    }
+
+    /** @test */
+    public function del_role_verifies_permission()
+    {
+        $user = $this->createUser();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($user)->followingRedirects()->get(route('remove-role', ['id' => $user->id, 'role' => 1]));
+        $response->assertSee(__('site.permission_denied'));
+    }
+    
 
     /** Admin cannot remove admin from himself */
 

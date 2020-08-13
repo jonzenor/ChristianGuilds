@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Alert;
+use Gate;
+use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
@@ -27,6 +29,11 @@ class UserController extends Controller
 
     public function addRole(Request $request, $id)
     {
+        if (Gate::denies('manage-user-roles')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $user = $this->getUser($id);
 
         if (!$user) {
@@ -58,6 +65,11 @@ class UserController extends Controller
 
     public function delRole($id, $role_id)
     {
+        if (Gate::denies('manage-user-roles')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $user = $this->getUser($id);
         $role = $this->getRole($role_id);
 
@@ -65,6 +77,8 @@ class UserController extends Controller
         $confirm['body'] = __('user.remove_role_text', ['user' => $user->name, 'role' => $role->name]);
         $confirm['action'] = route("remove-role-confirm", ['id' => $user->id, 'role' => $role->id]);
         $confirm['cancel'] = route('profile', $user->id);
+
+        Cache::forget('user:' . $user->id . ':is:' . $role->name);
 
         return view('site.confirm', [
             'user' => $user,

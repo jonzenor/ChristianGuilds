@@ -59,14 +59,14 @@ class AuthServiceProvider extends ServiceProvider
     }
 
     private function isGameMaster($user) {
-        return Cache::remember('user:' . $user->id . ':is:GameMaster', $this->cache_time, function() use($user) {
+        return Cache::remember('user:' . $user->id . ':is:Game Master', $this->cache_time, function() use($user) {
             $gm = Role::where('name', '=', 'Game Master')->first();
             return $user->roles->contains($gm);    
         });
     }
 
     private function isCommunityManager($user) {
-        return Cache::remember('user:' . $user->id . ':is:CommunityManager', $this->cache_time, function() use($user) {
+        return Cache::remember('user:' . $user->id . ':is:Community Manager', $this->cache_time, function() use($user) {
             $cm = Role::where('name', '=', 'Community Manager')->first();
             return $user->roles->contains($cm);    
         });
