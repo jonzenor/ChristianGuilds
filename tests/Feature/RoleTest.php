@@ -55,6 +55,40 @@ class RoleTest extends TestCase
     }
 
     /** Adding a role checks for if the user is already in that role */
+    /** @test */
+    public function user_cannot_be_added_to_a_duplicate_role()
+    {
+        $user = $this->createAdminUser();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->followingRedirects()->post(route('add-role', $user->id), ['role' => '1']);
+        
+        $data['user_id'] = $user->id;
+        $data['role_id'] = 1;
+
+        $response->assertSee(__('user.duplicate_role'));
+    }
+
+    /** @test */
+    public function make_sure_role_exists()
+    {
+        $user = $this->createUser();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->followingRedirects()->post(route('add-role', $user->id), ['role' => '15']);
+        
+        $response->assertSee(__('user.invalid_role'));
+    }
+
+    /** @test */
+    public function make_sure_user_exists()
+    {
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->followingRedirects()->post(route('add-role', 45), ['role' => '15']);
+        
+        $response->assertSee(__('user.invalid_user'));
+    }
 
     /** Adding a role checks for admin permission */
 

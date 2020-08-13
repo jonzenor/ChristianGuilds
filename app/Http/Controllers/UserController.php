@@ -11,6 +11,11 @@ class UserController extends Controller
     {
         $user = $this->getUser($id);
 
+        if (!$user) {
+            toast(__('user.invalid_user'), 'error');
+            return redirect()->route('home');
+        }
+
         // Get roles that we can add the user to
         $newRoles = $this->getGlobalRoles();
 
@@ -24,9 +29,27 @@ class UserController extends Controller
     {
         $user = $this->getUser($id);
 
+        if (!$user) {
+            toast(__('user.invalid_user'), 'error');
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'role' => 'integer',
         ]);
+
+        $role = $this->getRole($request->role);
+
+        if (!$role) {
+            toast(__('user.invalid_role'), 'error');
+            return redirect()->route('profile', $user->id);
+        }
+
+        // Make sure the user isn't in this role already
+        if ($user->roles->contains($role)) {
+            toast(__('user.duplicate_role'), 'error');
+            return redirect()->route('profile', $user->id);
+        }
 
         $user->roles()->attach($request->role);
 

@@ -29,4 +29,13 @@ class UserTest extends TestCase
         $response->assertSee($user->name);
     }
 
+    /** @test */
+    public function user_show_verifies_user_exists()
+    {
+        $response = $this->followingRedirects()->get(route('profile', 25));
+
+        $response->assertSee(__('user.invalid_user'));
+
+    }
+
 }
