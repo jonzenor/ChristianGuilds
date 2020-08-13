@@ -104,3 +104,7 @@ input.button-secondary {
 hr {
     @apply text-cgpink-500 border-cgpink-500 w-11/12 mx-auto;
 }
+
+.role-tag {
+    @apply text-white rounded-full text-xs mr-3 px-2 my-2;
+}

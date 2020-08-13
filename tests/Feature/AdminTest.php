@@ -32,8 +32,10 @@ class AdminTest extends TestCase
     {
         $user = $this->createUser();
 
-        $response = $this->actingAs($user)->followingRedirects()->get(route('acp'));
+        $response = $this->actingAs($user)->get(route('acp'));
+        $response->assertRedirect('home');
 
+        $response = $this->actingAs($user)->followingRedirects()->get(route('acp'));
         $response->assertSee(__('site.permission_denied'));
     }
 
