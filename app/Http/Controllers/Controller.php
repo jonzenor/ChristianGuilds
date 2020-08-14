@@ -51,5 +51,12 @@ class Controller extends BaseController
         });
     }
 
+    public function clearCache($what, $id)
+    {
+        if ($what == 'user') {
+            Cache::forget('User:' . $id);
+        }
+    }
+
 }
 
