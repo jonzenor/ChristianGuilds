@@ -116,6 +116,6 @@ class LoginSecurityController extends Controller
         $this->clearCache('user', $user->id);
 
         toast(__('user.2fa_disable_success'), 'success');
-        return redirect('/2fa');
+        return redirect()->route('profile', $user->id);
     }
 }
