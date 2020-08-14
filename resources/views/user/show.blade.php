@@ -5,6 +5,21 @@
 
     <hr />
 
+    @can('view-user-security', $user)
+        <h2 class="page-subheader">{{ __('user.security_status') }}</h2>
+        <div class="page-section">
+            @if ($user->loginSecurity && $user->loginSecurity->google2fa_enable == 1)
+                <i class="fas fa-shield-check text-green-600 text-4xl"></i> {{ __('site.enabled') }}
+                @can('is-self', $user) <span class="ml-4"><a href="{{ route('2fa-settings') }}" class="link">[ {{ __('user.disable_2fa') }} ]</a>@endcan
+            @else
+                <i class="fas fa-shield text-red-600 text-4xl"></i> {{ __('site.disabled') }}
+                @can('is-self', $user)<span class="ml-4"><a href="{{ route('2fa-settings') }}" class="link">[ {{ __('user.enable_2fa') }} ]</a>@endcan
+            @endif
+
+        </div>
+        <hr />
+    @endcan
+
     @if ($user->roles->count() >= 1)
         @can('view-roles')
             <h2 class="page-subheader">{{ __('user.roles') }}</h2>

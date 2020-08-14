@@ -30,6 +30,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::define('is-self', function($user, $profile) {
+            if ($user->id == $profile->id) { return true; }
+            return false;
+        });
+
         Gate::define('view-acp', function ($user) {
             if ($this->isAdmin($user)) { return true; }
             return false;
@@ -46,6 +51,12 @@ class AuthServiceProvider extends ServiceProvider
 
         Gate::define('manage-user-roles', function ($user) {
             if ($this->isAdmin($user)) { return true; }
+            return false;
+        });
+
+        Gate::define('view-user-security', function ($user, $profile) {
+            if ($this->isAdmin($user)) { return true; }
+            if ($user->id == $profile->id) { return true; }
             return false;
         });
     }

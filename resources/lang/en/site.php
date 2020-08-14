@@ -5,4 +5,6 @@ return [
     'confirm_action'        => 'Confirm',
     'cancel'                => 'Cancel',
     'permission_denied'     => 'Permission Denied',
+    'enabled'               => 'Enabled',
+    'disabled'              => 'Disabled',
 ];

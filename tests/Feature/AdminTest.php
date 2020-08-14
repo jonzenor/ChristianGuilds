@@ -12,6 +12,9 @@ class AdminTest extends TestCase
     /** @test */
     public function admin_page_loads()
     {
+        $this->withoutMiddleware();
+        $this->withoutExceptionHandling();
+
         $admin = $this->createAdminUser();
         $response = $this->actingAs($admin)->get('/acp');
 
@@ -30,6 +33,7 @@ class AdminTest extends TestCase
     /** @test */
     public function users_cannot_load_acp()
     {
+        $this->withoutMiddleware();
         $user = $this->createUser();
 
         $response = $this->actingAs($user)->get(route('acp'));
@@ -52,6 +56,7 @@ class AdminTest extends TestCase
     /** @test */
     public function user_count_shows_in_acp_widget()
     {
+        $this->withoutMiddleware();
         $this->createUser();
         $this->createUser();
         $this->createUser();
@@ -65,6 +70,7 @@ class AdminTest extends TestCase
     /** @test */
     public function user_profile_links_from_acp_user_widget()
     {
+        $this->withoutMiddleware();
         $user = $this->createUser();
         $admin = $this->createAdminUser();
 
