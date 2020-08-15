@@ -10,9 +10,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
-
 use App\Mail\newUser;
-
 
 class Controller extends BaseController
 {
@@ -90,14 +88,14 @@ class Controller extends BaseController
     //**************************/
     // Send Message Functions //
     //************************/
-    public function send_admin_notification($type, $data)
+    public function sendAdminNotification($type, $data)
     {
         // Select admins
         $admins = $this->getAdminUsers();
 
         foreach ($admins as $admin) {
             if ($type == "new_user") {
-                Mail::to($admin)->send(new newUser($data));
+                Mail::to($admin)->send(new NewUser($data));
             }
         }
     }

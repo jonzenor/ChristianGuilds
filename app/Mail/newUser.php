@@ -6,12 +6,12 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-
 use App\User;
 
-class newUser extends Mailable
+class NewUser extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
@@ -30,7 +30,7 @@ class newUser extends Mailable
      */
     public function build()
     {
-        return $this->view('mail.newUser')->with([
+        return $this->view('mail.NewUser')->with([
             'user' => $this->user,
         ]);
     }

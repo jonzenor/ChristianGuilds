@@ -69,7 +69,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        $this->send_admin_notification('new_user', $user);
+        $this->sendAdminNotification('new_user', $user);
 
         return $user;
     }
