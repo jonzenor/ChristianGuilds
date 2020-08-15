@@ -16,7 +16,7 @@ class PopulateRolesTable extends Migration
         DB::table('roles')->insert([
             ['name' => 'Admin', 'color' => "red-700", 'context' => 'global'],
             ['name' => 'Game Master', 'color' => 'green-700', 'context' => 'global'],
-            ['name' => 'Commmunity Manager', 'color' => 'blue-700', 'context' => 'global'],
+            ['name' => 'Community Manager', 'color' => 'blue-700', 'context' => 'global'],
         ]);
     }
 

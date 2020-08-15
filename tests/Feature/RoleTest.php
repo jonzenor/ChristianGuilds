@@ -34,10 +34,6 @@ class RoleTest extends TestCase
 
     }
 
-    /** User's role tags show in profile */
-
-    /** Guests cannot see user roles */
-
     /** @test */
     public function user_is_added_to_role_from_form()
     {
@@ -65,7 +61,6 @@ class RoleTest extends TestCase
         $response->assertSee(__('user.role_add_success'));
     }
 
-    /** Adding a role checks for if the user is already in that role */
     /** @test */
     public function user_cannot_be_added_to_a_duplicate_role()
     {
@@ -101,7 +96,6 @@ class RoleTest extends TestCase
         $response->assertSee(__('user.invalid_user'));
     }
 
-    /** Adding a role checks for admin permission */
     /** @test */
     public function add_role_verifies_permission()
     {
@@ -125,9 +119,6 @@ class RoleTest extends TestCase
 
     /** Admin cannot remove admin from himself */
 
-    /** Removing role checks for admin permissions */
-
-    /** Removing roles works */
     /** @test */
     public function removing_user_from_role_works()
     {
@@ -164,6 +155,35 @@ class RoleTest extends TestCase
 
         $response = $this->followingRedirects()->actingAs($admin)->post(route('remove-role', ['id' => $user->id, 'role' => 1]), ['confirm' => true]);
         $response->assertSee(__('user.role_del_success'));
+    }
+
+    /** @test */
+    public function acp_roles_page_loads()
+    {
+        $this->withoutExceptionHandling();
+        $this->withoutMiddleware();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('role-list'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('role.index');
+        $response->assertSee('Game Master');
+    }
+
+    /** @test */
+    public function acp_roles_page_lists_users()
+    {
+        $this->withoutMiddleware();
+
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('role-list'));
+
+        $see[] = 'Admin';
+        $see[] = $admin->name;
+
+        $response->assertSeeInOrder($see);
     }
 
 }

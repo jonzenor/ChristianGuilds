@@ -104,4 +104,16 @@ class AdminTest extends TestCase
         $response = $this->actingAs($user)->followingRedirects()->get(route('user-list'));
         $response->assertSee(__('site.permission_denied'));        
     }
+
+    /** @test */
+    public function roles_show_in_acp()
+    {
+        $this->withoutMiddleware();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('acp'));
+        $response->assertSee('Admin');
+        $response->assertSee('Game Master');
+        $response->assertSee('Community Manager');
+    }
 }

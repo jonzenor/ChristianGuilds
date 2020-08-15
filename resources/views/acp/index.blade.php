@@ -31,6 +31,10 @@
                     @endforeach
                 </ul>
             </div>
+
+            <div class="page-section">
+                [ <a href="{{ route('role-list') }}" class="link">{{ __('site.view_global_roles') }}</a> ]
+            </div>
         </div>
 
     </div>

@@ -8,5 +8,6 @@ return [
     'enabled'               => 'Enabled',
     'disabled'              => 'Disabled',
 
-    'global_roles'          => 'Global Roles',
+    'global_roles'          => 'Global Site Roles',
+    'view_global_roles'     => 'View All Global Roles',
 ];
