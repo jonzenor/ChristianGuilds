@@ -15,16 +15,13 @@ return [
     '2fa'               => 'Two Factor Authentication (2FA)',
     'enable_2fa'        => 'Enable 2FA',
     'disable_2fa'       => 'Disable 2FA',
-    '2fa_explain'       => 'Two Factor Authentication (2FA) strengthens security to certain parts of the site by requiring two methods (AKA factors) to verify your identity. Two Factor Authentication (2FA) protects against phishing, social engineering and password brute force attacks and secures your account from attackers exploiting weak or stolen credentials.',
     'generate_2fa'      => 'Generate Secret Key to Enable 2FA',
-    '2fa_setup_step1'   => '<span class="highlight">Download an Authenticator App</span> (We recommend <a href="https://authy.com/" class="link">Authy</a>).',
     '2fa_setup_step2'   => '<span class="highlight">Scan this QR code</span> with your your Authenticator App App.',
     '2fa_setup_alt'     => 'Alternatively, you can use the code:',
     '2fa_setup_step3'   => '<span class="highlight">Enter the pin</span> from your Authenticator App app:',
     '2fa_authenticator_code' => 'Authenticator Code',
     '2fa_settings'      => 'Two Factor Authentication Settings',
     '2fa_status_long'   => '2FA is currently <strong class="font-strong">enabled</strong> on your account.',
-    '2fa_disable_explain' => 'If you want to <span class="highlight">disable</span> Two Factor Authentication, please <span class="highlight">confirm your password and Click on the Disable 2FA Button</span>.',
     '2fa_key_generated' => 'Secret Key Generated',
     '2fa_enable_success' => '2FA has been enabled successfully',
     '2fa_enable_failed' => 'Invalid verification Code. Please try again',
@@ -38,7 +35,6 @@ return [
     'roles'             => 'User Roles',
     'add_role'          => 'Add Role',
     'remove_role'       => 'Remove Role',
-    'remove_role_text'  => 'Remove <span class="highlight">:user</span> from the <span class="highlight">:role</span> role?',
     'confirm_remove_button' => 'Remove Role',
     'duplicate_role'        => 'User is already in that role. Cannot add duplicate role.',
     'invalid_role'          => 'Invalid or unknown role.',
@@ -47,4 +43,20 @@ return [
 
     'view_all'              => 'View All Users',
     'list'                  => 'Site User List',
+
+    '2fa_explain'       =>
+        'Two Factor Authentication (2FA) strengthens security to certain parts of the site by requiring two methods
+         (AKA factors) to verify your identity. Two Factor Authentication (2FA) protects against phishing, social
+        engineering and password brute force attacks and secures your account from attackers exploiting weak or stolen
+         credentials.',
+    
+    '2fa_setup_step1'   =>
+        '<span class="highlight">Download an Authenticator App</span> (We recommend <a href="https://authy.com/" 
+        class="link">Authy</a>).',
+
+    '2fa_disable_explain' =>
+        'If you want to <span class="highlight">disable</span> Two Factor Authentication, please 
+        <span class="highlight">confirm your password and Click on the Disable 2FA Button</span>.',
+    
+    'remove_role_text'  => 'Remove <span class="highlight">:user</span> from the <span class="highlight">:role</span> role?',
 ];
