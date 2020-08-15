@@ -48,3 +48,10 @@ Route::group(['prefix' => '2fa'], function () {
 Route::get('/test_middleware', function () {
     return "2FA middleware work!";
 })->middleware(['auth', '2fa']);
+
+Route::get('/send_test_email', 'HomeController@sendTestEmail');
+
+Route::get('/test_email', function () {
+    $user = App\User::find(4);
+    return new App\Mail\newUser($user);
+});

@@ -45,4 +45,12 @@ class HomeController extends Controller
             'roles' => $roles,
         ]);
     }
+
+    public function sendTestEmail()
+    {
+        $user = $this->getUser(4);
+        $this->mailAdminNewUser($user);
+
+        return redirect('/test_email');
+    }
 }
