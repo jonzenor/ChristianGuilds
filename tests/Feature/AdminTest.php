@@ -77,4 +77,17 @@ class AdminTest extends TestCase
         $response = $this->actingAs($admin)->get('/acp');
         $response->assertSee(route('profile', $user->id));
     }
+
+    /** @test */
+    public function acp_user_list_page_loads()
+    {
+        $this->withoutMiddleware();
+        $user = $this->createUser();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('user-list'));
+        $response->assertStatus(200);
+        $response->assertViewIs('user.index');
+        $response->assertSee($user->name);
+    }
 }

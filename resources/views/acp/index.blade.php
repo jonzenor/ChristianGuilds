@@ -15,8 +15,7 @@
     </div>
 
     <div class="page-section">
-        <span class="highlight"> <i class="fal fa-users"></i> {{ __('user.count', ['count' => $userCount]) }}</span>
+        <i class="fal fa-users"></i> <span class="highlight"> {{ __('user.count', ['count' => $userCount]) }}</span> [ <a href="{{ route('user-list') }}" class="link">{{ __('user.view_all') }}</a> ]
     </div>
-
 
 @endsection

@@ -34,7 +34,7 @@ class HomeController extends Controller
             return redirect()->route('home');
         }
 
-        $users = $this->getUsers();
+        $users = $this->getLatestUsers();
         $userCount = $this->getUserCount();
 
         return view('acp.index')->with([
