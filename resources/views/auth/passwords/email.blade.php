@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.main')
 
 @section('content')
     <div class="container mx-auto">
@@ -11,9 +11,9 @@
                     </div>
                 @endif
 
-                <div class="flex flex-col break-words bg-white border-2 rounded shadow-md">
+                <div class="flex flex-col break-words bg-cggray-700 border-cggray-500 text-cgwhite border-2 rounded shadow-md">
 
-                    <div class="font-semibold bg-gray-200 text-gray-700 py-3 px-6 mb-0">
+                    <div class="font-semibold bg-cggray-900 text-cgwhite py-3 px-6 mb-0">
                         {{ __('Reset Password') }}
                     </div>
 
@@ -21,11 +21,11 @@
                         @csrf
 
                         <div class="flex flex-wrap mb-6">
-                            <label for="email" class="block text-gray-700 text-sm font-bold mb-2">
+                            <label for="email" class="block text-cgwhite text-sm mb-2">
                                 {{ __('E-Mail Address') }}:
                             </label>
 
-                            <input id="email" type="email" class="form-input w-full @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <input id="email" type="email" class="form-field w-full @error('email') border-red-500 @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
                             @error('email')
                                 <p class="text-red-500 text-xs italic mt-4">
@@ -35,12 +35,10 @@
                         </div>
 
                         <div class="flex flex-wrap">
-                            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-gray-100 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                                {{ __('Send Password Reset Link') }}
-                            </button>
+                            <input type="submit" class="button-primary focus:outline-none focus:shadow-outline" value="{{ __('Send Password Reset Link') }}">
 
-                            <p class="w-full text-xs text-center text-gray-700 mt-8 -mb-4">
-                                <a class="text-blue-500 hover:text-blue-700 no-underline" href="{{ route('login') }}">
+                            <p class="w-full text-xs text-center text-cgwhite mt-8 -mb-4">
+                                <a class="link" href="{{ route('login') }}">
                                     {{ __('Back to login') }}
                                 </a>
                             </p>
