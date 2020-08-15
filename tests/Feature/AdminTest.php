@@ -46,6 +46,7 @@ class AdminTest extends TestCase
     /** @test */
     public function users_show_in_acp_widget()
     {
+        $this->withoutMiddleware();
         $user = $this->createUser();
         $admin = $this->createAdminUser();
 
