@@ -7,4 +7,6 @@ return [
     'permission_denied'     => 'Permission Denied',
     'enabled'               => 'Enabled',
     'disabled'              => 'Disabled',
+
+    'global_roles'          => 'Global Roles',
 ];
