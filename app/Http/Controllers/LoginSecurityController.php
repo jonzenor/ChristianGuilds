@@ -29,7 +29,7 @@ class LoginSecurityController extends Controller
         $google2fa_url = "";
         $secret_key = "";
 
-        if($user->loginSecurity()->exists()){
+        if ($user->loginSecurity()->exists()) {
             $google2fa = (new \PragmaRX\Google2FAQRCode\Google2FA());
             $google2fa_url = $google2fa->getQRCodeInline(
                 'Christian Guilds',
@@ -81,7 +81,7 @@ class LoginSecurityController extends Controller
         $secret = $request->input('secret');
         $valid = $google2fa->verifyKey($user->loginSecurity->google2fa_secret, $secret);
 
-        if($valid){
+        if ($valid) {
             $user->loginSecurity->google2fa_enable = 1;
             $user->loginSecurity->save();
 
@@ -89,7 +89,7 @@ class LoginSecurityController extends Controller
             $this->clearCache('user', $user->id);
             
             return redirect()->route('profile', $user->id);
-        }else{
+        } else {
             toast(__('user.2fa_enable_failed'), 'error');
 
             return redirect('2fa');
@@ -103,7 +103,7 @@ class LoginSecurityController extends Controller
     {
         if (!(Hash::check($request->get('current-password'), Auth::user()->password))) {
             // The passwords matches
-            return redirect()->back()->with("error","Your password does not matches with your account password. Please try again.");
+            return redirect()->back()->with("error", "Your password does not matches with your account password. Please try again.");
         }
 
         $validatedData = $request->validate([

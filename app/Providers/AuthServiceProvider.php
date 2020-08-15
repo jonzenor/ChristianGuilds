@@ -5,7 +5,6 @@ namespace App\Providers;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
-
 use App\Role;
 
 class AuthServiceProvider extends ServiceProvider
@@ -30,18 +29,24 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('is-self', function($user, $profile) {
-            if ($user->id == $profile->id) { return true; }
+        Gate::define('is-self', function ($user, $profile) {
+            if ($user->id == $profile->id) {
+                return true;
+            }
             return false;
         });
 
         Gate::define('view-acp', function ($user) {
-            if ($this->isAdmin($user)) { return true; }
+            if ($this->isAdmin($user)) {
+                return true;
+            }
             return false;
         });
 
         Gate::define('add-global-role', function ($user) {
-            if ($this->isAdmin($user)) { return true; }
+            if ($this->isAdmin($user)) {
+                return true;
+            }
             return false;
         });
 
@@ -50,36 +55,44 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-user-roles', function ($user) {
-            if ($this->isAdmin($user)) { return true; }
+            if ($this->isAdmin($user)) {
+                return true;
+            }
             return false;
         });
 
         Gate::define('view-user-security', function ($user, $profile) {
-            if ($this->isAdmin($user)) { return true; }
-            if ($user->id == $profile->id) { return true; }
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+            if ($user->id == $profile->id) {
+                return true;
+            }
             return false;
         });
     }
 
-    private function isAdmin($user) 
+    private function isAdmin($user)
     {
-        return Cache::remember('user:' . $user->id . ':is:Admin', $this->cache_time, function() use($user) {
+        return Cache::remember('user:' . $user->id . ':is:Admin', $this->cache_time, function () use ($user) {
             $admin = Role::where('name', '=', 'Admin')->first();
             return $user->roles->contains($admin);
         });
     }
 
-    private function isGameMaster($user) {
-        return Cache::remember('user:' . $user->id . ':is:Game Master', $this->cache_time, function() use($user) {
+    private function isGameMaster($user)
+    {
+        return Cache::remember('user:' . $user->id . ':is:Game Master', $this->cache_time, function () use ($user) {
             $gm = Role::where('name', '=', 'Game Master')->first();
-            return $user->roles->contains($gm);    
+            return $user->roles->contains($gm);
         });
     }
 
-    private function isCommunityManager($user) {
-        return Cache::remember('user:' . $user->id . ':is:Community Manager', $this->cache_time, function() use($user) {
+    private function isCommunityManager($user)
+    {
+        return Cache::remember('user:' . $user->id . ':is:Community Manager', $this->cache_time, function () use ($user) {
             $cm = Role::where('name', '=', 'Community Manager')->first();
-            return $user->roles->contains($cm);    
+            return $user->roles->contains($cm);
         });
     }
 }

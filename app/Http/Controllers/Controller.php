@@ -12,55 +12,57 @@ use Illuminate\Support\Facades\Cache;
 
 class Controller extends BaseController
 {
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests;
+    use DispatchesJobs;
+    use ValidatesRequests;
 
     private $cache_for = 1440;
 
-    public function getUser($id) 
+    public function getUser($id)
     {
-        return Cache::rememberForever('User:' . $id, function() use($id) {
+        return Cache::rememberForever('User:' . $id, function () use ($id) {
             return User::find($id);
         });
     }
 
     public function getUsers()
     {
-        return Cache::remember('Users', $this->cache_for, function() {
+        return Cache::remember('Users', $this->cache_for, function () {
             return User::all();
         });
     }
 
     public function getLatestUsers()
     {
-        return Cache::remember('Users:Latest', $this->cache_for, function() {
+        return Cache::remember('Users:Latest', $this->cache_for, function () {
             return User::orderBy('created_at', 'desc')->limit(config('acp.items_limit'))->get();
         });
     }
 
     public function getPaginatedUsers($page)
     {
-        return Cache::remember('Users:page:' . $page, $this->cache_for, function() {
+        return Cache::remember('Users:page:' . $page, $this->cache_for, function () {
             return User::paginate(config('acp.paginate_users'));
         });
     }
 
     public function getUserCount()
     {
-        return Cache::rememberForever('Users:count', function() {
+        return Cache::rememberForever('Users:count', function () {
             return User::all()->count();
         });
     }
 
     public function getGlobalRoles()
     {
-        return Cache::rememberForever('Roles:global', function() {
+        return Cache::rememberForever('Roles:global', function () {
             return Role::where('context', '=', 'global')->get();
         });
     }
 
     public function getRole($id)
     {
-        return Cache::rememberForever('Role:' . $id, function() use($id) {
+        return Cache::rememberForever('Role:' . $id, function () use ($id) {
             return Role::find($id);
         });
     }
@@ -71,6 +73,4 @@ class Controller extends BaseController
             Cache::forget('User:' . $id);
         }
     }
-
 }
-

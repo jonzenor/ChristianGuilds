@@ -3,12 +3,14 @@
 namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Tests\TestCase;
 
 class RoleTest extends TestCase
 {
 
     use RefreshDatabase;
+    use WithoutMiddleware;
 
     /** @test */
     public function user_profile_page_shows_global_roles()
@@ -37,6 +39,8 @@ class RoleTest extends TestCase
     /** @test */
     public function user_is_added_to_role_from_form()
     {
+        $this->withoutMiddleware();
+
         $user = $this->createUser();
         $admin = $this->createAdminUser();
 
@@ -53,6 +57,8 @@ class RoleTest extends TestCase
     /** @test */
     public function adding_role_gives_success_message()
     {
+        $this->withoutMiddleware();
+
         $user = $this->createUser();
         $admin = $this->createAdminUser();
 
