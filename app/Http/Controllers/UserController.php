@@ -9,6 +9,21 @@ use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
+    public function index()
+    {
+        if (Gate::denies('view-acp')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
+        $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
+        $users = $this->getPaginatedUsers($page);
+
+        return view('user.index')->with([
+            'users' => $users,
+        ]);
+    }
+
     public function show($id)
     {
         $user = $this->getUser($id);

@@ -26,6 +26,7 @@ Route::get('/profile/{id}/delRole/{role}', 'UserController@delRole')->name('remo
 Route::post('/profile/{id}/delRole/{role}', 'UserController@delRoleConfirm')->name('remove-role-confirm')->middleware('auth');
 
 Route::get('/acp', 'HomeController@acp')->name('acp')->middleware('auth', '2fa');
+Route::get('/acp/users', 'UserController@index')->name('user-list')->middleware('auth', '2fa');
 
 
 // Stuff for the 2FA plugin

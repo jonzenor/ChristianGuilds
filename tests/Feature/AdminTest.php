@@ -46,6 +46,7 @@ class AdminTest extends TestCase
     /** @test */
     public function users_show_in_acp_widget()
     {
+        $this->withoutMiddleware();
         $user = $this->createUser();
         $admin = $this->createAdminUser();
 
@@ -76,5 +77,31 @@ class AdminTest extends TestCase
 
         $response = $this->actingAs($admin)->get('/acp');
         $response->assertSee(route('profile', $user->id));
+    }
+
+    /** @test */
+    public function acp_user_list_page_loads()
+    {
+        $this->withoutMiddleware();
+        $user = $this->createUser();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('user-list'));
+        $response->assertStatus(200);
+        $response->assertViewIs('user.index');
+        $response->assertSee($user->name);
+    }
+
+    /** @test */
+    public function users_cannot_view_user_list_page()
+    {
+        $this->withoutMiddleware();
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('user-list'));
+        $response->assertRedirect('home');
+
+        $response = $this->actingAs($user)->followingRedirects()->get(route('user-list'));
+        $response->assertSee(__('site.permission_denied'));        
     }
 }

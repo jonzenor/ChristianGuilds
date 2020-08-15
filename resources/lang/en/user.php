@@ -4,6 +4,12 @@ return [
     'count'     => 'Total System Users: :count',
     'users'     => 'Users',
     'password'  => 'Password',
+
+    'id'                => 'ID',
+    'name'              => 'Name',
+    '2fa_security'      => '2FA',
+    'account_created'   => 'Account Created',
+    'account_modified'  => 'Last Modified',
     
     'security_status'   => 'Two Factor Authentication (2FA) Status',
     '2fa'               => 'Two Factor Authentication (2FA)',
@@ -38,4 +44,7 @@ return [
     'invalid_role'          => 'Invalid or unknown role.',
     'role_add_success'      => 'Role Added!',
     'role_del_success'      => 'Role Removed!',
+
+    'view_all'              => 'View All Users',
+    'list'                  => 'Site User List',
 ];

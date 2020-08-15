@@ -30,6 +30,20 @@ class Controller extends BaseController
         });
     }
 
+    public function getLatestUsers()
+    {
+        return Cache::remember('Users:Latest', $this->cache_for, function() {
+            return User::orderBy('created_at', 'desc')->limit(config('acp.items_limit'))->get();
+        });
+    }
+
+    public function getPaginatedUsers($page)
+    {
+        return Cache::remember('Users:page:' . $page, $this->cache_for, function() {
+            return User::paginate(config('acp.paginate_users'));
+        });
+    }
+
     public function getUserCount()
     {
         return Cache::rememberForever('Users:count', function() {
