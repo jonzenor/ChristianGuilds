@@ -27,6 +27,7 @@ Route::post('/profile/{id}/delRole/{role}', 'UserController@delRoleConfirm')->na
 
 Route::get('/acp', 'HomeController@acp')->name('acp')->middleware('auth', '2fa');
 Route::get('/acp/users', 'UserController@index')->name('user-list')->middleware('auth', '2fa');
+Route::get('/acp/roles', 'RoleController@index')->name('role-list')->middleware('auth', '2fa');
 
 
 // Stuff for the 2FA plugin

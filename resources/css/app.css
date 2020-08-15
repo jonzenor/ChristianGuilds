@@ -108,3 +108,19 @@ hr {
 .role-tag {
     @apply text-white rounded-full text-xs mr-3 px-2 my-2;
 }
+
+.acp-widget {
+    @apply w-full;
+}
+
+.acp-widget:md {
+    @apply w-1/2;
+}
+
+.acp-widget:lg {
+    @apply w-1/3;
+}
+
+.acp-widget:xl {
+    @apply w-1/4;
+}

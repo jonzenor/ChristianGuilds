@@ -37,9 +37,12 @@ class HomeController extends Controller
         $users = $this->getLatestUsers();
         $userCount = $this->getUserCount();
 
+        $roles = $this->getGlobalRoles();
+
         return view('acp.index')->with([
             'users' => $users,
             'userCount' => $userCount,
+            'roles' => $roles,
         ]);
     }
 }
