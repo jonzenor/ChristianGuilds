@@ -90,4 +90,17 @@ class AdminTest extends TestCase
         $response->assertViewIs('user.index');
         $response->assertSee($user->name);
     }
+
+    /** @test */
+    public function users_cannot_view_user_list_page()
+    {
+        $this->withoutMiddleware();
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('user-list'));
+        $response->assertRedirect('home');
+
+        $response = $this->actingAs($user)->followingRedirects()->get(route('user-list'));
+        $response->assertSee(__('site.permission_denied'));        
+    }
 }
