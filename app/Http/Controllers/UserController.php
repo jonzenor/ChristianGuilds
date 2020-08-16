@@ -77,7 +77,7 @@ class UserController extends Controller
         $settings = $user->settings;
 
         if (!$settings) {
-            $settings = new UserSettings;
+            $settings = new UserSettings();
             $settings->user_id = $user->id;
         }
 
