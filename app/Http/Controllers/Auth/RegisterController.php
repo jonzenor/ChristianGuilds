@@ -64,7 +64,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $captchaResponse = $this->recaptcha_check($data['recaptcha']);
+        $captchaResponse = $this->recaptchaCheck($data['recaptcha']);
 
         Log::info("[Recaptcha] Form:User Registration Name:" . $data['name'] . " Email:" . $data['email'] . " Score:" . $captchaResponse->score . " Success:" . $captchaResponse->success);
 

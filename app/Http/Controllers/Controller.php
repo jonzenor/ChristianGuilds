@@ -103,7 +103,7 @@ class Controller extends BaseController
     //*****************************/
     // Google ReCaptcha analysis //
     //***************************/
-    public function recaptcha_check($recaptcha)
+    public function recaptchaCheck($recaptcha)
     {
         $url = 'https://www.google.com/recaptcha/api/siteverify';
         $remoteip = $_SERVER['REMOTE_ADDR'];
