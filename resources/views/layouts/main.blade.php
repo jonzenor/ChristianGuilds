@@ -12,6 +12,7 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="https://kit.fontawesome.com/104658f4fb.js" crossorigin="anonymous"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.sitekey') }}"></script>
     
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
@@ -19,6 +20,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Markazi+Text&family=Noto+Sans+HK&display=swap" rel="stylesheet">
 
 
+    <style>
+        .grecaptcha-badge { visibility: hidden; }
+    </style>
 </head>
 <body class="h-screen antialiased leading-none bg-cgblack text-cgwhite font-body">
     <nav class="w-full">
@@ -65,6 +69,16 @@
     @include('sweetalert::alert')
 
     @yield('content')
+
+    <script>
+        grecaptcha.ready(function() {
+            grecaptcha.execute('{{ config('services.recaptcha.sitekey') }}', {action: 'contact'}).then(function(token) {
+               if (token) {
+                 document.getElementById('recaptcha').value = token;
+               }
+            });
+        });
+</script>
 
 </body>
 </html>
