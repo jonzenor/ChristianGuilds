@@ -1,6 +1,11 @@
 @extends('layouts.main')
 
 @section('content')
+
+    <style>
+        .grecaptcha-badge { visibility: visible; }
+    </style>
+
     <div class="container mx-auto">
         <div class="flex flex-wrap justify-center">
             <div class="w-full max-w-sm">
@@ -62,6 +67,8 @@
 
                             <input id="password-confirm" type="password" class="form-field w-full" name="password_confirmation" required autocomplete="new-password">
                         </div>
+
+                        <input type="hidden" name="recaptcha" id="recaptcha">
 
                         <div class="flex flex-wrap">
                             <input type="submit" class="button-primary" value="{{ __('Register') }}">

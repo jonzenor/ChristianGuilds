@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
@@ -63,11 +64,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $captchaResponse = $this->recaptcha_check($data['recaptcha']);
+
+        Log::info("[Recaptcha] Form:User Registration Name:" . $data['name'] . " Email:" . $data['email'] . " Score:" . $captchaResponse->score . " Success:" . $captchaResponse->success);
+
+        if ($captchaResponse->success != true) {
+            return back()->withErrors(['captcha' => 'ReCaptcha Error']);
+        }
+        
+        if ($captchaResponse->score <= 0.3) {
+            return back()->withErrors(['captcha' => 'ReCaptcha Error']);
+        }
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        Log::info("[User Created] Name:" . $user->name . " Email:" . $user->email);
 
         $this->sendAdminNotification('new_user', $user);
 
