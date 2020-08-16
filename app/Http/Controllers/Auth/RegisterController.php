@@ -66,7 +66,7 @@ class RegisterController extends Controller
     {
         $captchaResponse = $this->recaptchaCheck($data['recaptcha']);
 
-        Log::info("[Recaptcha] Form:User Registration Name:" . $data['name'] . " Email:" . $data['email'] . " Score:" . $captchaResponse->score . " Success:" . $captchaResponse->success);
+        Log::channel('app')->info("[Recaptcha] Form:User Registration " . json_encode($data) . " Score:" . $captchaResponse->score . " Success:" . $captchaResponse->success);
 
         if ($captchaResponse->success != true) {
             return back()->withErrors(['captcha' => 'ReCaptcha Error']);
@@ -82,7 +82,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        Log::info("[User Created] Name:" . $user->name . " Email:" . $user->email);
+        Log::channel('app')->info("[User Created] " . json_encode($user));
 
         $this->sendAdminNotification('new_user', $user);
 

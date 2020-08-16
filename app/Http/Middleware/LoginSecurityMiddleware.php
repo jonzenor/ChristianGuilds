@@ -16,6 +16,10 @@ class LoginSecurityMiddleware
      */
     public function handle($request, Closure $next)
     {
+        if (env('APP_ENV') === 'testing') {
+            return $next($request);
+        }
+    
         $authenticator = app(Google2FAAuthenticator::class)->boot($request);
 
         if ($authenticator->isAuthenticated()) {

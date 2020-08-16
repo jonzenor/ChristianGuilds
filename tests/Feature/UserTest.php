@@ -38,4 +38,39 @@ class UserTest extends TestCase
 
     }
 
+    /** @test */
+    public function user_edit_page_loads()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = $this->createUser();
+        $response = $this->actingAs($user)->get(route('profile-edit', $user->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('user.edit');
+    }
+
+    /** @test */
+    public function user_profile_saves_name()
+    {
+        $user = $this->createUser();
+        $response = $this->actingAs($user)->post(route('profile-update', $user->id), ['name' => 'Test2']);
+
+        $data['id'] = $user->id;
+        $data['name'] = "Test2";
+
+        $this->assertDatabaseHas('users', $data);
+    }
+
+    /**  */
+    public function user_pushover_key_shows_on_profile()
+    {
+        $this->withoutMiddleware();
+
+        $user = $this->createUser();
+        $response = $this->actingAs($user)->get(route('profile', $user->id));
+
+        $response->assertSee(__('user.pushover_key'));
+    }
+
 }

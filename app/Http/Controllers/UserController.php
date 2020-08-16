@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Alert;
 use Gate;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use App\UserSettings;
 
 class UserController extends Controller
 {
@@ -40,6 +42,59 @@ class UserController extends Controller
             'user' => $user,
             'newRoles' => $newRoles,
         ]);
+    }
+
+    public function edit($id)
+    {
+        $user = $this->getUser($id);
+
+        if (!$user) {
+            toast(__('user.invalid_user'), 'error');
+            return redirect()->route('home');
+        }
+
+        return view('user.edit')->with([
+            'user' => $user,
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $user = $this->getUser($id);
+
+        if (!$user) {
+            toast(__('user.invalid_user'), 'error');
+            return redirect()->route('home');
+        }
+
+        $this->validate($request, [
+            'name' => 'required|string',
+            'pushover_key' => 'nullable|string',
+        ]);
+
+        Log::channel('app')->info("[User Update] id: " . $user->id . " original: " . json_encode($user) . " new: " . json_encode($request->all()));
+
+        $settings = $user->settings;
+
+        if (!$settings) {
+            $settings = new UserSettings;
+            $settings->user_id = $user->id;
+        }
+
+        $settings->pushover_key = $request->pushover_key;
+
+        $user->name = $request->name;
+
+        $user->save();
+        $settings->save();
+
+        $this->clearCache('user', $user->id);
+
+        Log::channel('app')->info("[User Update] id: " . $user->id . " Success");
+
+        toast(__('user.profile_updated'), 'success');
+
+        return redirect()->route('profile', $user->id);
     }
 
     public function addRole(Request $request, $id)
