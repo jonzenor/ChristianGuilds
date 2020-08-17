@@ -15,7 +15,7 @@ class CreateContactTopicsTable extends Migration
     {
         Schema::create('contact_topics', function (Blueprint $table) {
             $table->id();
-            $table->string('topic');
+            $table->string('name');
             $table->string('category');
             $table->timestamps();
         });

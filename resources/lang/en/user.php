@@ -49,6 +49,7 @@ return [
     'contact_settings'      => 'Contact Settings',
     'pushover_key'          => 'Pushover Key',
     'edit_profile'          => 'Edit Profile',
+    'profile_updated'       => "Profile Updated",
 
     '2fa_explain'       =>
         'Two Factor Authentication (2FA) strengthens security to certain parts of the site by requiring two methods

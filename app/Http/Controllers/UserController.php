@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Alert;
+use App\ContactSettings;
+use App\ContactTopics;
 use Gate;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -53,8 +55,24 @@ class UserController extends Controller
             return redirect()->route('home');
         }
 
+        // Get a list of all of the things people can "subscribe" to receive notifications for
+        $topics = $this->getContactTopics();
+        $notifications = array();
+
+        foreach ($topics as $topic) {
+            $notifications[$topic->name] = array('email' => '', 'pushover' => '');
+        }
+
+        $userNotifications = $this->getUserContactSettings($user->id);
+
+        foreach ($userNotifications as $notification) {
+            $notifications[$notification->topic][$notification->mode] = true;
+        }
+
         return view('user.edit')->with([
             'user' => $user,
+            'topics' => $topics,
+            'notifications' => $notifications,
         ]);
     }
 
@@ -73,6 +91,41 @@ class UserController extends Controller
         ]);
 
         Log::channel('app')->info("[User Update] id: " . $user->id . " original: " . json_encode($user) . " new: " . json_encode($request->all()));
+
+        $topics = $this->getContactTopics();
+
+        $topicArray = $request->toArray();
+        foreach ($topics as $topic) {
+            $contactModes = array('pushover', 'email');
+            foreach ($contactModes as $mode) {
+                // See if the user currently has this setting set
+                $userSetting = ContactSettings::where('user_id', '=', $user->id)
+                    ->where('topic', '=', $topic->name)
+                    ->where('mode', '=', $mode)
+                    ->first();
+
+                // See what settings the user has selected
+                if (isset($topicArray[$topic->name][$mode])) {
+                    if (!$userSetting) {
+                        // The user selected this option but doesn't have it set, so set it
+                        $setting = new ContactSettings();
+
+                        $setting->user_id = $user->id;
+                        $setting->topic = $topic->name;
+                        $setting->mode = $mode;
+                        $setting->save();
+                    }
+                } else {
+                    if ($userSetting) {
+                        // If the user did not select this option, but has it saved, then remove it
+                        ContactSettings::where('user_id', '=', $user->id)
+                            ->where('topic', '=', $topic->name)
+                            ->where('mode', '=', $mode)
+                            ->delete();
+                    }
+                }
+            }
+        }
 
         $settings = $user->settings;
 

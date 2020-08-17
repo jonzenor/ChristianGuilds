@@ -45,12 +45,27 @@
                 @enderror
             </div>
 
+            <table>
+                <thead>
+                    <td class="px-6">Setting</td>
+                    <td class="px-6">Email</td>
+                    <td class="px-6">Pushover</td>
+                </thead>
+                @foreach ($topics as $topic)
+                    <tr>
+                        <td>{{ ucwords(str_replace("_", " ", $topic->name)) }}</td>
+                        <td class="px-6 text-center"><input type="checkbox" name="{{ $topic->name }}[email]" @if ($notifications[$topic->name]['email']) checked @endif></td>
+                        <td class="px-6 text-center"><input type="checkbox" name="{{ $topic->name }}[pushover]" @if ($notifications[$topic->name]['pushover']) checked @endif></td>
+                    </tr>
+                @endforeach
+            </table>
         </div>
 
         <hr />
 
         <div class="page-section">
             <input type="submit" value="{{ __('user.update_profile') }}" class="button-primary">
+            <a href="{{ route('profile', $user->id) }}" class="button-secondary">{{ __('site.cancel') }}</a>
         </div>
         
     </form>

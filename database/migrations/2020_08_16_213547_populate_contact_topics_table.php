@@ -14,7 +14,7 @@ class PopulateContactTopicsTable extends Migration
     public function up()
     {
         DB::table('contact_topics')->insert([
-            ['topic' => 'new_user', 'category' => "admin"],
+            ['name' => 'new_user', 'category' => "admin"],
         ]);
     }
 
