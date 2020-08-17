@@ -32,7 +32,7 @@
                             {{ $role->name }}
                         @endcan
                     </span>
-                @endforeach      
+                @endforeach
             </div>
         @endcan
     @endif
@@ -42,7 +42,7 @@
         <div class="page-section">
             <form action="{{ route('add-role', $user->id) }}" method="post">
                 @csrf
-        
+
                 <div class="form-row">
                     <select name="role" class="form-field">
                         @foreach ($newRoles as $role)
@@ -54,6 +54,12 @@
                     <input type="submit" class="button-primary" value="{{ __('user.add_role') }}">
                 </div>
             </form>
+        </div>
+    @endcan
+
+    @can('edit-user', $user)
+        <div class="page-section">
+            <a href="{{ route('profile-edit', $user->id) }}" class="link">{{ __('user.edit_profile') }}</a>
         </div>
     @endcan
 

@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->hasOne('App\LoginSecurity');
     }
 
+    public function settings()
+    {
+        return $this->hasOne('App\UserSettings');
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('m/d/Y');

@@ -21,6 +21,10 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/profile/{id}', 'UserController@show')->name('profile');
+
+Route::get('/profile/{id}/edit', 'UserController@edit')->name('profile-edit')->middleware('auth', '2fa');
+Route::post('/profile/{id}/edit', 'UserController@update')->name('profile-update')->middleware('auth', '2fa');
+
 Route::post('/profile/{id}/addRole', 'UserController@addRole')->name('add-role')->middleware('auth', '2fa');
 Route::get('/profile/{id}/delRole/{role}', 'UserController@delRole')->name('remove-role')->middleware('auth', '2fa');
 Route::post('/profile/{id}/delRole/{role}', 'UserController@delRoleConfirm')->name('remove-role-confirm')

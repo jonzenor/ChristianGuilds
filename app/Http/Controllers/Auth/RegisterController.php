@@ -66,14 +66,16 @@ class RegisterController extends Controller
     {
         $captchaResponse = $this->recaptchaCheck($data['recaptcha']);
 
-        Log::info("[Recaptcha] Form:User Registration Name:" . $data['name'] . " Email:" . $data['email'] . " Score:" . $captchaResponse->score . " Success:" . $captchaResponse->success);
-
         if ($captchaResponse->success != true) {
-            return back()->withErrors(['captcha' => 'ReCaptcha Error']);
+            Log::channel('app')->error("[Recaptcha] Error getting response..." . json_encode($captchaResponse));
         }
-        
-        if ($captchaResponse->score <= 0.3) {
-            return back()->withErrors(['captcha' => 'ReCaptcha Error']);
+
+        if ($captchaResponse->success == true) {
+            Log::channel('app')->info("[Recaptcha] Form:User Registration " . json_encode($data) . " Score:" . $captchaResponse->score . " Success:" . $captchaResponse->success);
+
+            if ($captchaResponse->score <= 0.3) {
+                return back()->withErrors(['captcha' => 'ReCaptcha Error']);
+            }
         }
 
         $user = User::create([
@@ -82,7 +84,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
 
-        Log::info("[User Created] Name:" . $user->name . " Email:" . $user->email);
+        Log::channel('app')->info("[User Created] " . json_encode($user));
 
         $this->sendAdminNotification('new_user', $user);
 

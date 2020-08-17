@@ -35,4 +35,8 @@ return [
         'secret' => env('RECAPTCHA_SECRET'),
     ],
 
+    'pushover' => [
+        'key' => env('PUSHOVER_KEY'),
+    ],
+
 ];

@@ -44,6 +44,13 @@ return [
     'view_all'              => 'View All Users',
     'list'                  => 'Site User List',
 
+    'profile'               => 'Profile',
+    'update_profile'        => 'Update Profile',
+    'contact_settings'      => 'Contact Settings',
+    'pushover_key'          => 'Pushover Key',
+    'edit_profile'          => 'Edit Profile',
+    'profile_updated'       => "Profile Updated",
+
     '2fa_explain'       =>
         'Two Factor Authentication (2FA) strengthens security to certain parts of the site by requiring two methods
          (AKA factors) to verify your identity. Two Factor Authentication (2FA) protects against phishing, social

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ContactSettings;
+use App\ContactTopics;
 use App\Role;
 use App\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -11,6 +13,8 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\newUser;
+use App\UserSettings;
+use Illuminate\Support\Facades\Log;
 
 class Controller extends BaseController
 {
@@ -24,6 +28,13 @@ class Controller extends BaseController
     {
         return Cache::rememberForever('User:' . $id, function () use ($id) {
             return User::find($id);
+        });
+    }
+
+    public function getUserContactSettings($id)
+    {
+        return Cache::remember('User:' . $id . ":ContactSettings", $this->cache_for, function () use ($id) {
+            return ContactSettings::where('user_id', '=', $id)->get();
         });
     }
 
@@ -77,10 +88,18 @@ class Controller extends BaseController
         });
     }
 
+    public function getContactTopics()
+    {
+        return Cache::rememberForever('ContactTopic: all', function () {
+            return ContactTopics::all();
+        });
+    }
+
     public function clearCache($what, $id)
     {
         if ($what == 'user') {
             Cache::forget('User:' . $id);
+            Cache::forget('User:' . $id . ':ContactSettings');
         }
     }
 
@@ -95,10 +114,52 @@ class Controller extends BaseController
 
         foreach ($admins as $admin) {
             if ($type == "new_user") {
-                Mail::to($admin)->send(new NewUser($data));
+                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_user')->get();
+
+                foreach ($contactSettings as $setting) {
+                    if ($setting->mode == "email") {
+                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
+                        Mail::to($admin)->send(new NewUser($data));
+                    }
+
+                    if ($setting->mode == "pushover") {
+                        $message = __('pushover.new_user_body', ['user' => $data->name]);
+                        $title = __('pushover.new_user_title');
+
+                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
+
+                        $this->sendPushover($admin, $message, $title);
+                    }
+                }
             }
         }
     }
+
+    public function sendPushover($user, $message, $title = null)
+    {
+        $key = config('services.pushover.key');
+        $user_settings = UserSettings::where('user_id', '=', $user->id)->first();
+
+        if (!$title) {
+            $title = "Christian Guilds";
+        }
+
+        curl_setopt_array($ch = curl_init(), array(
+            CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+            CURLOPT_POSTFIELDS => array(
+                "token" => $key,
+                "user" => $user_settings->pushover_key,
+                "message" => $message,
+                "title" => $title,
+            ),
+            CURLOPT_SAFE_UPLOAD => true,
+            CURLOPT_RETURNTRANSFER => true,
+        ));
+
+        curl_exec($ch);
+        curl_close($ch);
+    }
+
 
     //*****************************/
     // Google ReCaptcha analysis //
