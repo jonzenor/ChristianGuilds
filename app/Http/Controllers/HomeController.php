@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 //use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Request;
 use Gate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
@@ -52,5 +54,38 @@ class HomeController extends Controller
         $this->mailAdminNewUser($user);
 
         return redirect('/test_email');
+    }
+
+    public function forge()
+    {
+
+        $user = $this->getUser(Auth::id());
+        if (env("APP_ENV") != "forge" && env("APP_ENV") != "local") {
+            Log::channel('app')->alert("Attempt to access Forge Test Page by " . json_encode($user));
+            $this->sendAdminNotification("alert", $user);
+            return redirect()->route('home');
+        }
+        
+        $global = $this->getGlobalRoles();
+
+        return view('acp.forge')->with([
+            'roles' => $global,
+        ]);
+    }
+
+    public function forgePowerUp($id)
+    {
+        $user = $this->getUser(Auth::id());
+
+        $role = $this->getRole($id);
+
+        Log::channel('app')->alert("Granting " . $role->name . " Powers to " . json_encode($user));
+        $this->sendAdminNotification("alert", $user);
+        
+        $user->roles()->attach($role->id);
+
+        toast("Granted " . $role->name . " powers", "success");
+
+        return redirect()->route('profile', $user->id);
     }
 }
