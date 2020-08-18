@@ -56,7 +56,8 @@ class HomeController extends Controller
         return redirect('/test_email');
     }
 
-    public function forge() {
+    public function forge()
+    {
 
         $user = $this->getUser(Auth::id());
         if (env("APP_ENV") != "forge" && env("APP_ENV") != "local") {
@@ -78,7 +79,7 @@ class HomeController extends Controller
 
         $role = $this->getRole($id);
 
-        Log::channel('app')->alert("Granting " . $role->name . " Powers to " . json_encode($user) );
+        Log::channel('app')->alert("Granting " . $role->name . " Powers to " . json_encode($user));
         $this->sendAdminNotification("alert", $user);
         
         $user->roles()->attach($role->id);
@@ -86,6 +87,5 @@ class HomeController extends Controller
         toast("Granted " . $role->name . " powers", "success");
 
         return redirect()->route('profile', $user->id);
-
     }
 }
