@@ -10,4 +10,5 @@ return [
 
     'global_roles'          => 'Global Site Roles',
     'view_global_roles'     => 'View All Global Roles',
+    'forge_permissions'     => 'Forge Power Up Permission Granter',
 ];

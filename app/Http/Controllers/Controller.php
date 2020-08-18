@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ContactSettings;
 use App\ContactTopics;
+use App\Mail\AlertMessage;
 use App\Role;
 use App\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -107,7 +108,7 @@ class Controller extends BaseController
     //**************************/
     // Send Message Functions //
     //************************/
-    public function sendAdminNotification($type, $data)
+    public function sendAdminNotification($type, $data = null)
     {
         // Select admins
         $admins = $this->getAdminUsers();
@@ -125,6 +126,26 @@ class Controller extends BaseController
                     if ($setting->mode == "pushover") {
                         $message = __('pushover.new_user_body', ['user' => $data->name]);
                         $title = __('pushover.new_user_title');
+
+                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
+
+                        $this->sendPushover($admin, $message, $title);
+                    }
+                }
+            }
+
+            if ($type == "alert") {
+                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_user')->get();
+
+                foreach ($contactSettings as $setting) {
+                    if ($setting->mode == "email") {
+                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
+                        Mail::to($admin)->send(new AlertMessage($data));
+                    }
+
+                    if ($setting->mode == "pushover") {
+                        $message = __('pushover.alert_body', ['user' => $data->name]);
+                        $title = __('pushover.alert_title');
 
                         Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
 

@@ -35,10 +35,6 @@
             <li class="mr-6">
                 <a class="nav-links" href="{{ route('home') }}">Home</a>
             </li>
-            <li class="mr-6">
-                <a class="nav-links" href="{{ route('acp') }}">ACP</a>
-            </li>
-
             @guest
                 <li class="mr-6">
                     <a class="nav-links" href="{{ route('login') }}">{{ __('Login') }}</a>
@@ -64,6 +60,18 @@
                     <a class="nav-links" href="{{ route('profile', Auth::user()->id) }}">{{ Auth::user()->name }}</a>
                 </li>
             @endguest
+
+            @can('view-acp')
+                <li class="mr-6">
+                    <a class="nav-links" href="{{ route('acp') }}">ACP</a>
+                </li>
+            @endcan
+
+            @if (env("APP_ENV") == "forge" || env("APP_ENV") == "local")
+                <li class="mr-6">
+                    <a class="nav-links" href="{{ route('forge-power-up') }}">Forge Power Up</a>
+                </li>
+            @endif
         </ul>
     </nav>
     @include('sweetalert::alert')

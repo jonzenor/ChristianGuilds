@@ -34,6 +34,8 @@ Route::get('/acp', 'HomeController@acp')->name('acp')->middleware('auth', '2fa')
 Route::get('/acp/users', 'UserController@index')->name('user-list')->middleware('auth', '2fa');
 Route::get('/acp/roles', 'RoleController@index')->name('role-list')->middleware('auth', '2fa');
 
+Route::get('/forgePowerUp', 'HomeController@forge')->name('forge-power-up')->middleware('auth', '2fa');
+Route::get('/forgePowerUp/{id}', 'HomeController@forgePowerUp')->name('forge-grant')->middleware('auth', '2fa');
 
 // Stuff for the 2FA plugin
 Route::group(['prefix' => '2fa'], function () {
