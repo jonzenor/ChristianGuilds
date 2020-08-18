@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Gate;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
@@ -83,7 +84,8 @@ class HomeController extends Controller
         $this->sendAdminNotification("alert", $user);
         
         $user->roles()->attach($role->id);
-
+        Cache::flush();
+        
         toast("Granted " . $role->name . " powers", "success");
 
         return redirect()->route('profile', $user->id);
