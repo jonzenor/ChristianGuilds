@@ -37,5 +37,15 @@
             </div>
         </div>
 
+
+        <div>
+            <h2 class="page-subheader">{{ __('game.stats') }}</h2>
+            <div class="page-section">
+                <ul>
+                    <li> <a href="{{ route('game-list') }}" class="link">{{ __('game.count', ['count' => $gameCount]) }}</a></li>
+                </ul>
+            </div>
+        </div>
+
     </div>
 @endsection

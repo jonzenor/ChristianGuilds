@@ -2,6 +2,7 @@
 
 return [
     'admin_control_panel'   => 'Admin Control Panel',
+    'acp'                   => 'ACP',
     'confirm_action'        => 'Confirm',
     'cancel'                => 'Cancel',
     'permission_denied'     => 'Permission Denied',

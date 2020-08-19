@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\ContactSettings;
 use App\ContactTopics;
+use App\Game;
 use App\Mail\AlertMessage;
 use App\Role;
 use App\User;
@@ -93,6 +94,29 @@ class Controller extends BaseController
     {
         return Cache::rememberForever('ContactTopic: all', function () {
             return ContactTopics::all();
+        });
+    }
+
+    // Game related cache functions
+
+    public function getGameCount()
+    {
+        return Cache::rememberForever('Game:count', function () {
+            return Game::all()->count();
+        });
+    }
+
+    public function getGames()
+    {
+        return Cache::rememberForever('Games', function () {
+            return Game::all();
+        });
+    }
+
+    public function getPaginatedGames($page)
+    {
+        return Cache::remember('Games:page:' . $page, $this->cache_for, function () {
+            return Game::paginate(config('acp.paginate_games'));
         });
     }
 

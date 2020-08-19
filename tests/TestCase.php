@@ -25,5 +25,22 @@ abstract class TestCase extends BaseTestCase
         return $user;
     }
 
+    public function createGame()
+    {
+        $game = factory(\App\Game::class)->create();
+        $game->encoded_name = str_replace("'", "&#039;", $game->name);
+
+        return $game;
+    }
+
+    public function createGenre()
+    {
+        $genre = factory(\App\Genre::class)->create();
+        $genre->encoded_name = str_replace("'", "&#039;", $genre->name);
+
+        return $genre;
+    }
+
+
 
 }
