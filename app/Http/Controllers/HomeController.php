@@ -42,10 +42,13 @@ class HomeController extends Controller
 
         $roles = $this->getGlobalRoles();
 
+        $gameCount = $this->getGameCount();
+
         return view('acp.index')->with([
             'users' => $users,
             'userCount' => $userCount,
             'roles' => $roles,
+            'gameCount' => $gameCount,
         ]);
     }
 
