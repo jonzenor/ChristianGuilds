@@ -50,7 +50,7 @@ class PopulateGamesTable extends Migration
     {
         $games[] = array('name' => 'World of Warcraft', 'genre' => 'MMORPG');
         $games[] = array('name' => 'Overwatch', 'genre' => 'FPS');
-         $games[] = array('name' => 'Minecraft', 'genre' => 'Sandbox');
+        $games[] = array('name' => 'Minecraft', 'genre' => 'Sandbox');
 
         return $games;
     }
