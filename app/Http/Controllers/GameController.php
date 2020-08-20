@@ -28,7 +28,11 @@ class GameController extends Controller
      */
     public function create()
     {
-        //
+        $genres = $this->getGenres();
+
+        return view('game.create')->with([
+            'genres' => $genres,
+        ]);
     }
 
     /**

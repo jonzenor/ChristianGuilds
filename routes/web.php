@@ -35,7 +35,10 @@ Route::get('/acp/users', 'UserController@index')->name('user-list')->middleware(
 Route::get('/acp/roles', 'RoleController@index')->name('role-list')->middleware('auth', '2fa');
 
 Route::get('/acp/games', 'GameController@index')->name('game-list')->middleware('auth', '2fa');
+Route::get('/acp/games/add', 'GameController@create')->name('game-add')->middleware('auth', '2fa');
+Route::post('/acp/games/add', 'GameController@store')->name('game-create')->middleware('auth', '2fa');
 Route::get('/acp/genres', 'GenreController@index')->name('genre-list')->middleware('auth', '2fa');
+
 
 Route::get('/forgePowerUp', 'HomeController@forge')->name('forge-power-up')->middleware('auth', '2fa');
 Route::get('/forgePowerUp/{id}', 'HomeController@forgePowerUp')->name('forge-grant')->middleware('auth', '2fa');

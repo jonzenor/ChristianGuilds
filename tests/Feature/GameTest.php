@@ -87,6 +87,20 @@ class GameTest extends TestCase
         $response->assertSee($genre->name);
     }
 
+    // Make sure game add page loads
+    /** @test */
+    public function load_the_game_add_page()
+    {
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('game-add'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('game.create');\
+    }
+
+    // Make sure game add page works
+
     // Make sure game edit page loads
 
     // Make sure game edit page saves
@@ -94,10 +108,6 @@ class GameTest extends TestCase
     // Make sure genre edit page loads
 
     // Make sure genre edit page saves
-
-    // Make sure game add page loads
-
-    // Make sure game add page works
 
     // Make sure genre add page loads
 

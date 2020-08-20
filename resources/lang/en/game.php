@@ -14,5 +14,7 @@ return [
     'genre_id'      => 'ID',
     'genre_name'    => 'Name',
 
+    'add'       => 'Add a Game',
+    'details'   => 'Game Details',
 
 ];
