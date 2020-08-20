@@ -55,6 +55,7 @@ class PopulateGamesTable extends Migration
         $games[] = array('name' => 'Elder Scrolls Online', 'genre' => 'MMORPG');
         $games[] = array('name' => 'Final Fantasy IV', 'genre' => 'MMORPG');
         $games[] = array('name' => 'Guild Wars 2', 'genre' => 'MMORPG');
+        $games[] = array('name' => 'Rift', 'genre' => 'MMORPG');
 
         return $games;
     }
