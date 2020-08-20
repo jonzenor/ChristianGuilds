@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ContactSettings;
 use App\ContactTopics;
 use App\Game;
+use App\Genre;
 use App\Mail\AlertMessage;
 use App\Role;
 use App\User;
@@ -106,6 +107,13 @@ class Controller extends BaseController
         });
     }
 
+    public function getGenreCount()
+    {
+        return Cache::rememberForever('Genre:count', function () {
+            return Genre::all()->count();
+        });
+    }
+
     public function getGames()
     {
         return Cache::rememberForever('Games', function () {
@@ -119,6 +127,21 @@ class Controller extends BaseController
             return Game::paginate(config('acp.paginate_games'));
         });
     }
+
+    public function getGenres()
+    {
+        return Cache::rememberForever('Genres', function () {
+            return Genre::all();
+        });
+    }
+
+    public function getPaginatedGenres($page)
+    {
+        return Cache::remember('Genres:page:' . $page, $this->cache_for, function () {
+            return Genre::paginate(config('acp.paginate_games'));
+        });
+    }
+
 
     public function clearCache($what, $id)
     {

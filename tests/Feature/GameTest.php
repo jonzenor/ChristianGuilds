@@ -37,7 +37,6 @@ class GameTest extends TestCase
         $response->assertSee(__('game.count', ['count' => 2]));
     }
 
-    // Make sure game page loads with game name
     /** @test */
     public function game_acp_page_loads()
     {
@@ -57,9 +56,50 @@ class GameTest extends TestCase
         $response->assertSee($game->name);
     }
 
-    // Make sure genre count shows up on ACP
+    /** @test */
+    public function genre_count_shows_on_ACP_index()
+    {
+        DB::table('genres')->truncate();
+        $this->createGenre();
+        $this->createGenre();
 
-    // Make sure genre page loads with genre name
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('acp'));
+
+        $response->assertStatus(200);
+        $response->assertSee(__('game.genre_count', ['count' => 2]));
+    }
+
+    /** @test */
+    public function genre_acp_page_loads()
+    {
+        $this->withoutExceptionHandling();
+
+        $genre = $this->createGenre();
+        
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('genre-list'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('genre.index');
+        $response->assertSee($genre->name);
+    }
+
+    // Make sure game add page loads
+    /** @test */
+    public function load_the_game_add_page()
+    {
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('game-add'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('game.create');
+    }
+
+    // Make sure game add page works
 
     // Make sure game edit page loads
 
@@ -68,10 +108,6 @@ class GameTest extends TestCase
     // Make sure genre edit page loads
 
     // Make sure genre edit page saves
-
-    // Make sure game add page loads
-
-    // Make sure game add page works
 
     // Make sure genre add page loads
 

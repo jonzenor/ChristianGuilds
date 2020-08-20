@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class GameController extends Controller
+class GenreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,10 +14,10 @@ class GameController extends Controller
     public function index()
     {
         $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-        $games = $this->getPaginatedGames($page);
+        $genres = $this->getPaginatedGenres($page);
 
-        return view('game.index')->with([
-            'games' => $games,
+        return view('genre.index')->with([
+            'genres' => $genres,
         ]);
     }
 
@@ -28,11 +28,7 @@ class GameController extends Controller
      */
     public function create()
     {
-        $genres = $this->getGenres();
-
-        return view('game.create')->with([
-            'genres' => $genres,
-        ]);
+        //
     }
 
     /**

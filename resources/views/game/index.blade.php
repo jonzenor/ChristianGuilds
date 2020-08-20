@@ -29,6 +29,7 @@
     </div>
 
     <div class="page-section">
+        <a href="{{ route('game-add') }}" class="button-primary">{{ __('game.add') }}</a>
         <a href="{{ route('acp') }}" class="button-secondary">{{ __('site.acp') }}</a>
     </div>
 @endsection
