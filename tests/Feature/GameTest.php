@@ -96,7 +96,7 @@ class GameTest extends TestCase
         $response = $this->actingAs($admin)->get(route('game-add'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('game.create');\
+        $response->assertViewIs('game.create');
     }
 
     // Make sure game add page works
