@@ -45,6 +45,13 @@
                     <li> <a href="{{ route('game-list') }}" class="link">{{ __('game.count', ['count' => $gameCount]) }}</a></li>
                 </ul>
             </div>
+
+            <div class="page-section">
+                <ul>
+                    <li> <a href="{{ route('genre-list') }}" class="link">{{ __('game.genre_count', ['count' => $genreCount]) }}</a></li>
+                </ul>
+            </div>
+
         </div>
 
     </div>
