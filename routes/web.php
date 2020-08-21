@@ -37,6 +37,8 @@ Route::get('/acp/roles', 'RoleController@index')->name('role-list')->middleware(
 Route::get('/acp/games', 'GameController@index')->name('game-list')->middleware('auth', '2fa');
 Route::get('/acp/games/add', 'GameController@create')->name('game-add')->middleware('auth', '2fa');
 Route::post('/acp/games/add', 'GameController@store')->name('game-create')->middleware('auth', '2fa');
+Route::get('/acp/games/edit/{id}', 'GameController@edit')->name('game-edit')->middleware('auth', '2fa');
+Route::post('/acp/games/edit/{id}', 'GameController@update')->name('game-update')->middleware('auth', '2fa');
 Route::get('/acp/genres', 'GenreController@index')->name('genre-list')->middleware('auth', '2fa');
 
 

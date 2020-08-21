@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Game;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
@@ -43,7 +44,22 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
+            'genre' => 'required|integer|max:10000',
+        ]);
+
+        $game = new Game();
+
+        $game->name = $request->name;
+        $game->genre_id = $request->genre;
+
+        $game->save();
+
+        toast(__('game.add_success'), 'success');
+        $this->clearCache('games');
+
+        return redirect()->route('game-list');
     }
 
     /**
@@ -65,7 +81,14 @@ class GameController extends Controller
      */
     public function edit($id)
     {
-        //
+        $game = $this->getGame($id);
+
+        $genres = $this->getGenres();
+
+        return view('game.edit')->with([
+            'game' => $game,
+            'genres' => $genres,
+        ]);
     }
 
     /**
@@ -77,7 +100,23 @@ class GameController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
+            'genre' => 'required|integer|max:10000',
+        ]);
+
+        $game = $this->getGame($id);
+
+        $game->name = $request->name;
+        $game->genre_id = $request->genre;
+
+        $game->save();
+
+        toast(__('game.update_success'), 'success');
+        $this->clearCache('games');
+        $this->clearCache('game', $game->id);
+
+        return redirect()->route('game-list');
     }
 
     /**

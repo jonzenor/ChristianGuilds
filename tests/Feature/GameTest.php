@@ -87,7 +87,6 @@ class GameTest extends TestCase
         $response->assertSee($genre->name);
     }
 
-    // Make sure game add page loads
     /** @test */
     public function load_the_game_add_page()
     {
@@ -99,11 +98,51 @@ class GameTest extends TestCase
         $response->assertViewIs('game.create');
     }
 
-    // Make sure game add page works
+    /** @test */
+    public function add_game_form_works()
+    {
+        $admin = $this->createAdminUser();
 
-    // Make sure game edit page loads
+        $data['name'] = 'My Test Game';
+        $data['genre'] = 1;
 
-    // Make sure game edit page saves
+        $response = $this->actingAs($admin)->post(route('game-create'), $data);
+
+        $data['genre_id'] = $data['genre'];
+        unset($data['genre']);
+
+        $this->assertDatabaseHas('games', $data);        
+    }
+
+    /** @test */
+    public function game_edit_page_loads()
+    {
+        $this->withoutExceptionHandling();
+        $game = $this->createGame();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('game-edit', $game->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('game.edit');
+    }
+
+    /** @test */
+    public function edit_game_page_saves()
+    {
+        $admin = $this->createAdminUser();
+        $game = $this->createGame();
+
+        $data['name'] = 'My Test Updater Game';
+        $data['genre'] = 2;
+
+        $response = $this->actingAs($admin)->post(route('game-update', $game->id), $data);
+
+        $data['genre_id'] = $data['genre'];
+        unset($data['genre']);
+
+        $this->assertDatabaseHas('games', $data);        
+    }
 
     // Make sure genre edit page loads
 

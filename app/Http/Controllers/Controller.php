@@ -100,9 +100,16 @@ class Controller extends BaseController
 
     // Game related cache functions
 
+    public function getGame($id)
+    {
+        return Cache::rememberForever('Game:' . $id, function () use ($id) {
+            return Game::find($id);
+        });
+    }
+
     public function getGameCount()
     {
-        return Cache::rememberForever('Game:count', function () {
+        return Cache::rememberForever('Games:count', function () {
             return Game::all()->count();
         });
     }
@@ -143,11 +150,26 @@ class Controller extends BaseController
     }
 
 
-    public function clearCache($what, $id)
+    public function clearCache($what, $id = null)
     {
         if ($what == 'user') {
             Cache::forget('User:' . $id);
             Cache::forget('User:' . $id . ':ContactSettings');
+        }
+
+        if ($what == "games") {
+            $pages = ceil(($this->getGameCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Games');
+            Cache::forget('Games:count');
+            
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Games:page:' . $i);
+            }
+        }
+
+        if ($what == "game") {
+            Cache::forget('Game:' . $id);
         }
     }
 
