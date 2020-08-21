@@ -16,5 +16,8 @@ return [
 
     'add'       => 'Add a Game',
     'details'   => 'Game Details',
+    'add_success'       => 'Game Added Successfully!',
+    'update_success'    => 'Game Updated Successfully!',
+    'manage'            => 'Manage',
 
 ];
