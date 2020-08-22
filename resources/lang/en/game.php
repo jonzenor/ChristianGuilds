@@ -13,6 +13,12 @@ return [
     'genre_list'    => 'Game Genre List',
     'genre_id'      => 'ID',
     'genre_name'    => 'Name',
+    'genre_manage'  => 'Manage Genre',
+    'genre_edit'    => 'Edit Genre: ',
+    'genre_details' => 'Genre Details',
+    'genre_short_name'  => 'Short Name',
+    'update_genre'  => 'Update Genre',
+    'genre_update_success'  => 'Genre Updated Successfully!',
 
     'add'               => 'Add a Game',
     'details'           => 'Game Details',

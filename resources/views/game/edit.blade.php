@@ -46,7 +46,7 @@
         </div>
 
         <div class="page-section">
-            <input type="submit" value="{{ __('user.update_profile') }}" class="button-primary">
+            <input type="submit" value="{{ __('game.update_game') }}" class="button-primary">
             <a href="{{ route('game-list') }}" class="button-secondary">{{ __('site.cancel') }}</a>
         </div>
         

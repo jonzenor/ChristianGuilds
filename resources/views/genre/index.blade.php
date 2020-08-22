@@ -10,13 +10,17 @@
             <thead>
                 <tr>
                     <th class="px-4">{{ __('game.genre_id') }}</th>
+                    <th class="px-4">{{ __('game.genre_short_name') }}</th>
                     <th class="px-4">{{ __('game.genre_name') }}</th>
+                    <th class="px-4">{{ __('game.genre_manage') }}</th>
                 </tr>
             </thead>
             @foreach ($genres as $genre)
                 <tr class="my-3">
                     <td class="px-4">{{ $genre->id }}</td>
+                    <td class="px-4">{{ $genre->short_name }}</td>
                     <td class="px-4">{{ $genre->name }}</td>
+                    <td class="px-4"><a href="{{ route('genre-edit', $genre->id) }}" class="link" alt="{{ __('game.edit_genre') }}"><i class="fal fa-edit"></i></a>
                 </tr>
             @endforeach
         </table>

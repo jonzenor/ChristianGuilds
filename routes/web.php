@@ -37,10 +37,11 @@ Route::get('/acp/roles', 'RoleController@index')->name('role-list')->middleware(
 Route::get('/acp/games', 'GameController@index')->name('game-list')->middleware('auth', '2fa');
 Route::get('/acp/games/add', 'GameController@create')->name('game-add')->middleware('auth', '2fa');
 Route::post('/acp/games/add', 'GameController@store')->name('game-create')->middleware('auth', '2fa');
-Route::get('/acp/games/edit/{id}', 'GameController@edit')->name('game-edit')->middleware('auth', '2fa');
-Route::post('/acp/games/edit/{id}', 'GameController@update')->name('game-update')->middleware('auth', '2fa');
+Route::get('/acp/game/edit/{id}', 'GameController@edit')->name('game-edit')->middleware('auth', '2fa');
+Route::post('/acp/game/edit/{id}', 'GameController@update')->name('game-update')->middleware('auth', '2fa');
 Route::get('/acp/genres', 'GenreController@index')->name('genre-list')->middleware('auth', '2fa');
-
+Route::get('/acp/genre/edit/{id}', 'GenreController@edit')->name('genre-edit')->middleware('auth', '2fa');
+Route::post('/acp/genre/edit/{id}', 'GenreController@update')->name('genre-update')->middleware('auth', '2fa');
 
 Route::get('/forgePowerUp', 'HomeController@forge')->name('forge-power-up')->middleware('auth', '2fa');
 Route::get('/forgePowerUp/{id}', 'HomeController@forgePowerUp')->name('forge-grant')->middleware('auth', '2fa');

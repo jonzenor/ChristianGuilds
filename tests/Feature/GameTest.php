@@ -144,9 +144,32 @@ class GameTest extends TestCase
         $this->assertDatabaseHas('games', $data);        
     }
 
-    // Make sure genre edit page loads
+    /** @test */
+    public function genre_edit_page_loads()
+    {
+        $this->withoutExceptionHandling();
+        $game = $this->createGenre();
+        $admin = $this->createAdminUser();
 
-    // Make sure genre edit page saves
+        $response = $this->actingAs($admin)->get(route('genre-edit', $game->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('genre.edit');
+    }
+
+    /** @test */
+    public function edit_genre_page_saves()
+    {
+        $admin = $this->createAdminUser();
+        $genre = $this->createGenre();
+
+        $data['name'] = 'Bestest Genre Ever!';
+        $data['short_name'] = "BGE";
+
+        $response = $this->actingAs($admin)->post(route('genre-update', $genre->id), $data);
+
+        $this->assertDatabaseHas('genres', $data);        
+    }
 
     // Make sure genre add page loads
 
