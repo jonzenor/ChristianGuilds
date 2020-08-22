@@ -61,7 +61,11 @@ class GenreController extends Controller
      */
     public function edit($id)
     {
-        //
+        $genre = $this->getGenre($id);
+
+        return view('genre.edit')->with([
+            'genre' => $genre,
+        ]);
     }
 
     /**
@@ -73,7 +77,23 @@ class GenreController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
+            'short_name' => 'required|string|min:2|max:32',
+        ]);
+
+        $genre = $this->getGenre($id);
+
+        $genre->name = $request->name;
+        $genre->short_name = $request->short_name;
+
+        $genre->save();
+
+        toast(__('game.genre_update_success'), 'success');
+        $this->clearCache('genres');
+        $this->clearCache('genre', $genre->id);
+
+        return redirect()->route('genre-list');
     }
 
     /**

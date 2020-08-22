@@ -142,6 +142,13 @@ class Controller extends BaseController
         });
     }
 
+    public function getGenre($id)
+    {
+        return Cache::rememberForever('Genre:' . $id, function () use ($id) {
+            return Genre::find($id);
+        });
+    }
+
     public function getPaginatedGenres($page)
     {
         return Cache::remember('Genres:page:' . $page, $this->cache_for, function () {
@@ -170,6 +177,21 @@ class Controller extends BaseController
 
         if ($what == "game") {
             Cache::forget('Game:' . $id);
+        }
+
+        if ($what == "genres") {
+            $pages = ceil(($this->getGenreCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Genres');
+            Cache::forget('Genres:count');
+            
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Genres:page:' . $i);
+            }
+        }
+
+        if ($what == "genre") {
+            Cache::forget('Genre:' . $id);
         }
     }
 
