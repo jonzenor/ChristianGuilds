@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Game;
+use Gate;
 use Illuminate\Http\Request;
 
 class GameController extends Controller
@@ -14,6 +15,11 @@ class GameController extends Controller
      */
     public function index()
     {
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
         $games = $this->getPaginatedGames($page);
 
@@ -29,6 +35,11 @@ class GameController extends Controller
      */
     public function create()
     {
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $genres = $this->getGenres();
 
         return view('game.create')->with([
@@ -44,6 +55,11 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'name' => 'required|string|min:3|max:255',
             'genre' => 'required|integer|max:10000',
@@ -81,6 +97,11 @@ class GameController extends Controller
      */
     public function edit($id)
     {
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $game = $this->getGame($id);
 
         $genres = $this->getGenres();
@@ -100,6 +121,11 @@ class GameController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'name' => 'required|string|min:3|max:255',
             'genre' => 'required|integer|max:10000',

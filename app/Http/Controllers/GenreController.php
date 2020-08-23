@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Genre;
+use Gate;
 
 class GenreController extends Controller
 {
@@ -13,6 +15,11 @@ class GenreController extends Controller
      */
     public function index()
     {
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
         $genres = $this->getPaginatedGenres($page);
 
@@ -28,7 +35,12 @@ class GenreController extends Controller
      */
     public function create()
     {
-        //
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
+        return view('genre.create');
     }
 
     /**
@@ -39,7 +51,27 @@ class GenreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
+            'short_name' => 'required|string|min:2|max:36',
+        ]);
+
+        $genre = new Genre();
+
+        $genre->name = $request->name;
+        $genre->short_name = $request->short_name;
+
+        $genre->save();
+
+        toast(__('game.genre_add_success'), 'success');
+        $this->clearCache('genres');
+
+        return redirect()->route('genre-list');
     }
 
     /**
@@ -61,6 +93,11 @@ class GenreController extends Controller
      */
     public function edit($id)
     {
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $genre = $this->getGenre($id);
 
         return view('genre.edit')->with([
@@ -77,6 +114,11 @@ class GenreController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (Gate::denies('manage-games')) {
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('home');
+        }
+
         $this->validate($request, [
             'name' => 'required|string|min:3|max:255',
             'short_name' => 'required|string|min:2|max:32',

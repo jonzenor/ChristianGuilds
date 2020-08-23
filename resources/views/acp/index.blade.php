@@ -11,13 +11,13 @@
             <div class="page-section">
                 <ul>
                     @foreach ($users as $user)
-                        <li class="list-item"> <a href="{{ route('profile', $user->id) }}" class="link"> <i class="fal fa-user px-2"></i> {{ $user->name }}</a>
+                        <li class="list-item"> <a href="{{ route('profile', $user->id) }}" class="link"> <i class="fad fa-user px-2 text-cgwhite"></i> {{ $user->name }}</a>
                     @endforeach
                 </ul>
             </div>
 
             <div class="page-section">
-                <i class="fal fa-users"></i> <span class="highlight"> {{ __('user.count', ['count' => $userCount]) }}</span><br />[ <a href="{{ route('user-list') }}" class="link">{{ __('user.view_all') }}</a> ]
+                <i class="fad fa-users"></i> <span class="highlight"> {{ __('user.count', ['count' => $userCount]) }}</span><br />[ <a href="{{ route('user-list') }}" class="link">{{ __('user.view_all') }}</a> ]
             </div>
         </div>
 
@@ -27,7 +27,7 @@
             <div class="page-section">
                 <ul>
                     @foreach ($roles as $role)
-                        <li class="list-item"> <span class="role-tag bg-{{ $role->color }}"><a href="#">{{ $role->name }}</a></span>
+                        <li class="list-item"> <span class="role-tag bg-{{ $role->color }}"><a href="{{ route('role-list') }}">{{ $role->name }}</a></span>
                     @endforeach
                 </ul>
             </div>
@@ -42,13 +42,13 @@
             <h2 class="page-subheader">{{ __('game.stats') }}</h2>
             <div class="page-section">
                 <ul>
-                    <li> <a href="{{ route('game-list') }}" class="link">{{ __('game.count', ['count' => $gameCount]) }}</a></li>
+                    <li> <a href="{{ route('game-list') }}" class="link"><i class="fad fa-game-console-handheld text-xl text-white"></i> {{ __('game.count', ['count' => $gameCount]) }}</a></li>
                 </ul>
             </div>
 
             <div class="page-section">
                 <ul>
-                    <li> <a href="{{ route('genre-list') }}" class="link">{{ __('game.genre_count', ['count' => $genreCount]) }}</a></li>
+                    <li> <a href="{{ route('genre-list') }}" class="link"><i class="fad fa-alien-monster text-xl text-cgpink-500"></i></i> {{ __('game.genre_count', ['count' => $genreCount]) }}</a></li>
                 </ul>
             </div>
 

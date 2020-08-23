@@ -114,24 +114,17 @@ class Controller extends BaseController
         });
     }
 
-    public function getGenreCount()
-    {
-        return Cache::rememberForever('Genre:count', function () {
-            return Genre::all()->count();
-        });
-    }
-
     public function getGames()
     {
         return Cache::rememberForever('Games', function () {
-            return Game::all();
+            return Game::orderBy('name')->get();
         });
     }
 
     public function getPaginatedGames($page)
     {
         return Cache::remember('Games:page:' . $page, $this->cache_for, function () {
-            return Game::paginate(config('acp.paginate_games'));
+            return Game::orderBy('name')->paginate(config('acp.paginate_games'));
         });
     }
 
@@ -146,6 +139,13 @@ class Controller extends BaseController
     {
         return Cache::rememberForever('Genre:' . $id, function () use ($id) {
             return Genre::find($id);
+        });
+    }
+
+    public function getGenreCount()
+    {
+        return Cache::rememberForever('Genres:count', function () {
+            return Genre::all()->count();
         });
     }
 
