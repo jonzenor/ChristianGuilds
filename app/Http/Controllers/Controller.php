@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\ContactSettings;
 use App\ContactTopics;
 use App\Game;
+use App\Genre;
 use App\Mail\AlertMessage;
 use App\Role;
 use App\User;
@@ -99,9 +100,16 @@ class Controller extends BaseController
 
     // Game related cache functions
 
+    public function getGame($id)
+    {
+        return Cache::rememberForever('Game:' . $id, function () use ($id) {
+            return Game::find($id);
+        });
+    }
+
     public function getGameCount()
     {
-        return Cache::rememberForever('Game:count', function () {
+        return Cache::rememberForever('Games:count', function () {
             return Game::all()->count();
         });
     }
@@ -109,22 +117,81 @@ class Controller extends BaseController
     public function getGames()
     {
         return Cache::rememberForever('Games', function () {
-            return Game::all();
+            return Game::orderBy('name')->get();
         });
     }
 
     public function getPaginatedGames($page)
     {
         return Cache::remember('Games:page:' . $page, $this->cache_for, function () {
-            return Game::paginate(config('acp.paginate_games'));
+            return Game::orderBy('name')->paginate(config('acp.paginate_games'));
         });
     }
 
-    public function clearCache($what, $id)
+    public function getGenres()
+    {
+        return Cache::rememberForever('Genres', function () {
+            return Genre::all();
+        });
+    }
+
+    public function getGenre($id)
+    {
+        return Cache::rememberForever('Genre:' . $id, function () use ($id) {
+            return Genre::find($id);
+        });
+    }
+
+    public function getGenreCount()
+    {
+        return Cache::rememberForever('Genres:count', function () {
+            return Genre::all()->count();
+        });
+    }
+
+    public function getPaginatedGenres($page)
+    {
+        return Cache::remember('Genres:page:' . $page, $this->cache_for, function () {
+            return Genre::paginate(config('acp.paginate_games'));
+        });
+    }
+
+
+    public function clearCache($what, $id = null)
     {
         if ($what == 'user') {
             Cache::forget('User:' . $id);
             Cache::forget('User:' . $id . ':ContactSettings');
+        }
+
+        if ($what == "games") {
+            $pages = ceil(($this->getGameCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Games');
+            Cache::forget('Games:count');
+            
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Games:page:' . $i);
+            }
+        }
+
+        if ($what == "game") {
+            Cache::forget('Game:' . $id);
+        }
+
+        if ($what == "genres") {
+            $pages = ceil(($this->getGenreCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Genres');
+            Cache::forget('Genres:count');
+            
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Genres:page:' . $i);
+            }
+        }
+
+        if ($what == "genre") {
+            Cache::forget('Genre:' . $id);
         }
     }
 

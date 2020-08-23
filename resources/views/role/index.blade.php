@@ -16,4 +16,9 @@
         </div>
     @endforeach
 
+    <div class="page-section">
+        <a href="{{ route('acp') }}" class="button-secondary">{{ __('site.acp') }}</a>
+    </div>
+
+
 @endsection

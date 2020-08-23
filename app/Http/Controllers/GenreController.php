@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Game;
-use Gate;
 use Illuminate\Http\Request;
+use App\Genre;
+use Gate;
 
-class GameController extends Controller
+class GenreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,10 +21,10 @@ class GameController extends Controller
         }
 
         $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
-        $games = $this->getPaginatedGames($page);
+        $genres = $this->getPaginatedGenres($page);
 
-        return view('game.index')->with([
-            'games' => $games,
+        return view('genre.index')->with([
+            'genres' => $genres,
         ]);
     }
 
@@ -40,11 +40,7 @@ class GameController extends Controller
             return redirect()->route('home');
         }
 
-        $genres = $this->getGenres();
-
-        return view('game.create')->with([
-            'genres' => $genres,
-        ]);
+        return view('genre.create');
     }
 
     /**
@@ -62,20 +58,20 @@ class GameController extends Controller
 
         $this->validate($request, [
             'name' => 'required|string|min:3|max:255',
-            'genre' => 'required|integer|max:10000',
+            'short_name' => 'required|string|min:2|max:36',
         ]);
 
-        $game = new Game();
+        $genre = new Genre();
 
-        $game->name = $request->name;
-        $game->genre_id = $request->genre;
+        $genre->name = $request->name;
+        $genre->short_name = $request->short_name;
 
-        $game->save();
+        $genre->save();
 
-        toast(__('game.add_success'), 'success');
-        $this->clearCache('games');
+        toast(__('game.genre_add_success'), 'success');
+        $this->clearCache('genres');
 
-        return redirect()->route('game-list');
+        return redirect()->route('genre-list');
     }
 
     /**
@@ -102,13 +98,10 @@ class GameController extends Controller
             return redirect()->route('home');
         }
 
-        $game = $this->getGame($id);
+        $genre = $this->getGenre($id);
 
-        $genres = $this->getGenres();
-
-        return view('game.edit')->with([
-            'game' => $game,
-            'genres' => $genres,
+        return view('genre.edit')->with([
+            'genre' => $genre,
         ]);
     }
 
@@ -128,21 +121,21 @@ class GameController extends Controller
 
         $this->validate($request, [
             'name' => 'required|string|min:3|max:255',
-            'genre' => 'required|integer|max:10000',
+            'short_name' => 'required|string|min:2|max:32',
         ]);
 
-        $game = $this->getGame($id);
+        $genre = $this->getGenre($id);
 
-        $game->name = $request->name;
-        $game->genre_id = $request->genre;
+        $genre->name = $request->name;
+        $genre->short_name = $request->short_name;
 
-        $game->save();
+        $genre->save();
 
-        toast(__('game.update_success'), 'success');
-        $this->clearCache('games');
-        $this->clearCache('game', $game->id);
+        toast(__('game.genre_update_success'), 'success');
+        $this->clearCache('genres');
+        $this->clearCache('genre', $genre->id);
 
-        return redirect()->route('game-list');
+        return redirect()->route('genre-list');
     }
 
     /**
