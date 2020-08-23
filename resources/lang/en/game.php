@@ -21,6 +21,7 @@ return [
     'genre_update_success'  => 'Genre Updated Successfully!',
     'genre_add'             => 'Add a Genre',
     'genre_add_success'     => 'Genre Added Successfully',
+    'update_game'          => 'Update game',
 
     'add'               => 'Add a Game',
     'details'           => 'Game Details',

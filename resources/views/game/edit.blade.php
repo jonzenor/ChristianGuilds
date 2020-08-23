@@ -49,7 +49,7 @@
             <input type="submit" value="{{ __('game.update_game') }}" class="button-primary">
             <a href="{{ route('game-list') }}" class="button-secondary">{{ __('site.cancel') }}</a>
         </div>
-        
+
     </form>
 
 @endsection
