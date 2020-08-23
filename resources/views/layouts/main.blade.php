@@ -77,6 +77,12 @@
     </nav>
     @include('sweetalert::alert')
 
+    @if (config('site.message')) 
+        <div class="mx-auto w-full sm:w-2/3 md:w-2/3 lg:w-1/2 text-center @if (config('site.message_type') == 'info') bg-cggreen-900 @else bg-cgpink-900 @endif rounded-lg border-cggray-500 border-2 p-4 my-3">
+            <p>{!! config('site.message') !!}</p>
+        </div>
+    @endif
+
     @yield('content')
 
     <script>
