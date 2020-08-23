@@ -24,6 +24,7 @@ return [
     'update_game'          => 'Update game',
 
     'add'               => 'Add a Game',
+    'edit'               => 'Edit',
     'details'           => 'Game Details',
     'add_success'       => 'Game Added Successfully!',
     'update_success'    => 'Game Updated Successfully!',

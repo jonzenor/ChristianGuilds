@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <h1 class="page-header">{{ $game->name }} {{ __('game.edit') }}</h1>
+    <h1 class="page-header">{{ __('game.edit') }} {{ $game->name }} </h1>
 
     <hr />
 
