@@ -82,6 +82,18 @@ class AuthServiceProvider extends ServiceProvider
 
             return false;
         });
+
+        Gate::define('manage-games', function ($user) {
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+
+            if ($this->isGameMaster($user)) {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     private function isAdmin($user)
