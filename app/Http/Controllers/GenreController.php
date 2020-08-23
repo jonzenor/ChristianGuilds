@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Genre;
 
 class GenreController extends Controller
 {
@@ -28,7 +29,7 @@ class GenreController extends Controller
      */
     public function create()
     {
-        //
+        return view('genre.create');
     }
 
     /**
@@ -39,7 +40,22 @@ class GenreController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|min:3|max:255',
+            'short_name' => 'required|string|min:2|max:36',
+        ]);
+
+        $genre = new Genre();
+
+        $genre->name = $request->name;
+        $genre->short_name = $request->short_name;
+
+        $genre->save();
+
+        toast(__('game.genre_add_success'), 'success');
+        $this->clearCache('genres');
+
+        return redirect()->route('genre-list');
     }
 
     /**

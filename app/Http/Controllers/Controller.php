@@ -144,7 +144,7 @@ class Controller extends BaseController
 
     public function getGenreCount()
     {
-        return Cache::rememberForever('Genre:count', function () {
+        return Cache::rememberForever('Genres:count', function () {
             return Genre::all()->count();
         });
     }

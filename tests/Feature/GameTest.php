@@ -141,7 +141,7 @@ class GameTest extends TestCase
         $data['genre_id'] = $data['genre'];
         unset($data['genre']);
 
-        $this->assertDatabaseHas('games', $data);        
+        $this->assertDatabaseHas('games', $data);
     }
 
     /** @test */
@@ -171,7 +171,6 @@ class GameTest extends TestCase
         $this->assertDatabaseHas('genres', $data);        
     }
 
-    // Make sure genre add page loads
     /** @test */
     public function genre_add_page_loads()
     {
@@ -181,11 +180,21 @@ class GameTest extends TestCase
         $response = $this->actingAs($admin)->get(route('genre-add'));
 
         $response->assertStatus(200);
-        $response->assertViewIs('genre.add');
+        $response->assertViewIs('genre.create');
     }
-    
 
-    // Make sure genre add page works
+    /** @test */
+    public function add_genre_form_works()
+    {
+        $admin = $this->createAdminUser();
+
+        $data['name'] = 'My Test Genre';
+        $data['short_name'] = 'MTG';
+
+        $this->actingAs($admin)->post(route('genre-create'), $data);
+
+        $this->assertDatabaseHas('genres', $data);
+    }
 
     // Make sure users cannot access game pages
 
