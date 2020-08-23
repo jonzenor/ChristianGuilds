@@ -148,10 +148,10 @@ class GameTest extends TestCase
     public function genre_edit_page_loads()
     {
         $this->withoutExceptionHandling();
-        $game = $this->createGenre();
+        $genre = $this->createGenre();
         $admin = $this->createAdminUser();
 
-        $response = $this->actingAs($admin)->get(route('genre-edit', $game->id));
+        $response = $this->actingAs($admin)->get(route('genre-edit', $genre->id));
 
         $response->assertStatus(200);
         $response->assertViewIs('genre.edit');
@@ -172,6 +172,18 @@ class GameTest extends TestCase
     }
 
     // Make sure genre add page loads
+    /** @test */
+    public function genre_add_page_loads()
+    {
+        $this->withoutExceptionHandling();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('genre-add'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('genre.add');
+    }
+    
 
     // Make sure genre add page works
 

@@ -19,6 +19,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Baloo+Tamma+2:wght@500&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Markazi+Text&family=Noto+Sans+HK&display=swap" rel="stylesheet">
 
+    <link rel="icon" href="{{ asset('images/favicon.png') }}">
 
     <style>
         .grecaptcha-badge { visibility: hidden; }
@@ -28,7 +29,7 @@
     <nav class="w-full">
         <div class="bg-cgblack-900 w-full">
             <div class="w-full mx-auto lg:w-1/2">
-                <img src="{{ asset('images/ChristianGuilds.png') }}">
+                <img src="{{ asset('images/ChristianGuilds-2-Color.png') }}">
             </div>
         </div>
         <ul class="flex pl-3 pt-4">
