@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-    <h1 class="page-header">{{ $game->name }} {{ __('game.edit') }}</h1>
+    <h1 class="page-header">{{ __('game.edit') }} {{ $game->name }} </h1>
 
     <hr />
 
@@ -49,7 +49,7 @@
             <input type="submit" value="{{ __('game.update_game') }}" class="button-primary">
             <a href="{{ route('game-list') }}" class="button-secondary">{{ __('site.cancel') }}</a>
         </div>
-        
+
     </form>
 
 @endsection

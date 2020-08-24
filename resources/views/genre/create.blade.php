@@ -42,10 +42,10 @@
         </div>
 
         <div class="page-section">
-            <input type="submit" value="{{ __('game.update_genre') }}" class="button-primary">
+            <input type="submit" value="{{ __('game.genre_add') }}" class="button-primary">
             <a href="{{ route('genre-list') }}" class="button-secondary">{{ __('site.cancel') }}</a>
         </div>
-        
+
     </form>
 
 @endsection

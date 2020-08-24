@@ -21,8 +21,10 @@ return [
     'genre_update_success'  => 'Genre Updated Successfully!',
     'genre_add'             => 'Add a Genre',
     'genre_add_success'     => 'Genre Added Successfully',
+    'update_game'          => 'Update game',
 
     'add'               => 'Add a Game',
+    'edit'               => 'Edit',
     'details'           => 'Game Details',
     'add_success'       => 'Game Added Successfully!',
     'update_success'    => 'Game Updated Successfully!',
