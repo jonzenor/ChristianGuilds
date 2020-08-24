@@ -45,6 +45,10 @@ Route::post('/acp/genre/edit/{id}', 'GenreController@update')->name('genre-updat
 Route::get('/acp/genre/add', 'GenreController@create')->name('genre-add')->middleware('auth', '2fa');
 Route::post('/acp/genre/add', 'GenreController@store')->name('genre-create')->middleware('auth', '2fa');
 
+Route::get('/guild/{id}', 'GuildController@show')->name('guild');
+Route::get('/new-guild', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
+Route::post('/new-guild', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
+
 Route::get('/forgePowerUp', 'HomeController@forge')->name('forge-power-up')->middleware('auth', '2fa');
 Route::get('/forgePowerUp/{id}', 'HomeController@forgePowerUp')->name('forge-grant')->middleware('auth', '2fa');
 

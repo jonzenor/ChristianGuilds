@@ -10,6 +10,7 @@ use Gate;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use App\UserSettings;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -17,6 +18,7 @@ class UserController extends Controller
     {
         if (Gate::denies('view-acp')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -90,7 +92,7 @@ class UserController extends Controller
             'pushover_key' => 'nullable|string',
         ]);
 
-        Log::channel('app')->info("[User Update] id: " . $user->id . " original: " . json_encode($user) . " new: " . json_encode($request->all()));
+        Log::channel('app')->info("[User Update] id: " . $user->id . " updated by " . auth()->user()->name . " (ID: " . auth()->user()->id . ") original: " . json_encode($user) . " Original User Settings: " . json_encode($user->settings) . " new: " . json_encode($request->all()));
 
         $topics = $this->getContactTopics();
 
@@ -154,6 +156,7 @@ class UserController extends Controller
     {
         if (Gate::denies('manage-user-roles')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -194,6 +197,7 @@ class UserController extends Controller
     {
         if (Gate::denies('manage-user-roles')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
