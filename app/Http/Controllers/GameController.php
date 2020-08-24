@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Game;
 use Gate;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class GameController extends Controller
 {
@@ -17,6 +18,7 @@ class GameController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -37,6 +39,7 @@ class GameController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -57,6 +60,7 @@ class GameController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -65,12 +69,16 @@ class GameController extends Controller
             'genre' => 'required|integer|max:10000',
         ]);
 
+        Log::channel('app')->info("[Game Create] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Attempting to CREATE the Game " . json_encode($request->all()));
+
         $game = new Game();
 
         $game->name = $request->name;
         $game->genre_id = $request->genre;
 
         $game->save();
+
+        Log::channel('app')->info("[Game Create] Game Created Successfully with ID " . $game->id);
 
         toast(__('game.add_success'), 'success');
         $this->clearCache('games');
@@ -99,6 +107,7 @@ class GameController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -123,6 +132,7 @@ class GameController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -133,10 +143,14 @@ class GameController extends Controller
 
         $game = $this->getGame($id);
 
+        Log::channel('app')->info("[Game Update] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") UPDATING the Game " . json_encode($game) . " NEW DATA: " . json_encode($request->all()));
+
         $game->name = $request->name;
         $game->genre_id = $request->genre;
 
         $game->save();
+
+        Log::channel('app')->info("[Game Update] Game updated successfully.");
 
         toast(__('game.update_success'), 'success');
         $this->clearCache('games');

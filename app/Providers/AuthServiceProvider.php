@@ -84,12 +84,12 @@ class AuthServiceProvider extends ServiceProvider
         });
         
         Gate::define('manage-users', function ($user) {
-        	if ($this->isAdmin($user)) {
-        		return true;
-        	}
-        	
-        	return false;
-        })
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+            
+            return false;
+        });
 
         Gate::define('manage-games', function ($user) {
             if ($this->isAdmin($user)) {

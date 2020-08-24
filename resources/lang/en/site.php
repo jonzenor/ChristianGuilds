@@ -12,4 +12,5 @@ return [
     'global_roles'          => 'Global Site Roles',
     'view_global_roles'     => 'View All Global Roles',
     'forge_permissions'     => 'Forge Power Up Permission Granter',
+    'unknown_error'         => 'An unknown error occurred... Please contact a site admin with the time and details of this incident.',
 ];

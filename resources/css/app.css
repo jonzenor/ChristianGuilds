@@ -42,7 +42,7 @@
 }
 
 .page-subheader-h3 {
-    @apply text-xl text-cgwhite mx-2 px-6 py-3 my-3 font-body;
+    @apply text-xl text-cgwhite py-1 font-body font-bold;
 }
 
 .page-section {
