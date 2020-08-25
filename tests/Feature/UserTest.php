@@ -62,6 +62,17 @@ class UserTest extends TestCase
         $this->assertDatabaseHas('users', $data);
     }
 
+    /** @test */
+    public function user_cannot_edit_another_user()
+    {
+        $user = $this->createUser();
+        $profile = $this->createUser();
+
+        $response = $this->actingAs($user)->followingRedirects()->get(route('profile-edit', $profile->id));
+
+        $response->assertSee(__('site.permission_denied'));
+    }
+
     /**  */
     public function user_pushover_key_shows_on_profile()
     {

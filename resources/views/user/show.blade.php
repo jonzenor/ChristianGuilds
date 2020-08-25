@@ -57,7 +57,7 @@
         </div>
     @endcan
 
-    @can('edit-user', $user)
+    @can('edit-user', $user->id)
         <div class="page-section">
             <a href="{{ route('profile-edit', $user->id) }}" class="link">{{ __('user.edit_profile') }}</a>
         </div>

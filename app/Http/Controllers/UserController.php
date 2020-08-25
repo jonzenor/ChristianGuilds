@@ -50,6 +50,12 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        if (Gate::denies('edit-user', $id)) {
+            toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
+            return redirect()->route('home');
+        }
+
         $user = $this->getUser($id);
 
         if (!$user) {
@@ -80,6 +86,12 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (Gate::denies('edit-user', $id)) {
+            toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
+            return redirect()->route('home');
+        }
+
         $user = $this->getUser($id);
 
         if (!$user) {

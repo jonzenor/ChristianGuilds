@@ -65,18 +65,19 @@ class AuthServiceProvider extends ServiceProvider
             if ($this->isAdmin($user)) {
                 return true;
             }
+
             if ($user->id == $profile->id) {
                 return true;
             }
             return false;
         });
 
-        Gate::define('edit-user', function ($user, $profile) {
+        Gate::define('edit-user', function ($user, $profile_id) {
             if ($this->isAdmin($user)) {
                 return true;
             }
             
-            if ($user->id == $profile->id) {
+            if ($user->id == $profile_id) {
                 return true;
             }
 
