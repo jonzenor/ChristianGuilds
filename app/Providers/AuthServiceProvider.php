@@ -65,18 +65,19 @@ class AuthServiceProvider extends ServiceProvider
             if ($this->isAdmin($user)) {
                 return true;
             }
+
             if ($user->id == $profile->id) {
                 return true;
             }
             return false;
         });
 
-        Gate::define('edit-user', function ($user, $profile) {
+        Gate::define('edit-user', function ($user, $profile_id) {
             if ($this->isAdmin($user)) {
                 return true;
             }
             
-            if ($user->id == $profile->id) {
+            if ($user->id == $profile_id) {
                 return true;
             }
 
@@ -106,7 +107,7 @@ class AuthServiceProvider extends ServiceProvider
 
     private function isAdmin($user)
     {
-        return Cache::remember('user:' . $user->id . ':is:Admin', $this->cache_time, function () use ($user) {
+        return Cache::remember('User:' . $user->id . ':is:Admin', $this->cache_time, function () use ($user) {
             $admin = Role::where('name', '=', 'Admin')->first();
             return $user->roles->contains($admin);
         });
@@ -114,7 +115,7 @@ class AuthServiceProvider extends ServiceProvider
 
     private function isGameMaster($user)
     {
-        return Cache::remember('user:' . $user->id . ':is:Game Master', $this->cache_time, function () use ($user) {
+        return Cache::remember('User:' . $user->id . ':is:Game Master', $this->cache_time, function () use ($user) {
             $gm = Role::where('name', '=', 'Game Master')->first();
             return $user->roles->contains($gm);
         });
@@ -122,7 +123,7 @@ class AuthServiceProvider extends ServiceProvider
 
     private function isCommunityManager($user)
     {
-        return Cache::remember('user:' . $user->id . ':is:Community Manager', $this->cache_time, function () use ($user) {
+        return Cache::remember('User:' . $user->id . ':is:Community Manager', $this->cache_time, function () use ($user) {
             $cm = Role::where('name', '=', 'Community Manager')->first();
             return $user->roles->contains($cm);
         });

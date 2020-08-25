@@ -35,7 +35,6 @@ class UserTest extends TestCase
         $response = $this->followingRedirects()->get(route('profile', 25));
 
         $response->assertSee(__('user.invalid_user'));
-
     }
 
     /** @test */
@@ -60,6 +59,17 @@ class UserTest extends TestCase
         $data['name'] = "Test2";
 
         $this->assertDatabaseHas('users', $data);
+    }
+
+    /** @test */
+    public function user_cannot_edit_another_user()
+    {
+        $user = $this->createUser();
+        $profile = $this->createUser();
+
+        $response = $this->actingAs($user)->followingRedirects()->get(route('profile-edit', $profile->id));
+
+        $response->assertSee(__('site.permission_denied'));
     }
 
     /**  */

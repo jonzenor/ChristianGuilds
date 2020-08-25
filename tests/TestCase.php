@@ -41,6 +41,16 @@ abstract class TestCase extends BaseTestCase
         return $genre;
     }
 
+    public function createGuild($user)
+    {
+        $guild = factory(\App\Guild::class)->create();
+        $guild->owner_id = $user->id;
+        $guild->save();
+        
+        $guild->encoded_name = str_replace("'", "&#039;", $guild->name);
+
+        return $guild;
+    }
 
 
 }
