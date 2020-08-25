@@ -164,6 +164,7 @@ class UserController extends Controller
 
         if (!$user) {
             toast(__('user.invalid_user'), 'error');
+            Log::channel('app')->warning("[Invalid User] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path() . " but the user does not exist.");
             return redirect()->route('home');
         }
 
@@ -175,6 +176,7 @@ class UserController extends Controller
 
         if (!$role) {
             toast(__('user.invalid_role'), 'error');
+            Log::channel('app')->warning("[Invalid Role] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path() . " with role " . $request->role . " but the role does not exist.");
             return redirect()->route('profile', $user->id);
         }
 
@@ -186,7 +188,7 @@ class UserController extends Controller
 
         $user->roles()->attach($request->role);
 
-        Cache::forget('user:' . $user->id . ':is:' . $role->name);
+        Cache::forget('User:' . $user->id . ':is:' . $role->name);
 
         toast(__('user.role_add_success'), 'success');
 
@@ -209,8 +211,6 @@ class UserController extends Controller
         $confirm['action'] = route("remove-role-confirm", ['id' => $user->id, 'role' => $role->id]);
         $confirm['cancel'] = route('profile', $user->id);
 
-        Cache::forget('user:' . $user->id . ':is:' . $role->name);
-
         return view('site.confirm', [
             'user' => $user,
             'confirm_data' => $confirm,
@@ -219,12 +219,22 @@ class UserController extends Controller
 
     public function delRoleConfirm(Request $request, $id, $role_id)
     {
+        if (Gate::denies('manage-user-roles')) {
+            toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
+            return redirect()->route('home');
+        }
+
         $user = $this->getUser($id);
         $role = $this->getRole($role_id);
 
         $user->roles()->detach($role->id);
 
+        Cache::forget('User:' . $user->id . ':is:' . $role->name);
+
         toast(__('user.role_del_success'), 'success');
+        
+        Log::channel('app')->info("[Role Remove] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") removed role " . $role->name . " from User " . $user->name . " (ID: " . $user->id . ")");
 
         return redirect()->route('profile', $user->id);
     }
