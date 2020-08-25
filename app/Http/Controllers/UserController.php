@@ -36,7 +36,11 @@ class UserController extends Controller
 
         if (!$user) {
             toast(__('user.invalid_user'), 'error');
-            Log::channel('app')->warning("[Invalid User] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path() . " but the user does not exist.");
+            if (auth()->user()) {
+                Log::channel('app')->warning("[Invalid User] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path() . " but the user does not exist.");
+            } else {
+                Log::channel('app')->warning("[Invalid User] User GUEST (IP: " . request()->ip() . ") attempted to access " . request()->path() . " but the user does not exist.");
+            }
             return redirect()->route('home');
         }
 

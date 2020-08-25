@@ -30,7 +30,7 @@ return [
     '2fa_otp'           => 'One Time Password',
     '2fa_authenticate'  => 'Authenticate',
 
-    'invalid_user'      => 'Invalid or unkown user!',
+    'invalid_user'      => 'Invalid or Unkown User!',
 
     'roles'             => 'User Roles',
     'add_role'          => 'Add Role',

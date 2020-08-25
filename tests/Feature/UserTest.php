@@ -35,7 +35,6 @@ class UserTest extends TestCase
         $response = $this->followingRedirects()->get(route('profile', 25));
 
         $response->assertSee(__('user.invalid_user'));
-
     }
 
     /** @test */
