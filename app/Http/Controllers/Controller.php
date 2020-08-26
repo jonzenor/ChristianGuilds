@@ -6,6 +6,7 @@ use App\ContactSettings;
 use App\ContactTopics;
 use App\Game;
 use App\Genre;
+use App\Guild;
 use App\Mail\AlertMessage;
 use App\Role;
 use App\User;
@@ -98,6 +99,43 @@ class Controller extends BaseController
         });
     }
 
+    // Guild related cache functions
+
+    public function getGuild($id)
+    {
+        return Cache::rememberForever('Guild:' . $id, function () use ($id) {
+            return Guild::find($id);
+        });
+    }
+
+    public function getGuilds()
+    {
+        return Cache::remember('Guilds:all', $this->cache_for, function () {
+            return Guild::all();
+        });
+    }
+
+    public function getPaginatedGuilds($page)
+    {
+        return Cache::remember('Guilds:page:' . $page, $this->cache_for, function () {
+            return Guild::orderBy('name')->paginate(config('acp.paginate_games'));
+        });
+    }
+
+    public function getGuildCount()
+    {
+        return Cache::rememberForever('Guilds:count', function () {
+            return Guild::all()->count();
+        });
+    }
+
+    public function getLatestGuilds()
+    {
+        return Cache::remember('Guilds:Latest', $this->cache_for, function () {
+            return Guild::orderBy('created_at', 'desc')->limit(config('acp.items_limit'))->get();
+        });
+    }
+
     // Game related cache functions
 
     public function getGame($id)
@@ -162,6 +200,25 @@ class Controller extends BaseController
         if ($what == 'user') {
             Cache::forget('User:' . $id);
             Cache::forget('User:' . $id . ':ContactSettings');
+        }
+
+        if ($what == 'guild') {
+            Cache::forget('Guild:' . $id);
+        }
+
+        if ($what == 'guilds') {
+            Cache::forget('Guilds:count');
+            Cache::forget('Guilds:Latest');
+        }
+
+        if ($what == 'guild' || $what == 'guilds') {
+            Cache::forget('Guilds');
+
+            $pages = ceil(($this->getGuildCount()) / config('acp.paginate_games'));
+            
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Games:page:' . $i);
+            }
         }
 
         if ($what == "games") {

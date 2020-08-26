@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'mission_title'         => 'Our Mission Statement',
+    'mission'               => 'Connecting Christian Guilds together in fellowship, making disciples in gaming communities, and giving guilds the tools they need to thrive.',
+
     'admin_control_panel'   => 'Admin Control Panel',
     'acp'                   => 'ACP',
     'confirm_action'        => 'Confirm',

@@ -40,6 +40,11 @@ class AuthServiceProvider extends ServiceProvider
             if ($this->isAdmin($user)) {
                 return true;
             }
+
+            if ($this->isGameMaster($user)) {
+                return true;
+            }
+
             return false;
         });
 
@@ -55,6 +60,13 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-user-roles', function ($user) {
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+            return false;
+        });
+
+        Gate::define('manage-roles', function ($user) {
             if ($this->isAdmin($user)) {
                 return true;
             }
@@ -93,6 +105,18 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-games', function ($user) {
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+
+            if ($this->isGameMaster($user)) {
+                return true;
+            }
+
+            return false;
+        });
+
+        Gate::define('manage-guilds', function ($user) {
             if ($this->isAdmin($user)) {
                 return true;
             }
