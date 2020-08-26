@@ -10,4 +10,9 @@ class Game extends Model
     {
         return $this->belongsTo('App\Genre');
     }
+
+    public function games()
+    {
+        return $this->hasMany('App\Guild');
+    }
 }

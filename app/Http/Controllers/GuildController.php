@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Gate;
 use App\Guild;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +17,18 @@ class GuildController extends Controller
      */
     public function index()
     {
-        //
+        if (Gate::denies('manage-guilds')) {
+            toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] [User  " . auth()->user()->id . " " . auth()->user()->name . "] Attempted to access " . request()->path());
+            return redirect()->route('home');
+        }
+
+        $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
+        $guilds = $this->getPaginatedGuilds($page);
+
+        return view('guild.index')->with([
+            'guilds' => $guilds,
+        ]);
     }
 
     /**
@@ -94,7 +106,11 @@ class GuildController extends Controller
      */
     public function show($id)
     {
-        //
+        $guild = $this->getGuild($id);
+
+        return view('guild.show')->with([
+            'guild' => $guild,
+        ]);
     }
 
     /**

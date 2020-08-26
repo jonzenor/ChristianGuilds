@@ -39,9 +39,52 @@ class GuildTest extends TestCase
 
     // User is added to the members table when creating a guild
 
-    // Guild List shows in ACP index panel
+    /** @test */
+    public function guild_shows_in_acp_panel()
+    {
+        $admin = $this->createAdminUser();
+        $guild = $this->createGuild($admin);
 
-    // Guild List ACP page works
+        $response = $this->actingAs($admin)->get(route('acp'));
+
+        $response->assertStatus(200);
+        $response->assertSee($guild->name);
+    }
+
+    /** @test */
+    public function guild_list_page_loads()
+    {
+        $admin = $this->createAdminUser();
+        
+        $response = $this->actingAs($admin)->get(route('guild-list'));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('guild.index');
+    }
+
+    /** @test */
+    public function users_cannot_access_guild_list()
+    {
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('guild-list'));
+        $response->assertRedirect(route('home'));
+
+        $response = $this->actingAs($user)->followingRedirects()->get(route('guild-list'));
+        $response->assertSee(__('site.permission_denied'));
+    }
+
+    /** @test */
+    public function guild_page_loads()
+    {
+        $user = $this->createUser();
+        $guild = $this->createGuild($user);
+
+        $response = $this->get(route('guild', $guild->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('guild.show');
+    }
 
     // Create guild with new game works
 

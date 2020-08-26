@@ -39,19 +39,21 @@ class HomeController extends Controller
         }
 
         $users = $this->getLatestUsers();
-        $userCount = $this->getUserCount();
+        $count['users'] = $this->getUserCount();
 
         $roles = $this->getGlobalRoles();
 
-        $gameCount = $this->getGameCount();
-        $genreCount = $this->getGenreCount();
+        $count['games'] = $this->getGameCount();
+        $count['genres'] = $this->getGenreCount();
+
+        $guilds = $this->getLatestGuilds();
+        $count['guilds'] = $this->getGuildCount();
 
         return view('acp.index')->with([
             'users' => $users,
-            'userCount' => $userCount,
             'roles' => $roles,
-            'gameCount' => $gameCount,
-            'genreCount' => $genreCount,
+            'guilds' => $guilds,
+            'count' => $count,
         ]);
     }
 

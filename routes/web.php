@@ -13,12 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/profile/{id}', 'UserController@show')->name('profile');
 
@@ -45,6 +42,7 @@ Route::post('/acp/genre/edit/{id}', 'GenreController@update')->name('genre-updat
 Route::get('/acp/genre/add', 'GenreController@create')->name('genre-add')->middleware('auth', '2fa');
 Route::post('/acp/genre/add', 'GenreController@store')->name('genre-create')->middleware('auth', '2fa');
 
+Route::get('/guilds', 'GuildController@index')->name('guild-list')->middleware('auth', '2fa');
 Route::get('/guild/{id}', 'GuildController@show')->name('guild');
 Route::get('/new-guild', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
 Route::post('/new-guild', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
