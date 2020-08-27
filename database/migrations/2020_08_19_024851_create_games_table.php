@@ -17,6 +17,7 @@ class CreateGamesTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('genre_id')->nullable();
+            $table->string('status')->default('confirmed');
             $table->timestamps();
         });
     }

@@ -155,7 +155,21 @@ class Controller extends BaseController
     public function getGames()
     {
         return Cache::rememberForever('Games', function () {
-            return Game::orderBy('name')->get();
+            return Game::orderBy('name')->where('status', '=', 'confirmed')->get();
+        });
+    }
+
+    public function getPendingGames()
+    {
+        return Cache::rememberForever('Games:pending', function () {
+            return Game::orderBy('name')->where('status', '=', 'pending')->get();
+        });
+    }
+
+    public function getPendingGamesCount()
+    {
+        return Cache::rememberForever('Games:pending:count', function () {
+            return Game::where('status', '=', 'pending')->get()->count();
         });
     }
 
@@ -169,7 +183,7 @@ class Controller extends BaseController
     public function getGenres()
     {
         return Cache::rememberForever('Genres', function () {
-            return Genre::all();
+            return Genre::orderBy('name')->get();
         });
     }
 
@@ -226,6 +240,8 @@ class Controller extends BaseController
 
             Cache::forget('Games');
             Cache::forget('Games:count');
+            Cache::forget('Games:pending');
+            Cache::forget('Games:pending:count');
             
             for ($i = 0; $i <= $pages; $i++) {
                 Cache::forget('Games:page:' . $i);
@@ -374,5 +390,10 @@ class Controller extends BaseController
                 }
             }
         }
+    }
+    
+    public function logEvent($type, $message)
+    {
+        Log::channel('app')->info("[" . $type . "] [USER: " . auth()->user()->name . " ID: " . auth()->user()->id . "] " . $message);
     }
 }

@@ -68,6 +68,14 @@
                 </li>
             @endcan
 
+            @can('manage-games')
+                @if (getPendingGamesCount())
+                    <li class="mr-6">
+                        <a href="{{ route('game-list-pending') }}" class="nav-links"><i class="fas fa-exclamation-triangle text-xl text-red-300"></i> {{ getPendingGamesCount() }}</a>
+                    </li>
+                @endif
+            @endcan
+
             @if (env("APP_ENV") == "forge" || env("APP_ENV") == "local")
                 <li class="mr-6">
                     <a class="nav-links" href="{{ route('forge-power-up') }}">Forge Power Up</a>

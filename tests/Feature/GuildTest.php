@@ -86,6 +86,10 @@ class GuildTest extends TestCase
         $response->assertViewIs('guild.show');
     }
 
+    // Pending games show on the ACP page
+
+    // Pending games show in the pending games page
+
     // Create guild with new game works
 
     // Guild public page is not public until the game is approved (Maybe ??)
