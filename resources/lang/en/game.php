@@ -7,10 +7,12 @@ return [
     'list'  => 'Game List',
     'id'    => 'ID',
     'name'  => 'Name',
+    'game'  => 'Game',
 
     'genre'                 => 'Genre',
     'genre_count'           => 'Total Genres: :count',
     'genre_list'            => 'Game Genre List',
+    'game_genre'            => 'Game Genre',
     'genre_id'              => 'ID',
     'genre_name'            => 'Name',
     'genre_manage'          => 'Manage Genre',
@@ -29,5 +31,9 @@ return [
     'add_success'       => 'Game Added Successfully!',
     'update_success'    => 'Game Updated Successfully!',
     'manage'            => 'Manage',
+
+    'not_listed'        => 'GAME NOT LISTED',
+    'pending'           => 'Pending Games',
+    'pending_count'     => 'Games Pending Approval: :count',
 
 ];

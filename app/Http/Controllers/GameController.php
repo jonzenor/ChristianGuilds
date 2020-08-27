@@ -159,6 +159,15 @@ class GameController extends Controller
         return redirect()->route('game-list');
     }
 
+    public function pending()
+    {
+        $games = $this->getPendingGames();
+
+        return view('game.pending')->with([
+            'games' => $games,
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *

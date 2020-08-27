@@ -14,6 +14,7 @@
                 @foreach ($games as $game)
                     <option value="{{ $game->id }}" @if (old('game') == $game->id) selected @endif>{{ $game->name }}</option>
                 @endforeach
+                <option value="0"> -- {{ __('game.not_listed') }} --</option>
             </select>
 
             @error('game')
