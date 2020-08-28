@@ -1,6 +1,6 @@
 <h2 class="page-subheader">{{ __('guild.add_game') }}</h2>
 <div class="page-section">
-    <p>{{ __('guild.add_game_details') }}</p>
+    <p>{!! __('guild.add_game_details') !!}</p>
 </div>
 
 <form action="{{ route('guild-create') }}" method="post">
@@ -33,7 +33,7 @@
 
             <select name="genre" class="form-field w-full @error('genre') border-red-500 @enderror">
                 @foreach ($genres as $genre)
-                    <option value="{{ $genre->id }}">{{ $genre->name }}</option>
+                    <option value="{{ $genre->id }}">@if ($genre->short_name == "Other") ===== {{ $genre->name }} ====== @else {{ $genre->short_name }} -- {{ $genre->name }} @endif</option>
                 @endforeach
             </select>
 
