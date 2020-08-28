@@ -60,7 +60,7 @@ class PopulateGameGenresTable extends Migration
 
         
         
-        $genres[] = array('short_name' => 'Other...', 'name' => 'Other');
+        $genres[] = array('short_name' => 'Other', 'name' => 'Other....');
 
         return $genres;
     }

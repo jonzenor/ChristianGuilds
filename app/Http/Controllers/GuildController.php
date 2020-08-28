@@ -123,6 +123,7 @@ class GuildController extends Controller
                 $this->logEvent('Guild Added Game', 'Added the game ' . json_encode($game) . ' for guild ' . $request->name);
 
                 $this->clearCache('games');
+                $this->clearCache('games-pending');
             }
 
             $guild = new Guild();
@@ -134,6 +135,8 @@ class GuildController extends Controller
             $guild->owner_id = auth()->user()->id;
 
             $guild->save();
+
+            $this->clearCache('guilds');
 
             $this->logEvent('Guild Created', 'Guild created successfully with ID ' . $guild->id);
 

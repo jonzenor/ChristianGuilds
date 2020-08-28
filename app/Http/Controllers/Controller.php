@@ -204,7 +204,7 @@ class Controller extends BaseController
     public function getPaginatedGenres($page)
     {
         return Cache::remember('Genres:page:' . $page, $this->cache_for, function () {
-            return Genre::paginate(config('acp.paginate_games'));
+            return Genre::orderBy('name')->paginate(config('acp.paginate_games'));
         });
     }
 
@@ -236,20 +236,26 @@ class Controller extends BaseController
         }
 
         if ($what == "games") {
-            $pages = ceil(($this->getGameCount()) / config('acp.paginate_games'));
-
-            Cache::forget('Games');
             Cache::forget('Games:count');
+        }
+
+        if ($what == "games-pending") {
             Cache::forget('Games:pending');
             Cache::forget('Games:pending:count');
-            
-            for ($i = 0; $i <= $pages; $i++) {
-                Cache::forget('Games:page:' . $i);
-            }
         }
 
         if ($what == "game") {
             Cache::forget('Game:' . $id);
+        }
+
+        if ($what == "game" || $what == "games") {
+            $pages = ceil(($this->getGameCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Games');
+
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Games:page:' . $i);
+            }
         }
 
         if ($what == "genres") {
@@ -392,8 +398,16 @@ class Controller extends BaseController
         }
     }
     
-    public function logEvent($type, $message)
+    public function logEvent($type, $message, $level = 'info')
     {
-        Log::channel('app')->info("[" . $type . "] [USER: " . auth()->user()->name . " ID: " . auth()->user()->id . "] " . $message);
+        $text = "[" . $type . "] [USER: " . auth()->user()->name . " ID: " . auth()->user()->id . "] " . $message;
+
+        if ($level == 'info') {
+            Log::channel('app')->info($text);
+        }
+
+        if ($level == 'warning') {
+            Log::channel('app')->warning($text);
+        }
     }
 }

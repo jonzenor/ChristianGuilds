@@ -35,5 +35,16 @@ return [
     'not_listed'        => 'GAME NOT LISTED',
     'pending'           => 'Pending Games',
     'pending_count'     => 'Games Pending Approval: :count',
+    'accept_pending'    => 'Add Game to Database',
+    'accept_message'    => 'Add the game to the database for all guilds to use.',
+    'accept_game'       => 'Accept Game Details',
+    'new_genre_placeholder' => 'Create new genre if "Create New Genre..." selected above...',
+    'set_genre'         => 'Set Game Genre',
+    'set_genre_message' => 'Before you can change the game details, please select a valid game genre, or enter a new one.',
+    'no_pending_games'  => 'No Games Currently In Pending List',
+    'reject_game'       => 'Reject Suggested & Assign New Game to Guild',
+
+    'existing_game'     => 'Assign Guild to Existing Game',
+    'existing_message'  => 'If the guild should be assigned to an already existing game, then select it here.',
 
 ];
