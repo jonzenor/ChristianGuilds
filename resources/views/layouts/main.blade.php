@@ -32,56 +32,92 @@
                 <a href="{{ route('home') }}"><img src="{{ asset('images/ChristianGuilds-2-Color.png') }}"></a>
             </div>
         </div>
-        <ul class="flex pl-3 pt-4">
-            <li class="mr-6">
-                <a class="nav-links" href="{{ route('home') }}">Home</a>
-            </li>
-            @guest
-                <li class="mr-6">
-                    <a class="nav-links" href="{{ route('login') }}">{{ __('Login') }}</a>
-                </li>
 
-                @if (Route::has('register'))
+        <div class="w-full flex">
+            <div class="w-auto flex-grow">
+                <ul class="flex pl-3 pt-4">
                     <li class="mr-6">
-                        <a class="nav-links" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        <a class="nav-links" href="{{ route('home') }}">Home</a>
                     </li>
-                @endif
-            @else
-                <li class="mr-6">
-                    <a href="{{ route('logout') }}" class="nav-links"
-                        onclick="event.preventDefault();
-                        document.getElementById('logout-form').submit();">{{ __('Logout') }}
-                    </a>
-                </li>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
-                    {{ csrf_field() }}
-                </form>
 
-                <li class="mr-6">
-                    <a class="nav-links" href="{{ route('profile', Auth::user()->id) }}">{{ Auth::user()->name }}</a>
-                </li>
-            @endguest
+                    @can('view-acp')
+                        <li class="mr-6">
+                            <a class="nav-links" href="{{ route('acp') }}">ACP</a>
+                        </li>
+                    @endcan
 
-            @can('view-acp')
-                <li class="mr-6">
-                    <a class="nav-links" href="{{ route('acp') }}">ACP</a>
-                </li>
-            @endcan
+                    @can('manage-games')
+                        @if (getPendingGamesCount())
+                            <li class="mr-6">
+                                <a href="{{ route('game-list-pending') }}" class="nav-links"><i class="fas fa-exclamation-triangle text-xl text-red-300"></i> {{ getPendingGamesCount() }}</a>
+                            </li>
+                        @endif
+                    @endcan
 
-            @can('manage-games')
-                @if (getPendingGamesCount())
-                    <li class="mr-6">
-                        <a href="{{ route('game-list-pending') }}" class="nav-links"><i class="fas fa-exclamation-triangle text-xl text-red-300"></i> {{ getPendingGamesCount() }}</a>
-                    </li>
-                @endif
-            @endcan
+                    @if (env("APP_ENV") == "forge" || env("APP_ENV") == "local")
+                        <li class="mr-6">
+                            <a class="nav-links" href="{{ route('forge-power-up') }}">Forge Power Up</a>
+                        </li>
+                    @endif
 
-            @if (env("APP_ENV") == "forge" || env("APP_ENV") == "local")
-                <li class="mr-6">
-                    <a class="nav-links" href="{{ route('forge-power-up') }}">Forge Power Up</a>
-                </li>
-            @endif
-        </ul>
+                    @auth
+                        @if (auth()->user()->guilds()->count())
+                            <div class="dropdown inline-block relative">
+                                <button class="text-cgwhite py-2 px-4 rounded inline-flex items-center button-blue">
+                                <span class="mr-1">{{ __('guild.my_guilds') }}</span>
+                                <i class="fad fa-chevron-down"></i>
+                                {{-- <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg> --}}
+                                </button>
+                                <ul class="dropdown-menu absolute hidden text-gray-700 pt-1">
+                                    <?php $count = 0; ?>
+                                    @foreach (auth()->user()->guilds as $userGuild)
+                                        <?php
+                                            $rounded = "";
+                                            $count ++;
+                                            if ($count == 1) { $rounded .= "rounded-t"; }
+                                            if ($count == auth()->user()->guilds()->count()) { $rounded .= " rounded-b"; }
+                                        ?>
+                                        
+                                        <li><a class="bg-gray-200 hover:bg-gray-400 py-2 px-4 block whitespace-no-wrap {{ $rounded }}" href="{{ route('guild', $userGuild->id) }}">{{ $userGuild->name }}</a></li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    @endauth
+                    
+                </ul>
+            </div>
+            <div>
+                <ul class="flex pl-3 pt-4">
+                    @guest
+                        <li class="mr-6">
+                            <a class="nav-links" href="{{ route('login') }}">{{ __('Login') }}</a>
+                        </li>
+
+                        @if (Route::has('register'))
+                            <li class="mr-6">
+                                <a class="nav-links" href="{{ route('register') }}">{{ __('Register') }}</a>
+                            </li>
+                        @endif
+                    @else
+                        <li class="mr-6">
+                            <a href="{{ route('logout') }}" class="nav-links"
+                                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">{{ __('Logout') }}
+                            </a>
+                        </li>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">
+                            {{ csrf_field() }}
+                        </form>
+
+                        <li class="mr-6">
+                            <a class="nav-links" href="{{ route('profile', Auth::user()->id) }}">{{ Auth::user()->name }}</a>
+                        </li>
+                    @endguest
+                </ul>
+            </div>
+        </div>
     </nav>
     @include('sweetalert::alert')
 

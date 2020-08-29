@@ -34,6 +34,28 @@ module.exports = {
         'cggreen-700': '#0D6D6A',
         'cggreen-800': '#094947',
         'cggreen-900': '#042423',
+
+        'cgblue-50': '#D6F1FF',
+        'cgblue-100': '#ADE4FF',
+        'cgblue-200': '#85D6FF',
+        'cgblue-300': '#5CC9FF',
+        'cgblue-400': '#33BBFF',
+        'cgblue-500': '#00AAFF',
+        'cgblue-600': '#0096E0',
+        'cgblue-700': '#007AB8',
+        'cgblue-800': '#00527A',
+        'cgblue-900': '#001B29',
+
+        'cgpurple-50': '#EFDCFA',
+        'cgpurple-100': '#E6CAF7',
+        'cgpurple-200': '#C683EC',
+        'cgpurple-300': '#B55FE7',
+        'cgpurple-400': '#A53CE2',
+        'cgpurple-500': '#9320D5',
+        'cgpurple-600': '#791AB1',
+        'cgpurple-700': '#62158E',
+        'cgpurple-800': '#49106A',
+        'cgpurple-900': '#250835',
   
   
         cggray: '#1D2B35',
