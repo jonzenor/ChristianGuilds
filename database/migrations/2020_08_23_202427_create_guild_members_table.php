@@ -17,6 +17,7 @@ class CreateGuildMembersTable extends Migration
             $table->bigInteger('guild_id');
             $table->bigInteger('user_id');
             $table->string('title');
+            $table->string('position')->default('member');
             $table->timestamps();
         });
     }

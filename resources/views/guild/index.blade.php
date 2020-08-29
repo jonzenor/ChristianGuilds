@@ -24,7 +24,7 @@
                     <td class="px-4">{{ $guild->game->name }}</td>
                     <td class="px-4"><a href="{{ route('profile', $guild->owner->id) }}" class="link">{{ $guild->owner->name }}</a></td>
                     <td class="px-4">{{ ucwords($guild->created_at) }}</td>
-                    <td class="px-4"><i class="fal fa-edit"></i></td>
+                    <td class="px-4"><a href="{{ route('guild-edit', $guild->id) }}" class="link"><i class="fal fa-edit"></i></a></td>
                 </tr>
             @endforeach
         </table>

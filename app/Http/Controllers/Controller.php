@@ -222,16 +222,16 @@ class Controller extends BaseController
 
         if ($what == 'guilds') {
             Cache::forget('Guilds:count');
-            Cache::forget('Guilds:Latest');
         }
 
         if ($what == 'guild' || $what == 'guilds') {
             Cache::forget('Guilds');
+            Cache::forget('Guilds:Latest');
 
             $pages = ceil(($this->getGuildCount()) / config('acp.paginate_games'));
             
             for ($i = 0; $i <= $pages; $i++) {
-                Cache::forget('Games:page:' . $i);
+                Cache::forget('Guilds:page:' . $i);
             }
         }
 
@@ -404,6 +404,10 @@ class Controller extends BaseController
 
         if ($level == 'info') {
             Log::channel('app')->info($text);
+        }
+
+        if ($level == 'notice') {
+            Log::channel('app')->notice($text);
         }
 
         if ($level == 'warning') {

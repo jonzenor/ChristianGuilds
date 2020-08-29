@@ -50,6 +50,8 @@ Route::get('/guilds', 'GuildController@index')->name('guild-list')->middleware('
 Route::get('/guild/{id}', 'GuildController@show')->name('guild');
 Route::get('/new-guild', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
 Route::post('/new-guild', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
+Route::get('/guild/{id}/edit', 'GuildController@edit')->name('guild-edit')->middleware('auth', '2fa');
+Route::post('/guild/{id}/edit', 'GuildController@update')->name('guild-update')->middleware('auth', '2fa');
 
 Route::get('/forgePowerUp', 'HomeController@forge')->name('forge-power-up')->middleware('auth', '2fa');
 Route::get('/forgePowerUp/{id}', 'HomeController@forgePowerUp')->name('forge-grant')->middleware('auth', '2fa');
