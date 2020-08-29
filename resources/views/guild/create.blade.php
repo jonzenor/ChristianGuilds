@@ -14,7 +14,7 @@
     @endif
 
     @if ($step == 4)
-        @include('guild.steps.step4');
+        @include('guild.steps.step4')
     @endif
 
 @endsection

@@ -19,7 +19,7 @@
                     @if ($game->genre->short_name == "Other")
 
                         <div class="flex flex-col break-words bg-cggray-700 border border-2 rounded shadow-md">
-                            
+
                             <div class="font-semibold bg-cggray-900 text-purple-500 py-3 px-6 mb-0 text-xl text-center">
                                 {{ __('game.set_genre') }}
                             </div>
@@ -37,7 +37,7 @@
                                     <label for="genre" class="block text-cgwhite text-sm mb-2">
                                         {{ __('game.genre') }}:
                                     </label>
-                        
+
                                     <select name="genre" class="form-field w-full @error('genre') border-red-500 @enderror">
                                         <option value="0">==== Create New Genre... ====</option>
                                         @foreach ($genres as $genre)
@@ -56,7 +56,7 @@
                                     <label for="name" class="block text-cgwhite text-sm mb-2">
                                         {{ __('game.genre_name') }}:
                                     </label>
-                        
+
                                     <p class="text-cgwhite">
                                         <input type="text" name="name" class="form-field w-full" placeholder=" {{ __('game.new_genre_placeholder') }}">
                                     </p>
@@ -66,14 +66,14 @@
                                             {{ $message }}
                                         </p>
                                     @enderror
-                
+
                                 </div>
 
                                 <div class="w-full p-4">
                                     <label for="short_name" class="block text-cgwhite text-sm mb-2">
                                         {{ __('game.genre_short_name') }}:
                                     </label>
-                        
+
                                     <p class="text-cgwhite">
                                         <input type="text" name="short_name" class="form-field w-full" >
                                     </p>
@@ -83,11 +83,11 @@
                                             {{ $message }}
                                         </p>
                                     @enderror
-                
+
                                 </div>
 
                                 <div class="w-full p-4">
-                                    <input type="submit" class="button-primary" value="{{ __('game.update_genre') }}">
+                                    <input type="submit" class="button-primary" value="{{ __('game.set_genre') }}">
                                 </div>
                             </form>
                         </div>
@@ -96,13 +96,13 @@
 
                         <form action="{{ route('game-approve-pending', $game->id) }}" method="post">
                             @csrf
-        
+
                             <div class="flex flex-col break-words bg-cggray-700 border border-2 rounded shadow-md">
-            
+
                                 <div class="font-semibold bg-cggray-900 text-purple-500 py-3 px-6 mb-0 text-xl text-center">
                                     {{ __('game.accept_pending') }}
                                 </div>
-            
+
                                 <div class="w-full p-6">
                                     <p class="text-cgwhite">
                                         {{ __('game.accept_message') }}
@@ -113,7 +113,7 @@
                                     <label for="name" class="block text-cgwhite text-sm mb-2">
                                         {{ __('game.game') }}:
                                     </label>
-                        
+
                                     <p class="text-cgwhite">
                                         <input type="text" name="name" class="form-field w-full" value="{{ $game->name }}">
                                     </p>
@@ -123,14 +123,14 @@
                                             {{ $message }}
                                         </p>
                                     @enderror
-                
+
                                 </div>
 
                                 <div class="w-full p-4">
                                     <label for="genre" class="block text-cgwhite text-sm mb-2">
                                         {{ __('game.genre') }}:
                                     </label>
-                        
+
                                     <select name="genre" class="form-field w-full @error('genre') border-red-500 @enderror">
                                         @foreach ($genres as $genre)
                                             <option value="{{ $genre->id }}" @if ($genre->id == $game->genre_id) selected @endif>{{ $genre->short_name }} - {{ $genre->name }}</option>
@@ -142,7 +142,7 @@
                                             {{ $message }}
                                         </p>
                                     @enderror
-                
+
                                 </div>
 
                                 <div class="w-full p-4">
@@ -159,11 +159,11 @@
                         @csrf
 
                         <div class="flex flex-col break-words bg-cggray-700 border border-2 rounded shadow-md">
-        
+
                             <div class="font-semibold bg-cggray-900 text-purple-500 py-3 px-6 mb-0 text-xl text-center">
                                 {{ __('game.existing_game') }}
                             </div>
-        
+
                             <div class="w-full p-6">
                                 <p class="text-cgwhite">
                                     {{ __('game.existing_message') }}
@@ -172,9 +172,9 @@
 
                             <div class="w-full p-4">
                                 <label for="game" class="block text-cgwhite text-sm mb-2">
-                                    {{ __('game.genre') }}:
+                                    {{ __('game.game') }}:
                                 </label>
-                    
+
                                 <select name="game" class="form-field w-full @error('game') border-red-500 @enderror">
                                     @foreach ($listGames as $listGame)
                                         <option value="{{ $listGame->id }}">{{ $listGame->name }}</option>
@@ -186,7 +186,7 @@
                                         {{ $message }}
                                     </p>
                                 @enderror
-            
+
                             </div>
 
                             <div class="w-full p-4">
@@ -194,7 +194,7 @@
                             </div>
                         </div>
                     </form>
-                
+
                 </div>
 
             </div>
