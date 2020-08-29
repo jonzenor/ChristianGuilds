@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use Gate;
 use App\Guild;
 use App\Game;
@@ -137,8 +138,14 @@ class GuildController extends Controller
             $guild->save();
 
             $this->clearCache('guilds');
-
             $this->logEvent('Guild Created', 'Guild created successfully with ID ' . $guild->id);
+
+            DB::table('guild_members')->insert([
+                'user_id' => auth()->user()->id,
+                'guild_id' => $guild->id,
+                'title' => 'Guild Master',
+                'position' => 'owner',
+            ]);
 
             toast(__('guild.created_successfully'), 'success');
 
@@ -184,7 +191,23 @@ class GuildController extends Controller
      */
     public function edit($id)
     {
-        //
+        if (Gate::denies('manage-guild', $id)) {
+            toast(__('site.permission_denied'), 'warning');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access ' . request()->path(), 'notice');
+            return redirect()->route('home');
+        }
+
+        $guild = $this->getGuild($id);
+
+        if (!$guild) {
+            toast(__('guild.invalid_guild'), 'error');
+            $this->logEvent('Invalid Guild', 'Attempted to access ' . request()->path() . ', but the guild does not exist.', 'warning');
+            return redirect()->route('home');
+        }
+
+        return view('guild.edit')->with([
+            'guild' => $guild,
+        ]);
     }
 
     /**
@@ -196,7 +219,35 @@ class GuildController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if (Gate::denies('manage-guild', $id)) {
+            toast(__('site.permission_denied'), 'warning');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access ' . request()->path(), 'notice');
+            return redirect()->route('home');
+        }
+
+        $guild = $this->getGuild($id);
+
+        if (!$guild) {
+            toast(__('guild.invalid_guild'), 'error');
+            $this->logEvent('Invalid Guild', 'Attempted to access ' . request()->path() . ', but the guild does not exist.', 'warning');
+            return redirect()->route('home');
+        }
+
+        $this->validate($request, [
+            'name' => 'string|required|max:255',
+        ]);
+
+        $this->logEvent('Guild Update', 'Updating guild information from ' . json_encode($guild) . ' to ' . json_encode($request->all()));
+
+        $guild->name = $request->name;
+
+        $guild->save();
+
+        $this->clearCache('guild', $guild->id);
+
+        Alert::success(__('guild.update_successful'));
+
+        return redirect()->route('guild', $guild->id);
     }
 
     /**

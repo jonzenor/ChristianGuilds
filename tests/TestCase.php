@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use DB;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
 abstract class TestCase extends BaseTestCase
@@ -46,6 +47,13 @@ abstract class TestCase extends BaseTestCase
         $guild = factory(\App\Guild::class)->create();
         $guild->owner_id = $user->id;
         $guild->save();
+        
+        DB::table('guild_members')->insert([
+            'user_id' => $user->id,
+            'guild_id' => $guild->id,
+            'position' => 'owner',
+            'title' => 'Test Game Manager',
+        ]);
         
         $guild->encoded_name = str_replace("'", "&#039;", $guild->name);
 

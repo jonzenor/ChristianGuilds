@@ -104,6 +104,20 @@ class GuildTest extends TestCase
         $response->assertSee(__('game.is_pending'));
     }
 
+    /** @test */
+    public function guild_edit_page_loads()
+    {
+        $this->withoutExceptionHandling();
+
+        $user = $this->createUser();
+        $guild = $this->createGuild($user);
+
+        $response = $this->actingAS($user)->get(route('guild-edit', $guild->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('guild.edit');
+    }
+
     // Pending games show on the ACP page
 
     // Pending games show in the pending games page

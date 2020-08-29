@@ -6,6 +6,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
 use App\Role;
+use DB;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -122,6 +123,28 @@ class AuthServiceProvider extends ServiceProvider
             }
 
             if ($this->isGameMaster($user)) {
+                return true;
+            }
+
+            return false;
+        });
+
+        Gate::define('manage-guild', function ($user, $guild) {
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+
+            if ($this->isGameMaster($user)) {
+                return true;
+            }
+
+            $member = DB::table('guild_members')->where('guild_id', '=', $guild)->where('user_id', '=', $user->id)->first();
+
+            if (!$member) {
+                return false;
+            }
+
+            if ($member->position == 'owner' || $member->position == 'manager') {
                 return true;
             }
 
