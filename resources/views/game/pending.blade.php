@@ -87,7 +87,7 @@
                                 </div>
 
                                 <div class="w-full p-4">
-                                    <input type="submit" class="button-primary" value="{{ __('game.update_genre') }}">
+                                    <input type="submit" class="button-primary" value="{{ __('game.set_genre') }}">
                                 </div>
                             </form>
                         </div>
