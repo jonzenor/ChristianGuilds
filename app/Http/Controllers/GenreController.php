@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Genre;
 use Gate;
+use Illuminate\Support\Facades\Log;
 
 class GenreController extends Controller
 {
@@ -17,6 +18,7 @@ class GenreController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -37,6 +39,7 @@ class GenreController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -53,6 +56,7 @@ class GenreController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -61,12 +65,16 @@ class GenreController extends Controller
             'short_name' => 'required|string|min:2|max:36',
         ]);
 
+        Log::channel('app')->info("[Genre Create] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Attempting to CREATE Genre " . json_encode($request->all()));
+
         $genre = new Genre();
 
         $genre->name = $request->name;
         $genre->short_name = $request->short_name;
 
         $genre->save();
+
+        Log::channel('app')->info("[Game Create] Genre created successfully. Assigned ID " . $genre->id);
 
         toast(__('game.genre_add_success'), 'success');
         $this->clearCache('genres');
@@ -95,6 +103,7 @@ class GenreController extends Controller
     {
         if (Gate::denies('manage-games')) {
             toast(__('site.permission_denied'), 'warning');
+            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
         }
 
@@ -126,10 +135,14 @@ class GenreController extends Controller
 
         $genre = $this->getGenre($id);
 
+        Log::channel('app')->info("[Genre Update] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Attempting to UPDATE Genre " . json_encode($genre) . " NEW DATA: " . json_encode($request->all()));
+
         $genre->name = $request->name;
         $genre->short_name = $request->short_name;
 
         $genre->save();
+
+        Log::channel('app')->info("[Genre Update] Genre Updated Successfully.");
 
         toast(__('game.genre_update_success'), 'success');
         $this->clearCache('genres');

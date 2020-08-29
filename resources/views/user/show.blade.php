@@ -38,8 +38,8 @@
     @endif
 
     @can('add-global-role')
-        <h3 class="page-subheader-h3">{{ __('user.add_role') }}</h3>
         <div class="page-section">
+            <h3 class="page-subheader-h3">{{ __('user.add_role') }}</h3>
             <form action="{{ route('add-role', $user->id) }}" method="post">
                 @csrf
 
@@ -57,7 +57,7 @@
         </div>
     @endcan
 
-    @can('edit-user', $user)
+    @can('edit-user', $user->id)
         <div class="page-section">
             <a href="{{ route('profile-edit', $user->id) }}" class="link">{{ __('user.edit_profile') }}</a>
         </div>

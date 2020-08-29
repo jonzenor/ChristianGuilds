@@ -42,7 +42,7 @@ class PopulateGameGenresTable extends Migration
         $genres[] = array('short_name' => 'FPS', 'name' => 'First Person Shooter');
         $genres[] = array('short_name' => 'Sandbox', 'name' => 'Sandbox');
         $genres[] = array('short_name' => 'MMOFPS', 'name' => 'Massively Multiplayer Online First Person Shooter');
-        $genres[] = array('short_name' => 'RTS', 'name' => 'Real-time Strategy');
+        $genres[] = array('short_name' => 'RTS', 'name' => 'Real-Time Strategy');
         $genres[] = array('short_name' => 'MMORTS', 'name' => 'Massively Multiplayer Online Real-time Strategy');
         $genres[] = array('short_name' => 'Survival', 'name' => 'Survival');
         $genres[] = array('short_name' => 'BR', 'name' => 'Battle Royale');
@@ -57,6 +57,10 @@ class PopulateGameGenresTable extends Migration
         $genres[] = array('short_name' => 'TBS', 'name' => 'Turn-based Strategy');
         $genres[] = array('short_name' => 'Party', 'name' => 'Party');
         $genres[] = array('short_name' => 'Educational', 'name' => 'Educational');
+
+        
+        
+        $genres[] = array('short_name' => 'Other', 'name' => 'Other....');
 
         return $genres;
     }

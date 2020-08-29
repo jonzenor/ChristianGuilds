@@ -6,6 +6,7 @@ use App\ContactSettings;
 use App\ContactTopics;
 use App\Game;
 use App\Genre;
+use App\Guild;
 use App\Mail\AlertMessage;
 use App\Role;
 use App\User;
@@ -98,6 +99,43 @@ class Controller extends BaseController
         });
     }
 
+    // Guild related cache functions
+
+    public function getGuild($id)
+    {
+        return Cache::rememberForever('Guild:' . $id, function () use ($id) {
+            return Guild::find($id);
+        });
+    }
+
+    public function getGuilds()
+    {
+        return Cache::remember('Guilds:all', $this->cache_for, function () {
+            return Guild::all();
+        });
+    }
+
+    public function getPaginatedGuilds($page)
+    {
+        return Cache::remember('Guilds:page:' . $page, $this->cache_for, function () {
+            return Guild::orderBy('name')->paginate(config('acp.paginate_games'));
+        });
+    }
+
+    public function getGuildCount()
+    {
+        return Cache::rememberForever('Guilds:count', function () {
+            return Guild::all()->count();
+        });
+    }
+
+    public function getLatestGuilds()
+    {
+        return Cache::remember('Guilds:Latest', $this->cache_for, function () {
+            return Guild::orderBy('created_at', 'desc')->limit(config('acp.items_limit'))->get();
+        });
+    }
+
     // Game related cache functions
 
     public function getGame($id)
@@ -117,7 +155,21 @@ class Controller extends BaseController
     public function getGames()
     {
         return Cache::rememberForever('Games', function () {
-            return Game::orderBy('name')->get();
+            return Game::orderBy('name')->where('status', '=', 'confirmed')->get();
+        });
+    }
+
+    public function getPendingGames()
+    {
+        return Cache::rememberForever('Games:pending', function () {
+            return Game::orderBy('name')->where('status', '=', 'pending')->get();
+        });
+    }
+
+    public function getPendingGamesCount()
+    {
+        return Cache::rememberForever('Games:pending:count', function () {
+            return Game::where('status', '=', 'pending')->get()->count();
         });
     }
 
@@ -131,7 +183,7 @@ class Controller extends BaseController
     public function getGenres()
     {
         return Cache::rememberForever('Genres', function () {
-            return Genre::all();
+            return Genre::orderBy('name')->get();
         });
     }
 
@@ -152,7 +204,7 @@ class Controller extends BaseController
     public function getPaginatedGenres($page)
     {
         return Cache::remember('Genres:page:' . $page, $this->cache_for, function () {
-            return Genre::paginate(config('acp.paginate_games'));
+            return Genre::orderBy('name')->paginate(config('acp.paginate_games'));
         });
     }
 
@@ -164,19 +216,46 @@ class Controller extends BaseController
             Cache::forget('User:' . $id . ':ContactSettings');
         }
 
-        if ($what == "games") {
-            $pages = ceil(($this->getGameCount()) / config('acp.paginate_games'));
+        if ($what == 'guild') {
+            Cache::forget('Guild:' . $id);
+        }
 
-            Cache::forget('Games');
-            Cache::forget('Games:count');
+        if ($what == 'guilds') {
+            Cache::forget('Guilds:count');
+            Cache::forget('Guilds:Latest');
+        }
+
+        if ($what == 'guild' || $what == 'guilds') {
+            Cache::forget('Guilds');
+
+            $pages = ceil(($this->getGuildCount()) / config('acp.paginate_games'));
             
             for ($i = 0; $i <= $pages; $i++) {
                 Cache::forget('Games:page:' . $i);
             }
         }
 
+        if ($what == "games") {
+            Cache::forget('Games:count');
+        }
+
+        if ($what == "games-pending") {
+            Cache::forget('Games:pending');
+            Cache::forget('Games:pending:count');
+        }
+
         if ($what == "game") {
             Cache::forget('Game:' . $id);
+        }
+
+        if ($what == "game" || $what == "games") {
+            $pages = ceil(($this->getGameCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Games');
+
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Games:page:' . $i);
+            }
         }
 
         if ($what == "genres") {
@@ -299,5 +378,36 @@ class Controller extends BaseController
         $resultJson = json_decode($result);
 
         return $resultJson;
+    }
+
+    //***************************/
+    // Other Helpful Functions //
+    //*************************/
+
+    public function getIp()
+    {
+        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) {
+            if (array_key_exists($key, $_SERVER) === true) {
+                foreach (explode(',', $_SERVER[$key]) as $ip) {
+                    $ip = trim($ip); // just to be safe
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+                        return $ip;
+                    }
+                }
+            }
+        }
+    }
+    
+    public function logEvent($type, $message, $level = 'info')
+    {
+        $text = "[" . $type . "] [USER: " . auth()->user()->name . " ID: " . auth()->user()->id . "] " . $message;
+
+        if ($level == 'info') {
+            Log::channel('app')->info($text);
+        }
+
+        if ($level == 'warning') {
+            Log::channel('app')->warning($text);
+        }
     }
 }

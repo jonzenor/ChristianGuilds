@@ -29,7 +29,7 @@
     <nav class="w-full">
         <div class="bg-cgblack-900 w-full">
             <div class="w-full mx-auto lg:w-1/2">
-                <img src="{{ asset('images/ChristianGuilds-2-Color.png') }}">
+                <a href="{{ route('home') }}"><img src="{{ asset('images/ChristianGuilds-2-Color.png') }}"></a>
             </div>
         </div>
         <ul class="flex pl-3 pt-4">
@@ -66,6 +66,14 @@
                 <li class="mr-6">
                     <a class="nav-links" href="{{ route('acp') }}">ACP</a>
                 </li>
+            @endcan
+
+            @can('manage-games')
+                @if (getPendingGamesCount())
+                    <li class="mr-6">
+                        <a href="{{ route('game-list-pending') }}" class="nav-links"><i class="fas fa-exclamation-triangle text-xl text-red-300"></i> {{ getPendingGamesCount() }}</a>
+                    </li>
+                @endif
             @endcan
 
             @if (env("APP_ENV") == "forge" || env("APP_ENV") == "local")

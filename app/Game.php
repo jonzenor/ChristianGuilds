@@ -10,4 +10,14 @@ class Game extends Model
     {
         return $this->belongsTo('App\Genre');
     }
+
+    public function guilds()
+    {
+        return $this->hasMany('App\Guild');
+    }
+
+    public function guild()
+    {
+        return $this->hasOne('App\Guild');
+    }
 }
