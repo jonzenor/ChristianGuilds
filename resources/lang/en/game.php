@@ -43,6 +43,7 @@ return [
     'set_genre_message' => 'Before you can change the game details, please select a valid game genre, or enter a new one.',
     'no_pending_games'  => 'No Games Currently In Pending List',
     'reject_game'       => 'Reject Suggested & Assign New Game to Guild',
+    'is_pending'        => 'Pending Approval',
 
     'existing_game'     => 'Assign Guild to Existing Game',
     'existing_message'  => 'If the guild should be assigned to an already existing game, then select it here.',

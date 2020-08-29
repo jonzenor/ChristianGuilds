@@ -86,6 +86,24 @@ class GuildTest extends TestCase
         $response->assertViewIs('guild.show');
     }
 
+    /** @test */
+    public function guild_page_shows_if_game_is_pending()
+    {
+        $game = $this->createGame();
+        $game = \App\Game::find($game->id);
+        $game->status = 'pending';
+        $game->save();
+
+        $user = $this->createUser();
+        $guild = $this->createGuild($user);
+        $guild = \App\Guild::find($guild->id);
+        $guild->game_id = $game->id;
+        $guild->save();
+
+        $response = $this->get(route('guild', $guild->id));
+        $response->assertSee(__('game.is_pending'));
+    }
+
     // Pending games show on the ACP page
 
     // Pending games show in the pending games page

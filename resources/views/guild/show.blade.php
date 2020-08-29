@@ -2,7 +2,7 @@
 
 @section('content')
     <h1 class="page-header">{{ $guild->name }}</h1>
-    <h2 class="page-subheader">{{ $guild->game->name }}</h2>
+    <h2 class="page-subheader">{{ $guild->game->name }} @if ($guild->game->status == "pending") <span class="bg-yellow-600 rounded-lg text-sm text-white px-4 py-1"><i class="fas fa-exclamation-circle text-lg"></i> {{ __('game.is_pending') }}</span> @endif</h2>
 
     <hr />
 
