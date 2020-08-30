@@ -47,5 +47,6 @@ return [
 
     'existing_game'     => 'Assign Guild to Existing Game',
     'existing_message'  => 'If the guild should be assigned to an already existing game, then select it here.',
+    'genre_updated'     => 'Updated Game\'s Genre',
 
 ];
