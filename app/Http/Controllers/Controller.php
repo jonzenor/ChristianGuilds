@@ -400,7 +400,7 @@ class Controller extends BaseController
     
     public function logEvent($type, $message, $level = 'info')
     {
-        $text = "[" . $type . "] [USER: " . auth()->user()->name . " ID: " . auth()->user()->id . "] " . $message;
+        $text = "[" . $type . "] [USER: " . auth()->user()->name . " ID: " . auth()->user()->id . "] [URL: " . request()->path() . "] " . $message;
 
         if ($level == 'info') {
             Log::channel('app')->info($text);

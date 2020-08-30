@@ -136,7 +136,7 @@ class GenreController extends Controller
         $genre = $this->getGenre($id);
 
         if ($genre->short_name == "Other") {
-            $this->logEvent('[Invalid Genre Update]', 'Attempted to updated the "Other" genre.');
+            $this->logEvent('[Invalid Genre Update]', 'Attempted to updated the "Other" genre.', 'notice');
             toast(__('site.permission_denied'), 'warning');
             return redirect()->route('genre-list');
         }

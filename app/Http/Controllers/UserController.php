@@ -225,6 +225,12 @@ class UserController extends Controller
         $user = $this->getUser($id);
         $role = $this->getRole($role_id);
 
+        if (!$role) {
+            toast(__('user.invalid_role'), 'error');
+            $this->LogEvent('[Invalid Role]', 'User attempted to remove a role from another user, but the role does not exist.', 'notice');
+            return redirect()->route('profile', $user->id);
+        }
+
         $confirm['header'] = __('user.remove_role');
         $confirm['body'] = __('user.remove_role_text', ['user' => $user->name, 'role' => $role->name]);
         $confirm['action'] = route("remove-role-confirm", ['id' => $user->id, 'role' => $role->id]);
@@ -240,12 +246,19 @@ class UserController extends Controller
     {
         if (Gate::denies('manage-user-roles')) {
             toast(__('site.permission_denied'), 'warning');
-            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
+            $this->LogEvent('[Invalid Role]', 'User attempted to remove a role from another user, but the role does not exist.', 'notice');
             return redirect()->route('home');
         }
 
         $user = $this->getUser($id);
         $role = $this->getRole($role_id);
+
+        if (!$role) {
+            toast(__('user.invalid_role'), 'error');
+            Log::channel('app')->warning("[Invalid Role] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path() . " with role " . $request->role . " but the role does not exist.");
+            return redirect()->route('profile', $user->id);
+        }
+
 
         $user->roles()->detach($role->id);
 
