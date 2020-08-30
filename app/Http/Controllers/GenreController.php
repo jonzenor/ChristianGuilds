@@ -135,6 +135,12 @@ class GenreController extends Controller
 
         $genre = $this->getGenre($id);
 
+        if ($genre->short_name == "Other") {
+            $this->logEvent('[Invalid Genre Update]', 'Attempted to updated the "Other" genre.');
+            toast(__('site.permission_denied'), 'warning');
+            return redirect()->route('genre-list');
+        }
+
         Log::channel('app')->info("[Genre Update] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Attempting to UPDATE Genre " . json_encode($genre) . " NEW DATA: " . json_encode($request->all()));
 
         $genre->name = $request->name;

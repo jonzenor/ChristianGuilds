@@ -16,12 +16,14 @@
                 </tr>
             </thead>
             @foreach ($genres as $genre)
-                <tr class="my-3">
-                    <td class="px-4">{{ $genre->id }}</td>
-                    <td class="px-4">{{ $genre->short_name }}</td>
-                    <td class="px-4">{{ $genre->name }}</td>
-                    <td class="px-4"><a href="{{ route('genre-edit', $genre->id) }}" class="link" alt="{{ __('game.edit_genre') }}"><i class="fal fa-edit"></i></a>
-                </tr>
+                @if ($genre->short_name != "Other")
+                    <tr class="my-3">
+                        <td class="px-4">{{ $genre->id }}</td>
+                        <td class="px-4">{{ $genre->short_name }}</td>
+                        <td class="px-4">{{ $genre->name }}</td>
+                        <td class="px-4"><a href="{{ route('genre-edit', $genre->id) }}" class="link" alt="{{ __('game.edit_genre') }}"><i class="fal fa-edit"></i></a>
+                    </tr>
+                @endif
             @endforeach
         </table>
     </div>
