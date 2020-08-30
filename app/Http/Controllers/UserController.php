@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        if (Gate::denies('view-acp')) {
+        if (Gate::denies('manage-users')) {
             toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
             return redirect()->route('home');
