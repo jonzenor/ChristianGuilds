@@ -21,7 +21,11 @@ class Guild extends Model
     {
         $now = Carbon::now();
         $diff = $now->diffInDays($value);
-        $readable = $now->subDays($diff)->diffForHumans(); //->diffInDays()->diffForHumans();
+        if ($diff < 1) {
+            $readable = "Today";
+        } else {
+            $readable = $now->subDays($diff)->diffForHumans(); //->diffInDays()->diffForHumans();
+        }
 
         return $readable;
     }
