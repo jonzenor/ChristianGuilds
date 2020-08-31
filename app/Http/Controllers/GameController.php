@@ -294,7 +294,7 @@ class GameController extends Controller
         if ($request->genre == 0) {
             $this->validate($request, [
                 'name' => 'string|required|max:255',
-                'short_name' => 'string|required|min:2|max:12',    
+                'short_name' => 'string|required|min:2|max:12',
             ]);
             
             $genre = new Genre();

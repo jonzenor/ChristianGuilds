@@ -17,9 +17,11 @@
     @if ($games)
         <div class="page-section">
             @foreach ($games as $game)
-                <div class="page-section">
-                    <i class="fad fa-game-console-handheld text-xl px-2 text-white"></i> <a href="{{ route('game', $game->id) }}" class="link">{{ $game->name }}</a>
-                </div>
+                @if ($game->status == 'confirmed')
+                    <div class="page-section">
+                        <i class="fad fa-game-console-handheld text-xl px-2 text-white"></i> <a href="{{ route('game', $game->id) }}" class="link">{{ $game->name }}</a>
+                    </div>
+                @endif
             @endforeach
         </div>
     @endif
