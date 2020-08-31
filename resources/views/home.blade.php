@@ -24,7 +24,7 @@
     </div>
 
     <div class="page-section text-center">
-        <a href="{{ route('guild-create') }}" class="button-primary" style="background: #791ab1">{{ __('guild.create') }}</a>
+        <a href="{{ route('guild-create') }}" class="button-primary">{{ __('guild.create') }}</a>
     </div>
 
     @endsection

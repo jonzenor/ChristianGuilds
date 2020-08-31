@@ -41,7 +41,9 @@
                                     <select name="genre" class="form-field w-full @error('genre') border-red-500 @enderror">
                                         <option value="0">==== Create New Genre... ====</option>
                                         @foreach ($genres as $genre)
-                                            <option value="{{ $genre->id }}">{{ $genre->short_name }} - {{ $genre->name }}</option>
+                                            @if ($genre->short_name != "Other")
+                                                <option value="{{ $genre->id }}">{{ $genre->short_name }} - {{ $genre->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
 
@@ -133,7 +135,9 @@
 
                                     <select name="genre" class="form-field w-full @error('genre') border-red-500 @enderror">
                                         @foreach ($genres as $genre)
-                                            <option value="{{ $genre->id }}" @if ($genre->id == $game->genre_id) selected @endif>{{ $genre->short_name }} - {{ $genre->name }}</option>
+                                            @if ($genre->short_name != "Other")
+                                                <option value="{{ $genre->id }}" @if ($genre->id == $game->genre_id) selected @endif>{{ $genre->short_name }} - {{ $genre->name }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
 

@@ -64,7 +64,7 @@
                 <h2 class="page-subheader">{{ __('game.stats') }}</h2>
                 <div class="page-section">
                     <ul>
-                        <li> <a href="{{ route('game-list') }}" class="link"><i class="fad fa-game-console-handheld text-xl text-white"></i> {{ __('game.count', ['count' => $count['games']]) }}</a></li>
+                        <li> <a href="{{ route('game-list') }}" class="link"><i class="fad fa-game-console-handheld px-2 text-xl text-white"></i> {{ __('game.count', ['count' => $count['games']]) }}</a></li>
                         @if ($count['games_pending'])<li> <a href="{{ route('game-list-pending') }}" class="link"><i class="fas fa-exclamation-triangle text-xl text-red-300"></i> {{ __('game.pending_count', ['count' => $count['games_pending']]) }}</a></li>@endif
                     </ul>
                 </div>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 //use Illuminate\Support\Facades\Gate;
+
+use App\Game;
 use Illuminate\Http\Request;
 use Gate;
 use Illuminate\Support\Facades\Auth;
@@ -99,5 +101,32 @@ class HomeController extends Controller
         toast("Granted " . $role->name . " powers", "success");
 
         return redirect()->route('profile', $user->id);
+    }
+
+    public function search(Request $request)
+    {
+        $this->validate($request, [
+            'search' => 'string|required',
+        ]);
+
+        $keywords = explode(':', $request->search);
+        $keywords[0] = strtolower($keywords[0]);
+
+        $guilds = "";
+        $games = "";
+
+        if ($keywords[0] == "guild") {
+            $guilds = \App\Guild::search($keywords[1])->get();
+        } elseif ($keywords[0] == "game") {
+            $games = \App\Game::search($keywords[1])->get();
+        } else {
+            $guilds = \App\Guild::search($request->search)->get();
+            $games = \App\Game::search($request->search)->get();
+        }
+
+        return view('site.search')->with([
+            'games' => $games,
+            'guilds' => $guilds,
+        ]);
     }
 }

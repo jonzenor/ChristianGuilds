@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Game extends Model
 {
+    use Searchable;
+    
     public function genre()
     {
         return $this->belongsTo('App\Genre');

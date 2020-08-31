@@ -4,9 +4,12 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Guild extends Model
 {
+    use Searchable;
+
     public function game()
     {
         return $this->belongsTo('App\Game');
@@ -21,7 +24,11 @@ class Guild extends Model
     {
         $now = Carbon::now();
         $diff = $now->diffInDays($value);
-        $readable = $now->subDays($diff)->diffForHumans(); //->diffInDays()->diffForHumans();
+        if ($diff < 1) {
+            $readable = "Today";
+        } else {
+            $readable = $now->subDays($diff)->diffForHumans(); //->diffInDays()->diffForHumans();
+        }
 
         return $readable;
     }
