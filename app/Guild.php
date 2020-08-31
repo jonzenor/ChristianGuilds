@@ -4,9 +4,12 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Guild extends Model
 {
+    use Searchable;
+
     public function game()
     {
         return $this->belongsTo('App\Game');

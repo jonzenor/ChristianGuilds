@@ -33,6 +33,8 @@ Route::get('/acp', 'HomeController@acp')->name('acp')->middleware('auth', '2fa')
 Route::get('/acp/users', 'UserController@index')->name('user-list')->middleware('auth', '2fa');
 Route::get('/acp/roles', 'RoleController@index')->name('role-list')->middleware('auth', '2fa');
 
+Route::get('/game/{id}', 'GameController@show')->name('game');
+
 Route::get('/acp/games', 'GameController@index')->name('game-list')->middleware('auth', '2fa');
 Route::get('/acp/games/pending', 'GameController@pending')->name('game-list-pending')->middleware('auth', '2fa');
 Route::post('/acp/games/pending/{id}/approve', 'GameController@approvePending')->name('game-approve-pending')->middleware('auth', '2fa');
