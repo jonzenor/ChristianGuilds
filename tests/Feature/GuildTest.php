@@ -140,4 +140,17 @@ class GuildTest extends TestCase
 
     // Guild public page loads for all users
 
+    /** @test */
+    public function guild_search_shows_results()
+    {
+        $user = $this->createUser();
+        $guild = $this->createGuild($user);
+
+        $response = $this->post(route('search'), ['search' => $guild->name]);
+
+        $response->assertStatus(200);
+        $response->assertViewIs('site.search');
+        $response->assertSee(route('guild', $guild->id));
+    }
+
 }

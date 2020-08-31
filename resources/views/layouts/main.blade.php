@@ -35,7 +35,7 @@
 
         <div class="w-full flex">
             <div class="w-auto flex-grow">
-                <ul class="flex pl-3 pt-4">
+                <ul class="flex pl-3 pt-4 items-center">
                     <li class="mr-6">
                         <a class="nav-links" href="{{ route('home') }}">Home</a>
                     </li>
@@ -88,7 +88,24 @@
                 </ul>
             </div>
             <div>
-                <ul class="flex pl-3 pt-4">
+                <ul class="flex pl-3 pt-4 items-center justify-center">
+
+                    <form action="{{ route('search') }}" method="post">
+                        @csrf
+
+                        <div class="pr-6">
+                            <div class="bg-white flex items-center rounded-full shadow-xl">
+                                <input class="rounded-l-full w-full text-cggray-700 leading-tight focus:outline-none pl-3" id="search" type="text" placeholder="Search">
+                              
+                                <div class="px-3 py-1">
+                                    <button class="bg-cgblue-500 text-cgwhite rounded-full hover:bg-cgblue-400 focus:outline-none flex items-center justify-center p-2">
+                                        <i class="far fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
                     @guest
                         <li class="mr-6">
                             <a class="nav-links" href="{{ route('login') }}">{{ __('Login') }}</a>
