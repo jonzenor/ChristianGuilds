@@ -124,12 +124,12 @@ class HomeController extends Controller
 
 
         if ($keywords[0] == "guild") {
-            $guilds = \App\Guild::search($keywords[1])->get();
+            $guilds = $this->searchGuilds($keywords[1]);
         } elseif ($keywords[0] == "game") {
-            $games = \App\Game::search($keywords[1])->get();
+            $games = $this->searchGames($keywords[1]);
         } else {
-            $guilds = \App\Guild::search($request->search)->get();
-            $games = \App\Game::search($request->search)->get();
+            $guilds = $this->searchGuilds($request->search);
+            $games = $this->searchGames($request->search);
         }
 
         return view('site.search')->with([
