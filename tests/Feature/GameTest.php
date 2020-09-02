@@ -317,4 +317,16 @@ class GameTest extends TestCase
         $response->assertSee(__('site.permission_denied'));
         $response->assertLocation('/');
     }
+
+    /** @test */
+    public function game_page_loads()
+    {
+        $game = $this->createGame();
+
+        $response = $this->get(route('game', $game->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('game.show');
+        $response->assertSee($game->name);
+    }
 }

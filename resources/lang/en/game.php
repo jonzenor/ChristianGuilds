@@ -8,6 +8,8 @@ return [
     'id'    => 'ID',
     'name'  => 'Name',
     'game'  => 'Game',
+    'view'  => 'View Game Page',
+    'guilds'    => 'Guilds',
 
     'genre'                 => 'Genre',
     'genre_count'           => 'Total Genres: :count',

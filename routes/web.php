@@ -35,6 +35,7 @@ Route::get('/acp/users', 'UserController@index')->name('user-list')->middleware(
 Route::get('/acp/roles', 'RoleController@index')->name('role-list')->middleware('auth', '2fa');
 
 Route::get('/game/{id}', 'GameController@show')->name('game');
+Route::get('/game/edit/{id}', 'GameController@edit')->name('game-edit')->middleware('auth', '2fa');
 
 Route::get('/acp/games', 'GameController@index')->name('game-list')->middleware('auth', '2fa');
 Route::get('/acp/games/pending', 'GameController@pending')->name('game-list-pending')->middleware('auth', '2fa');
@@ -43,7 +44,6 @@ Route::post('/acp/games/pending/{id}/genre', 'GameController@setPendingGenre')->
 Route::post('/acp/games/pending/{id}/reject', 'GameController@rejectPending')->name('game-reject-pending')->middleware('auth', '2fa');
 Route::get('/acp/games/add', 'GameController@create')->name('game-add')->middleware('auth', '2fa');
 Route::post('/acp/games/add', 'GameController@store')->name('game-create')->middleware('auth', '2fa');
-Route::get('/acp/game/edit/{id}', 'GameController@edit')->name('game-edit')->middleware('auth', '2fa');
 Route::post('/acp/game/edit/{id}', 'GameController@update')->name('game-update')->middleware('auth', '2fa');
 Route::get('/acp/genres', 'GenreController@index')->name('genre-list')->middleware('auth', '2fa');
 Route::get('/acp/genre/edit/{id}', 'GenreController@edit')->name('genre-edit')->middleware('auth', '2fa');
