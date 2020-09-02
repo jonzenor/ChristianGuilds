@@ -216,6 +216,17 @@ class Controller extends BaseController
             Cache::forget('User:' . $id . ':ContactSettings');
         }
 
+        if ($what == 'users' || $what == 'user') {
+            Cache::forget('Users');
+            Cache::forget('Users:Latest');
+
+            $pages = ceil(($this->getUserCount()) / config('acp.paginate_games'));
+            
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Users:page:' . $i);
+            }
+        }
+
         if ($what == 'guild') {
             Cache::forget('Guild:' . $id);
         }
