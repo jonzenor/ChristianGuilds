@@ -143,16 +143,30 @@ class GuildTest extends TestCase
     /** @test */
     public function guild_search_shows_results()
     {
+        $this->withoutExceptionHandling();
         $user = $this->createUser();
         $guild = $this->createGuild($user);
 
-        $response = $this->post(route('search'), ['search' => $guild->name]);
+        $response = $this->post(route('search'), ['search' => "test"]);
 
         $response->assertStatus(200);
         $response->assertViewIs('site.search');
         
         // We can't actually get search results back without feeding data to the search engine...
         //$response->assertSee(route('guild', $guild->id));
+    }
+
+    /** @test */
+    public function users_cannot_see_edit_button_of_another_guild()
+    {
+        $guildmaster = $this->createUser();
+        $guild = $this->createGuild($guildmaster);
+
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('guild', $guild->id));
+
+        $response->assertDontSee(route('guild-edit', $guild->id));
     }
 
 }

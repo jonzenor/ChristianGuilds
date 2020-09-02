@@ -216,6 +216,17 @@ class Controller extends BaseController
             Cache::forget('User:' . $id . ':ContactSettings');
         }
 
+        if ($what == 'users' || $what == 'user') {
+            Cache::forget('Users');
+            Cache::forget('Users:Latest');
+
+            $pages = ceil(($this->getUserCount()) / config('acp.paginate_games'));
+            
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Users:page:' . $i);
+            }
+        }
+
         if ($what == 'guild') {
             Cache::forget('Guild:' . $id);
         }
@@ -274,10 +285,29 @@ class Controller extends BaseController
         }
     }
 
+    //*******************//
+    // Search Functions //
+    //*****************//
+    public function searchGuilds($query)
+    {
+        return Cache::remember('Search:Guild:' . $query, config('site.cache_search_time'), function () use ($query) {
+            $this->logEvent('Search Guild', 'Caching results for search ' . $query);
+            return \App\Guild::search($query)->get();
+        });
+    }
 
-    //**************************/
+    public function searchGames($query)
+    {
+        return Cache::remember('Search:Game:' . $query, config('site.cache_search_time'), function () use ($query) {
+            $this->logEvent('Search Game', 'Caching results for search ' . $query);
+            return \App\Game::search($query)->get();
+        });
+    }
+
+
+    //*************************//
     // Send Message Functions //
-    //************************/
+    //***********************//
     public function sendAdminNotification($type, $data = null)
     {
         // Select admins
@@ -400,7 +430,14 @@ class Controller extends BaseController
     
     public function logEvent($type, $message, $level = 'info')
     {
-        $text = "[" . $type . "] [USER: " . auth()->user()->name . " ID: " . auth()->user()->id . "] [URL: " . request()->path() . "] " . $message;
+        if (auth()->user()) {
+            $user = auth()->user()->name;
+            $user_id = auth()->user()->id;
+        } else {
+            $user = "GUEST";
+            $user_id = "0";
+        }
+        $text = "[" . $type . "] [USER: " . $user . " ID: " . $user_id . "] [URL: " . request()->path() . "] " . $message;
 
         if ($level == 'info') {
             Log::channel('app')->info($text);

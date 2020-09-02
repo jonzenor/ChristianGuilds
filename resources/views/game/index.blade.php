@@ -18,7 +18,7 @@
             @foreach ($games as $game)
                 <tr class="my-3">
                     <td class="px-4">{{ $game->id }}</td>
-                    <td class="px-4">{{ $game->name }}</td>
+                    <td class="px-4"><a href="{{ route('game', $game->id) }}" class="link" alt="{{ __('game.view') }}">{{ $game->name }}</a></td>
                     <td class="px-4">{{ $game->genre->short_name }}</td>
                     <td class="px-4"><a href="{{ route('game-edit', $game->id) }}" class="link" alt="{{ __('game.edit') }}"><i class="fal fa-edit"></i></a>
                 </tr>

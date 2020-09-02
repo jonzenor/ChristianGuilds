@@ -47,7 +47,10 @@
 
         <div class="page-section">
             <input type="submit" value="{{ __('game.update_game') }}" class="button-primary">
-            <a href="{{ route('game-list') }}" class="button-secondary">{{ __('site.cancel') }}</a>
+            <a href="{{ route('game', $game->id) }}" class="button-secondary">{{ __('site.cancel') }}</a>
+            @can('view-acp')
+                <a href="{{ route('game-list') }}" class="button-secondary">{{ __('site.acp') }}</a>
+            @endcan
         </div>
 
     </form>

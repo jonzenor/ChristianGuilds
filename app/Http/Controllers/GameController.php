@@ -96,7 +96,17 @@ class GameController extends Controller
      */
     public function show($id)
     {
-        //
+        $game = $this->getGame($id);
+
+        if (!$game) {
+            toast(__('game.invalid_game'), 'error');
+            $this->logEvent('Invalid Game', "Attempted to access a game that does not exist.", 'warning');
+            return redirect()->route('game-list-pending');
+        }
+
+        return view('game.show')->with([
+            'game' => $game,
+        ]);
     }
 
     /**
@@ -114,6 +124,12 @@ class GameController extends Controller
         }
 
         $game = $this->getGame($id);
+
+        if (!$game) {
+            toast(__('game.invalid_game'), 'error');
+            $this->logEvent('Invalid Game', "Attempted to access a game that does not exist.", 'warning');
+            return redirect()->route('game-list-pending');
+        }
 
         $genres = $this->getGenres();
 
@@ -144,6 +160,12 @@ class GameController extends Controller
         ]);
 
         $game = $this->getGame($id);
+
+        if (!$game) {
+            toast(__('game.invalid_game'), 'error');
+            $this->logEvent('Invalid Game', "Attempted to access a game that does not exist.", 'warning');
+            return redirect()->route('game-list-pending');
+        }
 
         Log::channel('app')->info("[Game Update] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") UPDATING the Game " . json_encode($game) . " NEW DATA: " . json_encode($request->all()));
 
