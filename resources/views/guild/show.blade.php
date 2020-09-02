@@ -6,9 +6,10 @@
 
     <hr />
 
-    <div class="page-section">
-        <a href="{{ route('guild-edit', $guild->id) }}" class="button-primary">{{ __('guild.edit') }}</a>
-    </div>
-
+    @can('manage-guild', $guild->id)
+        <div class="page-section">
+            <a href="{{ route('guild-edit', $guild->id) }}" class="button-primary">{{ __('guild.edit') }}</a>
+        </div>
+    @endcan
 
 @endsection

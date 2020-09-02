@@ -155,4 +155,17 @@ class GuildTest extends TestCase
         //$response->assertSee(route('guild', $guild->id));
     }
 
+    /** @test */
+    public function users_cannot_see_edit_button_of_another_guild()
+    {
+        $guildmaster = $this->createUser();
+        $guild = $this->createGuild($guildmaster);
+
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('guild', $guild->id));
+
+        $response->assertDontSee(route('guild-edit', $guild->id));
+    }
+
 }
