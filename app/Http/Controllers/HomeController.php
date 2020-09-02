@@ -105,6 +105,16 @@ class HomeController extends Controller
 
     public function search(Request $request)
     {
+        $guilds = "";
+        $games = "";
+
+        if (!$request->search) {
+            return view('site.search')->with([
+                'games' => $games,
+                'guilds' => $guilds,
+            ]);
+        }
+
         $this->validate($request, [
             'search' => 'string|required',
         ]);
@@ -112,8 +122,6 @@ class HomeController extends Controller
         $keywords = explode(':', $request->search);
         $keywords[0] = strtolower($keywords[0]);
 
-        $guilds = "";
-        $games = "";
 
         if ($keywords[0] == "guild") {
             $guilds = \App\Guild::search($keywords[1])->get();
