@@ -10,6 +10,13 @@ return [
     'game'  => 'Game',
     'view'  => 'View Game Page',
     'guilds'    => 'Guilds',
+    'games' => 'Games',
+    
+    'servers'   => 'Game Server List',
+    'add_realm' => 'Add a Realm',
+    'realm_name' => 'Realm Name',
+    'realm_type' => 'Realm Type',
+    'realm_added'   => 'Realm Added Successfully',
 
     'genre'                 => 'Genre',
     'genre_count'           => 'Total Genres: :count',

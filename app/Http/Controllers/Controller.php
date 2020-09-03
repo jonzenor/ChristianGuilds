@@ -248,6 +248,14 @@ class Controller extends BaseController
 
         if ($what == "games") {
             Cache::forget('Games:count');
+
+            $pages = ceil(($this->getGameCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Games');
+
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Games:page:' . $i);
+            }
         }
 
         if ($what == "games-pending") {
@@ -257,16 +265,6 @@ class Controller extends BaseController
 
         if ($what == "game") {
             Cache::forget('Game:' . $id);
-        }
-
-        if ($what == "game" || $what == "games") {
-            $pages = ceil(($this->getGameCount()) / config('acp.paginate_games'));
-
-            Cache::forget('Games');
-
-            for ($i = 0; $i <= $pages; $i++) {
-                Cache::forget('Games:page:' . $i);
-            }
         }
 
         if ($what == "genres") {

@@ -239,6 +239,7 @@ class GameController extends Controller
         $this->logEvent('Game Approved', 'User suggested game was approved for use on the site. ' . json_encode($game));
 
         $this->clearCache('game', $game->id);
+        $this->clearCache('games');
         $this->clearCache('games-pending');
 
         Alert::success(__('game.approved_success'));
@@ -280,6 +281,7 @@ class GameController extends Controller
         $game->save();
 
         $this->clearCache('game', $game->id);
+        $this->clearCache('games');
         $this->clearCache('games-pending');
         $this->clearCache('guild', $guild->id);
 
@@ -335,6 +337,7 @@ class GameController extends Controller
 
         $this->clearCache('game', $game->id);
         $this->clearCache('games-pending');
+        $this->clearCache('games');
 
         toast(__('game.genre_updated'), 'success');
 

@@ -3,13 +3,13 @@
 @section('content')
     <h1 class="page-header">{{ $user->name }}</h1>
 
+    <h2 class="page-subheader">{{ __('user.profile') }}</h2>
     <hr />
 
 
     <form action="{{ route('profile-update', $user->id) }}" method="post">
         @csrf
 
-        <h2 class="page-subheader">{{ __('user.profile') }}</h2>
         <div class="page-section">
             <div class="flex flex-wrap mb-6 md:w-1/2 lg:w-1/3">
                 <label for="name" class="block text-cgwhite text-sm mb-2">

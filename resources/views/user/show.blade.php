@@ -3,11 +3,13 @@
 @section('content')
     <h1 class="page-header">{{ $user->name }}</h1>
 
+    <h2 class="page-subheader">{{ __('user.profile') }}</h2>
     <hr />
 
     @can('view-user-security', $user)
-        <h2 class="page-subheader">{{ __('user.security_status') }}</h2>
+        <h3 class="section-header">{{ __('user.security') }}</h3>
         <div class="page-section">
+            <h3 class="section-subheader">{{ __('user.security_status') }}</h3>
             @if ($user->loginSecurity && $user->loginSecurity->google2fa_enable == 1)
                 <i class="fas fa-shield-check text-green-600 text-4xl"></i> {{ __('site.enabled') }}
                 @can('is-self', $user) <span class="ml-4"><a href="{{ route('2fa-settings') }}" class="link">[ {{ __('user.disable_2fa') }} ]</a>@endcan
@@ -22,7 +24,7 @@
 
     @if ($user->roles->count() >= 1)
         @can('view-roles')
-            <h2 class="page-subheader">{{ __('user.roles') }}</h2>
+            <h3 class="section-header">{{ __('user.roles') }}</h3>
             <div class="page-section">
                 @foreach ($user->roles as $role)
                     <span class="bg-{{ $role->color }} role-tag">
@@ -39,7 +41,7 @@
 
     @can('add-global-role')
         <div class="page-section">
-            <h3 class="page-subheader-h3">{{ __('user.add_role') }}</h3>
+            <h3 class="section-subheader">{{ __('user.add_role') }}</h3>
             <form action="{{ route('add-role', $user->id) }}" method="post">
                 @csrf
 

@@ -8,7 +8,25 @@ use Laravel\Scout\Searchable;
 class Game extends Model
 {
     use Searchable;
+
+    public $algoliaSettings = [
+        'attributesToIndex' => [
+            'name',
+        ],
+        'attributesToRetrieve' => [
+            'id',
+            'name',
+        ],
+        'attributesForFaceting' => [    //here you specify which attributes could be used on the facetFilters search args
+            'status'
+        ]
+    ];
     
+    public function shouldBeSearchable()
+    {
+        return ($this->status == "confirmed");
+    }
+
     public function genre()
     {
         return $this->belongsTo('App\Genre');
@@ -22,5 +40,10 @@ class Game extends Model
     public function guild()
     {
         return $this->hasOne('App\Guild');
+    }
+
+    public function realms()
+    {
+        return $this->hasMany('App\Realm');
     }
 }
