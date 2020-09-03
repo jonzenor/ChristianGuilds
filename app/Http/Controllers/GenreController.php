@@ -67,6 +67,12 @@ class GenreController extends Controller
 
         Log::channel('app')->info("[Genre Create] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Attempting to CREATE Genre " . json_encode($request->all()));
 
+        if ($request->short_name == "Other") {
+            $this->logEvent('[Invalid Genre Update]', 'Attempted to updated the "Other" genre.', 'notice');
+            toast(__('site.other_restricted'), 'warning');
+            return redirect()->route('genre-list');
+        }
+
         $genre = new Genre();
 
         $genre->name = $request->name;
@@ -135,9 +141,9 @@ class GenreController extends Controller
 
         $genre = $this->getGenre($id);
 
-        if ($genre->short_name == "Other") {
+        if ($genre->short_name == "Other" || $request->short_name == "Other") {
             $this->logEvent('[Invalid Genre Update]', 'Attempted to updated the "Other" genre.', 'notice');
-            toast(__('site.permission_denied'), 'warning');
+            toast(__('site.other_restricted'), 'warning');
             return redirect()->route('genre-list');
         }
 

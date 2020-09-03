@@ -18,4 +18,5 @@ return [
     'unknown_error'         => 'An unknown error occurred... Please contact a site admin with the time and details of this incident.',
 
     'search_results'        => 'Search Results',
+    'other_restricted'      => 'The name "Other" is a restricted name...',
 ];
