@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Gate;
 use Illuminate\Http\Request;
 
 class RoleController extends Controller
@@ -13,6 +14,11 @@ class RoleController extends Controller
      */
     public function index()
     {
+        if (Gate::denies('manage-roles')) {
+            $this->LogEvent(__('site.permission_denied_label'), __('site.permission_denied_explain'), 'notice');
+            return abort(404);
+        }
+
         $roles = $this->getGlobalRoles();
 
         return view('role.index')->with([

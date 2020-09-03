@@ -19,4 +19,9 @@ return [
 
     'search_results'        => 'Search Results',
     'other_restricted'      => 'The name "Other" is a restricted name...',
+
+    'permission_denied_label' => '[PERMISSION DENIED]',
+    'permission_denied_explain' => 'Permission Denied.',
+    'page_not_found'        => 'Page Not Found',
+    '404_message'           => 'The page you are looking for was not found. Maybe you need to log in?',
 ];
