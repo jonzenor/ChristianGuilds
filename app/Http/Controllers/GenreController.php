@@ -61,11 +61,17 @@ class GenreController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required|string|min:3|max:255',
-            'short_name' => 'required|string|min:2|max:36',
+            'name' => 'required|string|min:' . config('site.input_genre_min') . '|max:' . config('site.input_genre_max'),
+            'short_name' => 'required|string|min:' . config('site.input_short_genre_min') . '|max:' . config('site.input_short_genre_max'),
         ]);
 
         Log::channel('app')->info("[Genre Create] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Attempting to CREATE Genre " . json_encode($request->all()));
+
+        if ($request->short_name == "Other") {
+            $this->logEvent('[Invalid Genre Update]', 'Attempted to updated the "Other" genre.', 'notice');
+            toast(__('site.other_restricted'), 'warning');
+            return redirect()->route('genre-list');
+        }
 
         $genre = new Genre();
 
@@ -129,15 +135,15 @@ class GenreController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required|string|min:3|max:255',
-            'short_name' => 'required|string|min:2|max:32',
+            'name' => 'required|string|min:' . config('site.input_genre_min') . '|max:' . config('site.input_genre_max'),
+            'short_name' => 'required|string|min:' . config('site.input_short_genre_min') . '|max:' . config('site.input_short_genre_max'),
         ]);
 
         $genre = $this->getGenre($id);
 
-        if ($genre->short_name == "Other") {
+        if ($genre->short_name == "Other" || $request->short_name == "Other") {
             $this->logEvent('[Invalid Genre Update]', 'Attempted to updated the "Other" genre.', 'notice');
-            toast(__('site.permission_denied'), 'warning');
+            toast(__('site.other_restricted'), 'warning');
             return redirect()->route('genre-list');
         }
 

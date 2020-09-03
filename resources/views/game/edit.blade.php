@@ -9,7 +9,7 @@
     <form action="{{ route('game-update', $game->id) }}" method="post">
         @csrf
 
-        <h2 class="page-subheader">{{ __('game.details') }}</h2>
+        <h2 class="section-header">{{ __('game.details') }}</h2>
         <div class="page-section">
             <div class="flex flex-wrap mb-6 md:w-1/2 lg:w-1/3">
                 <label for="name" class="block text-cgwhite text-sm mb-2">

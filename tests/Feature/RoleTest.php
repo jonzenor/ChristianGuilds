@@ -192,4 +192,14 @@ class RoleTest extends TestCase
         $response->assertSeeInOrder($see);
     }
 
+    /** @test */
+    public function users_cannot_access_roles_page()
+    {
+        $user = $this->createUser();
+
+        $response = $this->actingAs($user)->get(route('role-list'));
+
+        $response->assertStatus(404);
+    }
+
 }

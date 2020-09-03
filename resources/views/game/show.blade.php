@@ -7,7 +7,7 @@
 
     <hr />
 
-    <h2 class="page-subheader text-cgpurple-400">{{ __('game.guilds')}}</h2>
+    <h2 class="section-header">{{ __('game.guilds')}}</h2>
     <div class="page-section">
         <ul>
             @foreach ($game->guilds as $guild)

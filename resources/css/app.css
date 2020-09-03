@@ -38,10 +38,14 @@
 }
 
 .page-subheader {
-    @apply text-cgwhite text-2xl mx-2 px-6 py-3 my-3 font-body;
+    @apply text-cgblue-400 text-2xl mx-2 px-6 py-3 my-3 font-body;
 }
 
-.page-subheader-h3 {
+.section-header {
+    @apply text-cgpurple-400 text-2xl mx-2 px-6 py-3 my-3 font-body;
+}
+
+.section-subheader {
     @apply text-xl text-cgwhite py-1 font-body font-bold;
 }
 
@@ -62,7 +66,7 @@
 }
 
 .form-field {
-    @apply bg-cgwhite text-cggray-900 rounded-lg px-3 py-1;
+    @apply bg-cgwhite text-cggray-800 rounded-lg px-3 py-1;
 }
 
 .form-row {

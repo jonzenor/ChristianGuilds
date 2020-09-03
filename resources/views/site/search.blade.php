@@ -6,6 +6,7 @@
 
     @if ($guilds)
         <div class="page-section">
+            <h2 class="section-header">{{ __('guild.guilds') }}</h2>
             @foreach ($guilds as $guild)
                 <div class="page-section">
                     <i class="fad fa-pennant px-2 text-cgwhite text-lg"></i> <a href="{{ route('guild', $guild->id) }}" class="link">{{ $guild->name }}</a> {{ $guild->game->name }}
@@ -16,6 +17,7 @@
 
     @if ($games)
         <div class="page-section">
+            <h2 class="section-header">{{ __('game.games') }}</h2>
             @foreach ($games as $game)
                 @if ($game->status == 'confirmed')
                     <div class="page-section">

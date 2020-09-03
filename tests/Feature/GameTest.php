@@ -329,4 +329,16 @@ class GameTest extends TestCase
         $response->assertViewIs('game.show');
         $response->assertSee($game->name);
     }
+
+    /** @test */
+    public function game_realm_page_loads()
+    {
+        $game = $this->createGame();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('game-manage-servers', $game->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('game.servers');
+    }
 }

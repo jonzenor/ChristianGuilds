@@ -2,8 +2,9 @@
 
 @section('content')
     <h1 class="page-header">{{ __('site.confirm_action') }}</h1>
-    <hr>
+    
     <h2 class="page-subheader">{{ $confirm_data['header'] }}</h2>
+    <hr>
     <div class="page-section">
         {!! $confirm_data['body'] !!}
     </div>

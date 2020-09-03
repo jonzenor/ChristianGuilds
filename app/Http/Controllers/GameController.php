@@ -67,8 +67,8 @@ class GameController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required|string|min:3|max:255',
-            'genre' => 'required|integer|max:10000',
+            'name' => 'required|string|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+            'genre' => 'required|integer|min:1|max:10000',
         ]);
 
         Log::channel('app')->info("[Game Create] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Attempting to CREATE the Game " . json_encode($request->all()));
@@ -155,7 +155,7 @@ class GameController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required|string|min:3|max:255',
+            'name' => 'required|string|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
             'genre' => 'required|integer|max:10000',
         ]);
 
@@ -218,8 +218,8 @@ class GameController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'string|required|max:255',
-            'genre' => 'integer|required|min:1|max:1000',
+            'name' => 'string|required|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+            'genre' => 'integer|required|min:1|max:10000',
         ]);
 
         $game = $this->getGame($id);
@@ -239,6 +239,7 @@ class GameController extends Controller
         $this->logEvent('Game Approved', 'User suggested game was approved for use on the site. ' . json_encode($game));
 
         $this->clearCache('game', $game->id);
+        $this->clearCache('games');
         $this->clearCache('games-pending');
 
         Alert::success(__('game.approved_success'));
@@ -280,6 +281,7 @@ class GameController extends Controller
         $game->save();
 
         $this->clearCache('game', $game->id);
+        $this->clearCache('games');
         $this->clearCache('games-pending');
         $this->clearCache('guild', $guild->id);
 
@@ -315,8 +317,8 @@ class GameController extends Controller
 
         if ($request->genre == 0) {
             $this->validate($request, [
-                'name' => 'string|required|max:255',
-                'short_name' => 'string|required|min:2|max:12',
+                'name' => 'string|required|min:' . config('site.input_genre_min') . '|max:' . config('site.input_genre_max'),
+                'short_name' => 'string|required|min:' . config('site.input_short_genre_min') . '|max:' . config('site.input_short_genre_max'),
             ]);
             
             $genre = new Genre();
@@ -335,6 +337,7 @@ class GameController extends Controller
 
         $this->clearCache('game', $game->id);
         $this->clearCache('games-pending');
+        $this->clearCache('games');
 
         toast(__('game.genre_updated'), 'success');
 

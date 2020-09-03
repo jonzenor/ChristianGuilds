@@ -4,6 +4,7 @@ return [
     'count'     => 'Total System Users: :count',
     'users'     => 'Users',
     'password'  => 'Password',
+    'security'  => 'Security',
 
     'id'                => 'ID',
     'name'              => 'Name',

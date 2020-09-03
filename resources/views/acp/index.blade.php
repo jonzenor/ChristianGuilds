@@ -8,7 +8,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
         @can('manage-users')
             <div>
-                <h2 class="page-subheader">{{ __('user.users') }}</h2>
+                <h2 class="section-header">{{ __('user.users') }}</h2>
                 <div class="page-section">
                     <ul>
                         @foreach ($users as $user)
@@ -25,7 +25,7 @@
 
         @can('manage-guilds')
             <div>
-                <h2 class="page-subheader">{{ __('guild.guilds') }}</h2>
+                <h2 class="section-header">{{ __('guild.guilds') }}</h2>
                 <div class="page-section">
                     <ul>
                         @foreach ($guilds as $guild)
@@ -44,7 +44,7 @@
 
         @can('manage-roles')
             <div>
-                <h2 class="page-subheader">{{ __('site.global_roles') }}</h2>
+                <h2 class="section-header">{{ __('site.global_roles') }}</h2>
                 <div class="page-section">
                     <ul>
                         @foreach ($roles as $role)
@@ -61,7 +61,7 @@
 
         @can('manage-games')
             <div>
-                <h2 class="page-subheader">{{ __('game.stats') }}</h2>
+                <h2 class="section-header">{{ __('game.stats') }}</h2>
                 <div class="page-section">
                     <ul>
                         <li> <a href="{{ route('game-list') }}" class="link"><i class="fad fa-game-console-handheld px-2 text-xl text-white"></i> {{ __('game.count', ['count' => $count['games']]) }}</a></li>

@@ -2,14 +2,14 @@
 
 @section('content')
     <h1 class="page-header">{{ $guild->name }}</h1>
-    <h2 class="page-subheader">{{ $guild->game->name }} @if ($guild->game->status == "pending") <span class="bg-yellow-600 rounded-lg text-sm text-white px-4 py-1"><i class="fas fa-exclamation-circle text-lg"></i> {{ __('game.is_pending') }}</span> @endif</h2>
+    <h2 class="page-subheader"><a href="{{ route('game', $guild->game_id) }}" class="link">{{ $guild->game->name }}</a> @if ($guild->game->status == "pending") <span class="bg-yellow-600 rounded-lg text-sm text-white px-4 py-1"><i class="fas fa-exclamation-circle text-lg"></i> {{ __('game.is_pending') }}</span> @endif</h2>
 
     <hr />
 
     <form action="{{ route('guild-update', $guild->id) }}" method="post">
         @csrf
 
-        <h2 class="page-subheader">{{ __('guild.details') }}</h2>
+        <h2 class="section-header">{{ __('guild.details') }}</h2>
         <div class="page-section">
             <div class="flex flex-wrap mb-6 md:w-1/2 lg:w-1/3">
                 <label for="name" class="block text-cgwhite text-sm mb-2">
