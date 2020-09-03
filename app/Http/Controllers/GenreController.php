@@ -61,8 +61,8 @@ class GenreController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required|string|min:3|max:255',
-            'short_name' => 'required|string|min:2|max:36',
+            'name' => 'required|string|min:' . config('site.input_genre_min') . '|max:' . config('site.input_genre_max'),
+            'short_name' => 'required|string|min:' . config('site.input_short_genre_min') . '|max:' . config('site.input_short_genre_max'),
         ]);
 
         Log::channel('app')->info("[Genre Create] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Attempting to CREATE Genre " . json_encode($request->all()));
@@ -129,8 +129,8 @@ class GenreController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required|string|min:3|max:255',
-            'short_name' => 'required|string|min:2|max:32',
+            'name' => 'required|string|min:' . config('site.input_genre_min') . '|max:' . config('site.input_genre_max'),
+            'short_name' => 'required|string|min:' . config('site.input_short_genre_min') . '|max:' . config('site.input_short_genre_max'),
         ]);
 
         $genre = $this->getGenre($id);
