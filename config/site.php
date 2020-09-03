@@ -12,4 +12,6 @@ return [
     'input_genre_max' => 128,
     'input_short_genre_min' => 2,
     'input_short_genre_max' => 32,
+
+    'input_pushover_length' => 30,
 ];

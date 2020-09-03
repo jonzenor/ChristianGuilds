@@ -107,8 +107,8 @@ class UserController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'required|string',
-            'pushover_key' => 'nullable|string',
+            'name' => 'required|string|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+            'pushover_key' => 'nullable|string|min:' . config('site.input_pushover_length') . '|max:' . config('site.input_pushover_length'),
         ]);
 
         Log::channel('app')->info("[User Update] id: " . $user->id . " updated by " . auth()->user()->name . " (ID: " . auth()->user()->id . ") original: " . json_encode($user) . " Original User Settings: " . json_encode($user->settings) . " new: " . json_encode($request->all()));
