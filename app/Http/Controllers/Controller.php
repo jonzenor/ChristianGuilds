@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\ContactSettings;
-use App\ContactTopics;
 use App\Game;
-use App\Genre;
-use App\Guild;
-use App\Mail\AlertMessage;
 use App\Role;
 use App\User;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Mail;
+use App\Guild;
+use App\Realm;
+use App\Genre;
 use App\Mail\newUser;
 use App\UserSettings;
+use App\ContactTopics;
+use App\ContactSettings;
+use App\Mail\AlertMessage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class Controller extends BaseController
 {
@@ -180,6 +181,13 @@ class Controller extends BaseController
         });
     }
 
+    public function getRealm($id)
+    {
+        return Cache::rememberForever('Realm:' . $id, function () use ($id) {
+            return Realm::find($id);
+        });
+    }
+
     public function getGenres()
     {
         return Cache::rememberForever('Genres', function () {
@@ -265,6 +273,10 @@ class Controller extends BaseController
 
         if ($what == "game") {
             Cache::forget('Game:' . $id);
+        }
+
+        if ($what == "realm") {
+            Cache::forget('Realm:' . $id);
         }
 
         if ($what == "genres") {

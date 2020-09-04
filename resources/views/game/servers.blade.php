@@ -8,12 +8,39 @@
     <hr />
 
     <h2 class="section-header">{{ __('game.servers')}}</h2>
-    <div class="page-section">
-        <ul>
-            @foreach ($game->realms as $realm)
-                <li> {{ $realm->name }} - {{ $realm->type }}</li>
-            @endforeach
-        </ul>
+    <div class="page-section">        
+        @foreach ($game->realms as $realm)
+            <h3 class="section-subheader">{{ $realm->name }} - {{ $realm->type }}</h3>
+            <ul>
+                @foreach ($realm->servers as $server)
+                    <li> {{ $server->name }}</li>
+                @endforeach
+            </ul>
+
+            <h3 class="section-subheader">{{ __('game.add_server_to_realm') }}</h3>
+            <form action="{{ route('game-server-add', $realm->id) }}" method="post">
+                @csrf
+
+                <div class="page-section">
+                    <label for="name" class="block text-cgwhite text-sm mb-2">
+                        {{ __('game.server_name') }}:
+                    </label>
+        
+                    <input type="text" name="name" class="form-field" id="name">
+        
+                    @error('name')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
+
+                <div class="page-section">
+                    <input type="submit" value="{{ __('game.add_server') }}" class="button-primary">
+                </div>
+        
+            </form>
+        @endforeach
     </div>
 
     <div class="page-section">&nbsp;</div>
@@ -23,7 +50,7 @@
     <form action="{{ route('game-realm-add', $game->id) }}" method="post">
         @csrf
 
-        <div class="page-section">        
+        <div class="page-section">
             <label for="name" class="block text-cgwhite text-sm mb-2">
                 {{ __('game.realm_name') }}:
             </label>

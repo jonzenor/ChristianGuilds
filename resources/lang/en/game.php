@@ -17,6 +17,12 @@ return [
     'realm_name' => 'Realm Name',
     'realm_type' => 'Realm Type',
     'realm_added'   => 'Realm Added Successfully',
+    'server_name'   => 'Server Name',
+    'add_server'    => 'Add Server',
+    'add_server_to_realm'   => 'Add Server to Realm',
+    'server_added'  => 'Server Added',
+    'manage-realms' => 'Manage Realms',
+    'no_servers'    => 'This game has no servers assigned to it.',
 
     'genre'                 => 'Genre',
     'genre_count'           => 'Total Genres: :count',

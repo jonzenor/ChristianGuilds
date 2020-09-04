@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Realm;
+use App\Server;
 use Gate;
 use Illuminate\Http\Request;
 
@@ -60,5 +61,39 @@ class ServerController extends Controller
         toast(__('game.realm_added'), 'success');
         
         return redirect()->route('game-manage-servers', $game->id);
+    }
+
+    public function storeServer(Request $request, $id)
+    {
+        if (Gate::denies('manage-games')) {
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'notice');
+            return abort(404);
+        }
+
+        $realm = $this->getRealm($id);
+
+        if (!$realm) {
+            $this->logEvent('Invalid Realm', 'Attempting to access a realm that does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $this->validate($request, [
+            'name' => 'string|required|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+        ]);
+
+        $server = new Server();
+
+        $server->name = $request->name;
+        $server->realm_id = $realm->id;
+
+        $server->save();
+
+        $this->clearCache('game', $realm->game->id);
+        $this->clearCache('realm', $realm->id);
+
+        $this->logEvent('[SERVER ADDED]', 'New server added to ' . $realm->name . ' (Game: ' . $realm->game->name . ')');
+        toast(__('game.server_added'), 'success');
+        
+        return redirect()->route('game-manage-servers', $realm->game->id);
     }
 }

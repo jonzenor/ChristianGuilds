@@ -32,4 +32,9 @@ class Guild extends Model
 
         return $readable;
     }
+
+    public function server()
+    {
+        return $this->belongsTo('App\Server');
+    }
 }

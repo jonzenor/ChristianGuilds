@@ -57,6 +57,10 @@
     @apply w-1/2;
 }
 
+.page-subtitle {
+    @apply mx-2 px-6 py-1 my-1 font-body text-lg;
+}
+
 .list-item {
     @apply my-2;
 }
