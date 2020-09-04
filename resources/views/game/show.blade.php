@@ -17,6 +17,25 @@
     </div>
 
     @can('manage-games')
+
+        <h2 class="section-header">{{ __('game.servers')}}</h2>
+        <div class="page-section">
+            @foreach ($game->realms as $realm)
+                <h3 class="section-subheader">{{ $realm->name }} - {{ $realm->type }}</h3>
+                <ul>
+                    @foreach ($realm->servers as $server)
+                        <li> {{ $server->name }}</li>
+                    @endforeach
+                </ul>
+            @endforeach
+        </div>
+        
+        <div class="page-section">
+            <a href="{{ route('game-manage-servers', $game->id) }}" class="button-primary">{{ __('game.manage-realms') }}</a>
+        </div>
+    @endcan
+
+    @can('manage-games')
         <div class="page-section">
             <a href="{{ route('game-edit', $game->id) }}" class="button-primary">{{ __('game.edit') }}</a>
         </div>
