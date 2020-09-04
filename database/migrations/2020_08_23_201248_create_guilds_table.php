@@ -18,6 +18,7 @@ class CreateGuildsTable extends Migration
             $table->string('name');
             $table->bigInteger('game_id');
             $table->bigInteger('owner_id');
+            $table->bigInteger('server_id')->nullable();
             $table->timestamps();
         });
     }

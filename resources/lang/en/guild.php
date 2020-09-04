@@ -31,6 +31,7 @@ return [
     'update_successful' => 'Guild Information Updated',
     'edit'              => 'Edit Guild Information',
 
-    'my_guilds'          => 'My Guilds',
+    'my_guilds'         => 'My Guilds',
+    'server'            => 'Game Server',
 
 ];

@@ -27,6 +27,20 @@
 
         </div>
 
+        @if ($guild->game->realms->count())
+            <h2 class="section-header">{{ __('guild.server') }}</h2>
+            <div class="page-section">
+                <select name="server_id" id="server" class="form-field">
+                    <option value="0">No Server Selected</option>
+                    @foreach ($guild->game->realms as $realm)
+                        @foreach ($realm->servers as $server)
+                            <option value="{{ $server->id }}" @if ($guild->server_id == $server->id) selected @endif>{{ $realm->name }} [{{ $realm->type }}] - {{ $server->name }}</option>
+                        @endforeach
+                    @endforeach
+                </select>
+            </div>
+        @endif
+
         <div class="page-section">
             <input type="submit" value="{{ __('guild.update') }}" class="button-primary">
             <a href="{{ route('guild', $guild->id) }}" class="button-secondary">{{ __('site.cancel') }}</a>

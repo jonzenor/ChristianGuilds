@@ -241,6 +241,20 @@ class GuildController extends Controller
 
         $guild->name = $request->name;
 
+        if (isset($request->server_id)) {
+            $this->validate($request, [
+                'server' => 'integer|min:0|max:10000000|exists:servers,id',
+            ]);
+
+            if ($request->server_id == 0) {
+                $guild->server_id = null;
+            }
+
+            if ($request->server_id > 0) {
+                $guild->server_id = $request->server_id;
+            }
+        }
+
         $guild->save();
 
         $this->clearCache('guild', $guild->id);
