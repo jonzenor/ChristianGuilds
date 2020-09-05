@@ -216,7 +216,7 @@ class GameController extends Controller
 
         if (!$game) {
             toast(__('game.invalid_game'), 'error');
-            $this->logEvent('Invalid Game', 'attempted to access ' . request()->path() . " but the game does not exist.", 'warning');
+            $this->logEvent('Invalid Game', 'Attempted to access a game that does not exist.', 'warning');
             return redirect()->route('game-list-pending');
         }
 

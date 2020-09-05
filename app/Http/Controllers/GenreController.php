@@ -111,6 +111,11 @@ class GenreController extends Controller
 
         $genre = $this->getGenre($id);
 
+        if (!$genre) {
+            $this->logEvent('Invalid Genre', 'Attempted to access a genre that does not exist.', 'warning');
+            return abort(404);
+        }
+
         return view('genre.edit')->with([
             'genre' => $genre,
         ]);
@@ -136,6 +141,11 @@ class GenreController extends Controller
         ]);
 
         $genre = $this->getGenre($id);
+
+        if (!$genre) {
+            $this->logEvent('Invalid Genre', 'Attempted to access a genre that does not exist.', 'warning');
+            return abort(404);
+        }
 
         if ($genre->short_name == "Other" || $request->short_name == "Other") {
             $this->logEvent('[Invalid Genre Update]', 'Attempted to updated the "Other" genre.', 'notice');
