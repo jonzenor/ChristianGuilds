@@ -19,9 +19,8 @@ class GameController extends Controller
     public function index()
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
@@ -40,9 +39,8 @@ class GameController extends Controller
     public function create()
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $genres = $this->getGenres();
@@ -61,9 +59,8 @@ class GameController extends Controller
     public function store(Request $request)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $this->validate($request, [
@@ -99,7 +96,6 @@ class GameController extends Controller
         $game = $this->getGame($id);
 
         if (!$game) {
-            toast(__('game.invalid_game'), 'error');
             $this->logEvent('Invalid Game', "Attempted to access a game that does not exist.", 'warning');
             return redirect()->route('game-list-pending');
         }
@@ -118,17 +114,15 @@ class GameController extends Controller
     public function edit($id)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $game = $this->getGame($id);
 
         if (!$game) {
-            toast(__('game.invalid_game'), 'error');
             $this->logEvent('Invalid Game', "Attempted to access a game that does not exist.", 'warning');
-            return redirect()->route('game-list-pending');
+            return abort(404);
         }
 
         $genres = $this->getGenres();
@@ -149,9 +143,8 @@ class GameController extends Controller
     public function update(Request $request, $id)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $this->validate($request, [
@@ -162,9 +155,8 @@ class GameController extends Controller
         $game = $this->getGame($id);
 
         if (!$game) {
-            toast(__('game.invalid_game'), 'error');
             $this->logEvent('Invalid Game', "Attempted to access a game that does not exist.", 'warning');
-            return redirect()->route('game-list-pending');
+            return abort(404);
         }
 
         Log::channel('app')->info("[Game Update] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") UPDATING the Game " . json_encode($game) . " NEW DATA: " . json_encode($request->all()));
@@ -186,9 +178,8 @@ class GameController extends Controller
     public function pending()
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $games = $this->getPendingGames();
@@ -212,9 +203,8 @@ class GameController extends Controller
     public function approvePending(Request $request, $id)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $this->validate($request, [
@@ -226,7 +216,7 @@ class GameController extends Controller
 
         if (!$game) {
             toast(__('game.invalid_game'), 'error');
-            $this->logEvent('Invalid Game', 'attempted to access ' . request()->path() . " but the game does not exist.", 'warning');
+            $this->logEvent('Invalid Game', 'Attempted to access a game that does not exist.', 'warning');
             return redirect()->route('game-list-pending');
         }
 
@@ -250,9 +240,8 @@ class GameController extends Controller
     public function rejectPending(Request $request, $id)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $this->validate($request, [
@@ -262,14 +251,12 @@ class GameController extends Controller
         $game = $this->getGame($id);
 
         if (!$game) {
-            toast(__('game.invalid_game'), 'error');
             $this->logEvent('Invalid Game', 'attempted to access ' . request()->path() . " but the game does not exist.", 'warning');
             return redirect()->route('game-list-pending');
         }
 
         $guild = $this->getGuild($game->guild->id);
         if (!$guild) {
-            toast(__('game.invalid_guild'), 'error');
             $this->logEvent('Invalid Guild', 'attempted to access ' . request()->path() . " but the guild attached to this game does not exist. " . json_endcode($game), 'warning');
             return redirect()->route('game-list-pending');
         }
@@ -293,17 +280,15 @@ class GameController extends Controller
     public function setPendingGenre(Request $request, $id)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $game = $this->getGame($id);
 
         if (!$game) {
-            toast(__('game.invalid_game'), 'error');
             $this->logEvent('Invalid Game', 'attempted to access ' . request()->path() . " but the game does not exist.", 'warning');
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $this->validate($request, [

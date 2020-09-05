@@ -20,9 +20,8 @@ class GuildController extends Controller
     public function index()
     {
         if (Gate::denies('manage-guilds')) {
-            toast(__('site.permission_denied'), 'warning');
             Log::channel('app')->notice("[PERMISSION DENIED] [User  " . auth()->user()->id . " " . auth()->user()->name . "] Attempted to access " . request()->path());
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
@@ -149,12 +148,12 @@ class GuildController extends Controller
 
             toast(__('guild.created_successfully'), 'success');
 
-            return redirect()->route('guild', $guild->id);
+            return redirect()->route('guild-edit', $guild->id);
         }
 
         Alert::error(__('site.unknown_error'));
         Log::channel('app')->error("[Guild Create] GuildController@create somehow broke out of it's step process with no default set... User: " . auth()->user()->name . " (ID: " . auth()->user()->id . ") Request Data: " . json_encode($request->all()));
-        return redirect()->route('home');
+        return abort(404);
     }
 
     /**
@@ -178,6 +177,11 @@ class GuildController extends Controller
     {
         $guild = $this->getGuild($id);
 
+        if (!$guild) {
+            $this->logEvent('Invalid Guild', 'Guild does not exist', 'warning');
+            return abort(404);
+        }
+
         return view('guild.show')->with([
             'guild' => $guild,
         ]);
@@ -192,17 +196,15 @@ class GuildController extends Controller
     public function edit($id)
     {
         if (Gate::denies('manage-guild', $id)) {
-            toast(__('site.permission_denied'), 'warning');
-            $this->logEvent('PERMISSION DENIED', 'Attempted to access ' . request()->path(), 'notice');
-            return redirect()->route('home');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access a guild edit page without permissions', 'notice');
+            return abort(404);
         }
 
         $guild = $this->getGuild($id);
 
         if (!$guild) {
-            toast(__('guild.invalid_guild'), 'error');
-            $this->logEvent('Invalid Guild', 'Attempted to access ' . request()->path() . ', but the guild does not exist.', 'warning');
-            return redirect()->route('home');
+            $this->logEvent('Invalid Guild', 'Attempted to access a guild that does not exist.', 'warning');
+            return abort(404);
         }
 
         return view('guild.edit')->with([
@@ -220,17 +222,15 @@ class GuildController extends Controller
     public function update(Request $request, $id)
     {
         if (Gate::denies('manage-guild', $id)) {
-            toast(__('site.permission_denied'), 'warning');
             $this->logEvent('PERMISSION DENIED', 'Attempted to access ' . request()->path(), 'notice');
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $guild = $this->getGuild($id);
 
         if (!$guild) {
-            toast(__('guild.invalid_guild'), 'error');
             $this->logEvent('Invalid Guild', 'Attempted to access ' . request()->path() . ', but the guild does not exist.', 'warning');
-            return redirect()->route('home');
+            return abort(404);
         }
 
         $this->validate($request, [
