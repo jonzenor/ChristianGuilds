@@ -149,7 +149,7 @@ class GuildController extends Controller
 
             toast(__('guild.created_successfully'), 'success');
 
-            return redirect()->route('guild', $guild->id);
+            return redirect()->route('guild-edit', $guild->id);
         }
 
         Alert::error(__('site.unknown_error'));
