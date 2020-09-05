@@ -6,6 +6,7 @@ use DB;
 use Gate;
 use App\Guild;
 use App\Game;
+use App\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -136,6 +137,15 @@ class GuildController extends Controller
 
             $guild->save();
 
+            $page = new Page();
+
+            $page->guild_id = $guild->id;
+            $page->title = __('guild.info_title');
+            $page->content = __('guild.info_content');
+            $page->slug = __('guild.info_slug');
+
+            $page->save();
+
             $this->clearCache('guilds');
             $this->logEvent('Guild Created', 'Guild created successfully with ID ' . $guild->id);
 
@@ -253,6 +263,12 @@ class GuildController extends Controller
             if ($request->server_id > 0) {
                 $guild->server_id = $request->server_id;
             }
+        } elseif (isset($request->server_name)) {
+            $this->validate($request, [
+                'server_name' => 'string|nullable|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+            ]);
+
+            $guild->server_name = $request->server_name;
         }
 
         $guild->save();

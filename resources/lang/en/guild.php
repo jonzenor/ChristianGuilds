@@ -34,4 +34,8 @@ return [
     'my_guilds'         => 'My Guilds',
     'server'            => 'Game Server',
 
+    'info_title'        => 'Info',
+    'info_slug'         => 'info', // Must be all lowercase
+    'info_content'      => 'Welcome to your new guild!',
+
 ];

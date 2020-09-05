@@ -151,4 +151,24 @@ hr {
 
 .dropdown:hover .dropdown-menu {
     display: block;
-}  
+}
+
+.grid-stack {
+    @apply grid-cols-1;
+}
+
+.grid-stack:sm {
+    @apply grid-cols-1;
+}
+
+.grid-stack:md {
+    @apply grid-cols-2;
+}
+
+.grid-stack:lg {
+    @apply grid-cols-3;
+}
+
+.grid-stack:xl {
+    @apply grid-cols-3;
+}

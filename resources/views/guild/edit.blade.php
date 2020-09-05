@@ -9,9 +9,9 @@
     <form action="{{ route('guild-update', $guild->id) }}" method="post">
         @csrf
 
-        <h2 class="section-header">{{ __('guild.details') }}</h2>
-        <div class="page-section">
-            <div class="flex flex-wrap mb-6 md:w-1/2 lg:w-1/3">
+        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+            <div class="page-section">
+                <h3 class="section-header">{{ __('guild.details') }}</h3>
                 <label for="name" class="block text-cgwhite text-sm mb-2">
                     {{ __('Name') }}:
                 </label>
@@ -23,23 +23,28 @@
                         {{ $message }}
                     </p>
                 @enderror
+
+                <h3 class="section-header">{{ __('guild.server') }}</h3>
+                @if ($guild->game->realms->count())
+                    <select name="server_id" id="server" class="form-field">
+                        <option value="0">No Server Selected</option>
+                        @foreach ($guild->game->realms as $realm)
+                            @foreach ($realm->servers as $server)
+                                <option value="{{ $server->id }}" @if ($guild->server_id == $server->id) selected @endif>{{ $realm->name }} [{{ $realm->type }}] - {{ $server->name }}</option>
+                            @endforeach
+                        @endforeach
+                    </select>
+                @else
+                    <input name="server_name" id="server" class="form-field" value="{{ $guild->server_name }}">
+
+                @endif
+
             </div>
 
         </div>
 
-        @if ($guild->game->realms->count())
-            <h2 class="section-header">{{ __('guild.server') }}</h2>
-            <div class="page-section">
-                <select name="server_id" id="server" class="form-field">
-                    <option value="0">No Server Selected</option>
-                    @foreach ($guild->game->realms as $realm)
-                        @foreach ($realm->servers as $server)
-                            <option value="{{ $server->id }}" @if ($guild->server_id == $server->id) selected @endif>{{ $realm->name }} [{{ $realm->type }}] - {{ $server->name }}</option>
-                        @endforeach
-                    @endforeach
-                </select>
-            </div>
-        @endif
+
+
 
         <div class="page-section">
             <input type="submit" value="{{ __('guild.update') }}" class="button-primary">
