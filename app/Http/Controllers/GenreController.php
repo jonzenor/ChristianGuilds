@@ -17,9 +17,8 @@ class GenreController extends Controller
     public function index()
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
-            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'warning');
+            return abort(404);
         }
 
         $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
@@ -38,9 +37,8 @@ class GenreController extends Controller
     public function create()
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
-            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'warning');
+            return abort(404);
         }
 
         return view('genre.create');
@@ -55,9 +53,8 @@ class GenreController extends Controller
     public function store(Request $request)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
-            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'warning');
+            return abort(404);
         }
 
         $this->validate($request, [
@@ -108,9 +105,8 @@ class GenreController extends Controller
     public function edit($id)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
-            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'warning');
+            return abort(404);
         }
 
         $genre = $this->getGenre($id);
@@ -130,8 +126,8 @@ class GenreController extends Controller
     public function update(Request $request, $id)
     {
         if (Gate::denies('manage-games')) {
-            toast(__('site.permission_denied'), 'warning');
-            return redirect()->route('home');
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'warning');
+            return abort(404);
         }
 
         $this->validate($request, [

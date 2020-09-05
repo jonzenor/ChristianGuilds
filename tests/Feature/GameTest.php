@@ -204,8 +204,7 @@ class GameTest extends TestCase
         $admin = $this->createAdminUser();
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('game-list'));
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -215,8 +214,7 @@ class GameTest extends TestCase
         $game = $this->createGame();
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('game-edit', $game->id));
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -229,8 +227,7 @@ class GameTest extends TestCase
         $data['genre'] = 2;
 
         $response = $this->actingAs($user)->followingRedirects()->post(route('game-update', $game->id), $data);
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
     
     /** @test */
@@ -242,8 +239,7 @@ class GameTest extends TestCase
         $data['genre'] = 2;
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('game-add'));
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -255,8 +251,7 @@ class GameTest extends TestCase
         $data['genre'] = 2;
 
         $response = $this->actingAs($user)->followingRedirects()->post(route('game-create'), $data);
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
     
     // Make sure users cannot access genre pages
@@ -266,8 +261,7 @@ class GameTest extends TestCase
         $user = $this->createUser();
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('genre-list'));
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -277,8 +271,7 @@ class GameTest extends TestCase
         $genre = $this->createGenre();
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('genre-edit', $genre->id));
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -291,8 +284,7 @@ class GameTest extends TestCase
         $data['short_name'] = 'MTUG';
 
         $response = $this->actingAs($user)->followingRedirects()->post(route('genre-update', $genre->id), $data);
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
     
     /** @test */
@@ -301,8 +293,7 @@ class GameTest extends TestCase
         $user = $this->createUser();
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('genre-add'));
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -314,8 +305,7 @@ class GameTest extends TestCase
         $data['short_name'] = 'MTUG';
 
         $response = $this->actingAs($user)->followingRedirects()->post(route('genre-create'), $data);
-        $response->assertSee(__('site.permission_denied'));
-        $response->assertLocation('/');
+        $response->assertStatus(404);
     }
 
     /** @test */

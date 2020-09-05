@@ -68,10 +68,10 @@ class GuildTest extends TestCase
         $user = $this->createUser();
 
         $response = $this->actingAs($user)->get(route('guild-list'));
-        $response->assertRedirect(route('home'));
+        $response->assertStatus(404);
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('guild-list'));
-        $response->assertSee(__('site.permission_denied'));
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -84,6 +84,14 @@ class GuildTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertViewIs('guild.show');
+    }
+
+    /** @test */
+    public function guild_page_404_if_not_found()
+    {
+        $response = $this->get(route('guild', 400));
+
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -117,6 +125,16 @@ class GuildTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('guild.edit');
     }
+
+    /** @test */
+    public function guild_edit_page_404_if_not_found()
+    {
+        $user = $this->createUser();
+        $response = $this->actingAs($user)->get(route('guild-edit', 400));
+
+        $response->assertStatus(404);
+    }
+    
 
     // Pending games show on the ACP page
 
