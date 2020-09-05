@@ -85,6 +85,17 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
+        Gate::define('view-pii', function ($user, $profile) {
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+
+            if ($user->id == $profile->id) {
+                return true;
+            }
+            return false;
+        });
+
         Gate::define('edit-user', function ($user, $profile_id) {
             if ($this->isAdmin($user)) {
                 return true;

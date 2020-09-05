@@ -51,6 +51,8 @@ return [
     'pushover_key'          => 'Pushover Key',
     'edit_profile'          => 'Edit Profile',
     'profile_updated'       => "Profile Updated",
+    'profile_info'          => 'Profle Information',
+    'email'                 => 'Email Address',
 
     '2fa_explain'       =>
         'Two Factor Authentication (2FA) strengthens security to certain parts of the site by requiring two methods
