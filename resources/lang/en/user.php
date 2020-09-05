@@ -35,6 +35,7 @@ return [
 
     'roles'             => 'User Roles',
     'add_role'          => 'Add Role',
+    'no_roles'          => 'No Roles',
     'remove_role'       => 'Remove Role',
     'confirm_remove_button' => 'Remove Role',
     'duplicate_role'        => 'User is already in that role. Cannot add duplicate role.',

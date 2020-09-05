@@ -32,45 +32,45 @@
 
         @endcan
 
-        @if ($user->roles->count() >= 1)
-            @can('view-roles')
-                <div>
-                    <div class="page-section">
-                        <h3 class="section-header">{{ __('user.roles') }}</h3>
-                        @foreach ($user->roles as $role)
-                            <span class="bg-{{ $role->color }} role-tag">
-                                @can('manage-user-roles')
-                                    <a href="{{ route('remove-role', ['id' => $user->id, 'role' => $role->id]) }}">{{ $role->name }} <i class="fal fa-times-circle ml-2"></i></a>
-                                @else
-                                    {{ $role->name }}
-                                @endcan
-                            </span>
-                        @endforeach
-                    </div>
+        @can('view-roles')
 
-                    @can('add-global-role')
-                        <div class="page-section">
-                            <h3 class="section-subheader">{{ __('user.add_role') }}</h3>
-                            <form action="{{ route('add-role', $user->id) }}" method="post">
-                                @csrf
-                
-                                <div class="form-row">
-                                    <select name="role" class="form-field">
-                                        @foreach ($newRoles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-row">
-                                    <input type="submit" class="button-primary" value="{{ __('user.add_role') }}">
-                                </div>
-                            </form>
+            <div class="page-section">
+                <h3 class="section-header">{{ __('user.roles') }}</h3>
+
+                @if ($user->roles->count() >= 1)
+
+                    @foreach ($user->roles as $role)
+                        <span class="bg-{{ $role->color }} role-tag">
+                            @can('manage-user-roles')
+                                <a href="{{ route('remove-role', ['id' => $user->id, 'role' => $role->id]) }}">{{ $role->name }} <i class="fal fa-times-circle ml-2"></i></a>
+                            @else
+                                {{ $role->name }}
+                            @endcan
+                        </span>
+                    @endforeach
+                @else
+                        {{ __('user.no_roles') }}
+                @endif
+
+                @can('add-global-role')
+                    <h3 class="section-subheader">{{ __('user.add_role') }}</h3>
+                    <form action="{{ route('add-role', $user->id) }}" method="post">
+                        @csrf
+        
+                        <div class="form-row">
+                            <select name="role" class="form-field">
+                                @foreach ($newRoles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                    @endcan
-
-                </div>
-            @endcan
-        @endif
+                        <div class="form-row">
+                            <input type="submit" class="button-primary" value="{{ __('user.add_role') }}">
+                        </div>
+                    </form>
+                @endcan
+            </div>
+        @endcan
 
     </div>
 

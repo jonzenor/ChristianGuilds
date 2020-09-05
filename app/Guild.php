@@ -37,4 +37,9 @@ class Guild extends Model
     {
         return $this->belongsTo('App\Server');
     }
+
+    public function members()
+    {
+        return $this->belongsToMany('App\User', 'guild_members', 'user_id')->withPivot('position');
+    }
 }

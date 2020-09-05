@@ -33,6 +33,7 @@ return [
 
     'my_guilds'         => 'My Guilds',
     'server'            => 'Game Server',
+    'leaders'           => 'Guild Leaders',
 
     'info_title'        => 'Info',
     'info_slug'         => 'info', // Must be all lowercase
