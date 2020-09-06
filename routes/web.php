@@ -39,6 +39,10 @@ Route::get('/game/{id}/edit', 'GameController@edit')->name('game-edit')->middlew
 Route::get('/game/{id}/edit/servers', 'ServerController@edit')->name('game-manage-servers')->middleware('auth', '2fa');
 Route::post('/game/{id}/edit/realm/add', 'ServerController@storeRealm')->name('game-realm-add')->middleware('auth', '2fa');
 Route::post('/game/{id}/edit/server/add', 'ServerController@storeServer')->name('game-server-add')->middleware('auth', '2fa');
+Route::get('/realm/{id}/edit/', 'ServerController@editRealm')->name('game-realm-edit')->middleware('auth', '2fa');
+Route::post('/realm/{id}/update/', 'ServerController@updateRealm')->name('game-realm-update')->middleware('auth', '2fa');
+Route::get('/server/{id}/edit/', 'ServerController@editServer')->name('game-server-edit')->middleware('auth', '2fa');
+Route::post('/server/{id}/update/', 'ServerController@updateServer')->name('game-server-update')->middleware('auth', '2fa');
 
 Route::get('/acp/games', 'GameController@index')->name('game-list')->middleware('auth', '2fa');
 Route::get('/acp/games/pending', 'GameController@pending')->name('game-list-pending')->middleware('auth', '2fa');

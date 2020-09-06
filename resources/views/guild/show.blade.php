@@ -33,7 +33,7 @@
             <ul>
                 @foreach ($guild->members as $member)
                     @if ($member->pivot->position == "owner" || $member->pivot->position == "leader")
-                        <li> <a href="{{ route('profile', $member->id) }}" class="link">{{ $member->name }}</a></li>
+                        <li> @if ($member->pivot->position == "owner") <i class="fad fa-crown" title="{{ __('guild.owner') }}"></i> @endif <a href="{{ route('profile', $member->id) }}" class="link">{{ $member->name }}</a></li>
                     @endif
                 @endforeach
             </ul>

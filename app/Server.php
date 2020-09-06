@@ -8,6 +8,6 @@ class Server extends Model
 {
     public function realm()
     {
-        return $this->belognsTo('App\Realm');
+        return $this->belongsTo('App\Realm');
     }
 }

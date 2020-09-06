@@ -11,9 +11,11 @@
     <div class="page-section">        
         @foreach ($game->realms as $realm)
             <h3 class="section-subheader">{{ $realm->name }} - {{ $realm->type }}</h3>
+            <a href="{{ route('game-realm-edit', $realm->id) }}" class="link"><i class="fad fa-edit"></i> {{ __('game.realm_edit') }}</a>
+
             <ul>
                 @foreach ($realm->servers as $server)
-                    <li> {{ $server->name }}</li>
+                    <li> <a href="{{ route('game-server-edit', $server->id) }}" class="link" title="{{ __('game.server_edit') }}"><i class="fad fa-edit"></i></a> {{ $server->name }}</li>
                 @endforeach
             </ul>
 
@@ -55,7 +57,7 @@
                 {{ __('game.realm_name') }}:
             </label>
 
-            <input type="text" name="name" class="form-field" id="name" value="Realm">
+            <input type="text" name="name" class="form-field" id="name" value="All Servers">
 
             @error('name')
                 <p class="text-red-500 text-xs italic mt-4">
