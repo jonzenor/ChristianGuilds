@@ -13,6 +13,7 @@ use App\UserSettings;
 use App\ContactTopics;
 use App\ContactSettings;
 use App\Mail\AlertMessage;
+use App\Server;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
@@ -188,6 +189,13 @@ class Controller extends BaseController
         });
     }
 
+    public function getServer($id)
+    {
+        return Cache::rememberForever('Server:' . $id, function () use ($id) {
+            return Server::find($id);
+        });
+    }
+
     public function getGenres()
     {
         return Cache::rememberForever('Genres', function () {
@@ -276,7 +284,17 @@ class Controller extends BaseController
         }
 
         if ($what == "realm") {
+            $realm = $this->getRealm($id);
+
             Cache::forget('Realm:' . $id);
+            $this->clearCache('game', $realm->game_id);
+        }
+
+        if ($what == "server") {
+            $server = $this->getServer($id);
+
+            Cache::forget('Server:' . $id);
+            $this->clearCache('realm', $server->realm_id);
         }
 
         if ($what == "genres") {

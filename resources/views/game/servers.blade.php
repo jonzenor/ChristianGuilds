@@ -11,9 +11,11 @@
     <div class="page-section">        
         @foreach ($game->realms as $realm)
             <h3 class="section-subheader">{{ $realm->name }} - {{ $realm->type }}</h3>
+            <a href="{{ route('game-realm-edit', $realm->id) }}" class="link"><i class="fad fa-edit"></i> {{ __('game.realm_edit') }}</a>
+
             <ul>
                 @foreach ($realm->servers as $server)
-                    <li> {{ $server->name }}</li>
+                    <li> <a href="{{ route('game-server-edit', $server->id) }}" class="link" title="{{ __('game.server_edit') }}"><i class="fad fa-edit"></i></a> {{ $server->name }}</li>
                 @endforeach
             </ul>
 

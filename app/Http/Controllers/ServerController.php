@@ -96,4 +96,94 @@ class ServerController extends Controller
         
         return redirect()->route('game-manage-servers', $realm->game->id);
     }
+
+    public function editRealm($id)
+    {
+
+        if (Gate::denies('manage-games')) {
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'notice');
+            return abort(404);
+        }
+
+        $realm = $this->getRealm($id);
+        
+        if (!$realm) {
+            $this->logEvent('Invalid Realm', 'Attempting to access a realm that does not exist.', 'warning');
+            return abort(404);
+        }
+
+        return view('game.realm.edit')->with([
+            'realm' => $realm,
+        ]);
+    }
+
+    public function updateRealm(Request $request, $id)
+    {
+        if (Gate::denies('manage-games')) {
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'notice');
+            return abort(404);
+        }
+
+        $realm = $this->getRealm($id);
+        
+        if (!$realm) {
+            $this->logEvent('Invalid Realm', 'Attempting to access a realm that does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $realm->name = $request->name;
+        $realm->type = $request->type;
+
+        $realm->save();
+
+        $this->clearCache('realm', $realm->id);
+
+        toast(__('game.realm_updated'), 'success');
+
+        return redirect()->route('game-manage-servers', $realm->game_id);
+    }
+
+    public function editServer($id)
+    {
+        if (Gate::denies('manage-games')) {
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'notice');
+            return abort(404);
+        }
+
+        $server = $this->getServer($id);
+        
+        if (!$server) {
+            $this->logEvent('Invalid Server', 'Attempting to access a server that does not exist.', 'warning');
+            return abort(404);
+        }
+
+        return view('game.server.edit')->with([
+            'server' => $server,
+        ]);
+    }
+
+    public function updateServer(Request $request, $id)
+    {
+        if (Gate::denies('manage-games')) {
+            $this->logEvent(__('site.permission_denied_label'), __('site.permission_denied_message'), 'notice');
+            return abort(404);
+        }
+
+        $server = $this->getServer($id);
+        
+        if (!$server) {
+            $this->logEvent('Invalid Server', 'Attempting to access a server that does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $server->name = $request->name;
+
+        $server->save();
+
+        $this->clearCache('server', $server->id);
+
+        toast(__('game.server_updated'), 'success');
+
+        return redirect()->route('game-manage-servers', $server->realm->game_id);
+    }
 }
