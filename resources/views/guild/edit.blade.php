@@ -23,28 +23,44 @@
                         {{ $message }}
                     </p>
                 @enderror
+            </div>
 
+            <div class="page-section">
                 <h3 class="section-header">{{ __('guild.server') }}</h3>
                 @if ($guild->game->realms->count())
                     <select name="server_id" id="server" class="form-field">
-                        <option value="0">No Server Selected</option>
+                        <option value="0">{{ __('guild.no_server_selected') }}</option>
                         @foreach ($guild->game->realms as $realm)
                             @foreach ($realm->servers as $server)
                                 <option value="{{ $server->id }}" @if ($guild->server_id == $server->id) selected @endif>{{ $realm->name }} [{{ $realm->type }}] - {{ $server->name }}</option>
                             @endforeach
                         @endforeach
                     </select>
-                @else
-                    <input name="server_name" id="server" class="form-field" value="{{ $guild->server_name }}">
+
+                    @error('server_id')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                    @enderror
 
                 @endif
 
+                <div class="my-4">
+
+                    <label for="server_name" class="block text-cgwhite text-sm mb-2">
+                        {{ __('guild.server_name') }}
+                    </label>
+
+                    <input name="server_name" id="server_name" class="form-field" value="{{ $guild->server_name }}">
+
+                    @error('server_name')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                </div>
             </div>
-
         </div>
-
-
-
 
         <div class="page-section">
             <input type="submit" value="{{ __('guild.update') }}" class="button-primary">

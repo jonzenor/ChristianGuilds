@@ -55,7 +55,7 @@
                 {{ __('game.realm_name') }}:
             </label>
 
-            <input type="text" name="name" class="form-field" id="name" value="Realm">
+            <input type="text" name="name" class="form-field" id="name" value="All Servers">
 
             @error('name')
                 <p class="text-red-500 text-xs italic mt-4">

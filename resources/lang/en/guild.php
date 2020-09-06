@@ -35,6 +35,9 @@ return [
     'server'            => 'Game Server',
     'leaders'           => 'Guild Leaders',
 
+    'no_server_selected'    => 'None or Custom Server Name',
+    'server_name'       => 'Custom Server Name',
+
     'info_title'        => 'Info',
     'info_slug'         => 'info', // Must be all lowercase
     'info_content'      => 'Welcome to your new guild!',
