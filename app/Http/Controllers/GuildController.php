@@ -156,6 +156,8 @@ class GuildController extends Controller
                 'position' => 'owner',
             ]);
 
+            $this->sendAdminNotification('new_guild', $guild);
+
             toast(__('guild.created_successfully'), 'success');
 
             return redirect()->route('guild-edit', $guild->id);

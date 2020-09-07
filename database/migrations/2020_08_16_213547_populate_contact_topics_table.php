@@ -16,6 +16,7 @@ class PopulateContactTopicsTable extends Migration
         DB::table('contact_topics')->insert([
             ['name' => 'new_user', 'category' => "admin"],
             ['name' => 'alerts', 'category' => "admin"],
+            ['name' => 'new_guild', 'category' => 'admin'],
         ]);
     }
 
@@ -28,5 +29,6 @@ class PopulateContactTopicsTable extends Migration
     {
         DB::table('contact_topics')->where('name', '=', 'new_user')->delete();
         DB::table('contact_topics')->where('name', '=', 'alerts')->delete();
+        DB::table('contact_topics')->where('name', '=', 'new_guild')->delete();
     }
 }
