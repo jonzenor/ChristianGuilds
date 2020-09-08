@@ -8,7 +8,9 @@ use App\User;
 use App\Guild;
 use App\Realm;
 use App\Genre;
+use App\Community;
 use App\Mail\newUser;
+use App\Mail\NewGuild;
 use App\UserSettings;
 use App\ContactTopics;
 use App\ContactSettings;
@@ -137,6 +139,16 @@ class Controller extends BaseController
             return Guild::orderBy('created_at', 'desc')->limit(config('acp.items_limit'))->get();
         });
     }
+
+    // Guild Communities functions
+
+    public function getCommunity($id)
+    {
+        return Cache::rememberForever('Community:' . $id, function () use ($id) {
+            return Community::find($id);
+        });
+    }
+
 
     // Game related cache functions
 
@@ -361,6 +373,27 @@ class Controller extends BaseController
                     }
                 }
             }
+
+            if ($type == "new_guild") {
+                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_guild')->get();
+
+                foreach ($contactSettings as $setting) {
+                    if ($setting->mode == "email") {
+                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
+                        Mail::to($admin)->send(new NewGuild($data));
+                    }
+
+                    if ($setting->mode == "pushover") {
+                        $message = __('pushover.new_guild_body', ['guild' => $data->name, 'owner' => $data->owner->name, 'game' => $data->game->name]);
+                        $title = __('pushover.new_guild_title');
+
+                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
+
+                        $this->sendPushover($admin, $message, $title);
+                    }
+                }
+            }
+
 
             if ($type == "alert") {
                 $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_user')->get();

@@ -21,7 +21,7 @@ class GuildController extends Controller
     public function index()
     {
         if (Gate::denies('manage-guilds')) {
-            Log::channel('app')->notice("[PERMISSION DENIED] [User  " . auth()->user()->id . " " . auth()->user()->name . "] Attempted to access " . request()->path());
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access a guild edit page without permissions', 'notice');
             return abort(404);
         }
 
@@ -147,7 +147,7 @@ class GuildController extends Controller
             $page->save();
 
             $this->clearCache('guilds');
-            $this->logEvent('Guild Created', 'Guild created successfully with ID ' . $guild->id);
+            $this->logEvent('Guild Created', 'Guild ' . $guild->name . ' created successfully with ID ' . $guild->id);
 
             DB::table('guild_members')->insert([
                 'user_id' => auth()->user()->id,
@@ -155,6 +155,8 @@ class GuildController extends Controller
                 'title' => 'Guild Master',
                 'position' => 'owner',
             ]);
+
+            $this->sendAdminNotification('new_guild', $guild);
 
             toast(__('guild.created_successfully'), 'success');
 

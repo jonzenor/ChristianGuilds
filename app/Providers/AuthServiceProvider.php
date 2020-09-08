@@ -161,6 +161,10 @@ class AuthServiceProvider extends ServiceProvider
 
             return false;
         });
+
+        Gate::define('create-community', function ($user) {
+            return true;
+        });
     }
 
     private function isAdmin($user)
