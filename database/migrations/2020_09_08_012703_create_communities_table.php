@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGuildsTable extends Migration
+class CreateCommunitiesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateGuildsTable extends Migration
      */
     public function up()
     {
-        Schema::create('guilds', function (Blueprint $table) {
+        Schema::create('communities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->bigInteger('game_id');
+            $table->mediumText('description');
             $table->bigInteger('owner_id');
-            $table->bigInteger('server_id')->nullable();
-            $table->string('server_name')->nullable();
-            $table->bigInteger('community_id')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ class CreateGuildsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('guilds');
+        Schema::dropIfExists('communities');
     }
 }

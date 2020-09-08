@@ -8,6 +8,7 @@ use App\User;
 use App\Guild;
 use App\Realm;
 use App\Genre;
+use App\Community;
 use App\Mail\newUser;
 use App\Mail\NewGuild;
 use App\UserSettings;
@@ -138,6 +139,16 @@ class Controller extends BaseController
             return Guild::orderBy('created_at', 'desc')->limit(config('acp.items_limit'))->get();
         });
     }
+
+    // Guild Communities functions
+
+    public function getCommunity($id)
+    {
+        return Cache::rememberForever('Community:' . $id, function () use ($id) {
+            return Community::find($id);
+        });
+    }
+
 
     // Game related cache functions
 

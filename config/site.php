@@ -10,6 +10,8 @@ return [
     'input_name_max' => 255,
     'input_genre_min' => 3,
     'input_genre_max' => 128,
+    'input_desc_min' => 3,
+    'input_desc_max' => 4000,
     'input_short_genre_min' => 2,
     'input_short_genre_max' => 32,
 

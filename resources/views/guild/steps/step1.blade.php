@@ -28,6 +28,7 @@
     <div class="page-section">
         <input type="submit" value="{{ __('guild.next_step') }}" class="button-primary">
         <a href="{{ route('home') }}" class="button-secondary">{{ __('site.cancel') }}</a>
+        <a href="{{ route('community-create') }}" class="button-blue">{{ __('community.create_button') }}</a>
     </div>
     
 </form>

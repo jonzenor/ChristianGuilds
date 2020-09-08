@@ -59,11 +59,16 @@ Route::get('/acp/genre/add', 'GenreController@create')->name('genre-add')->middl
 Route::post('/acp/genre/add', 'GenreController@store')->name('genre-create')->middleware('auth', '2fa');
 
 Route::get('/guilds', 'GuildController@index')->name('guild-list')->middleware('auth', '2fa');
+Route::get('/guild/create', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
+Route::post('/guild/create', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
 Route::get('/guild/{id}', 'GuildController@show')->name('guild');
-Route::get('/new-guild', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
-Route::post('/new-guild', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
 Route::get('/guild/{id}/edit', 'GuildController@edit')->name('guild-edit')->middleware('auth', '2fa');
 Route::post('/guild/{id}/edit', 'GuildController@update')->name('guild-update')->middleware('auth', '2fa');
+
+Route::get('/community/create', 'CommunityController@create')->name('community-create')->middleware('auth', '2fa');
+Route::post('/community/create', 'CommunityController@store')->name('community-create')->middleware('auth', '2fa');
+
+Route::get('/community/{id}', 'CommunityController@show')->name('community');
 
 Route::get('/forgePowerUp', 'HomeController@forge')->name('forge-power-up')->middleware('auth', '2fa');
 Route::get('/forgePowerUp/{id}', 'HomeController@forgePowerUp')->name('forge-grant')->middleware('auth', '2fa');
