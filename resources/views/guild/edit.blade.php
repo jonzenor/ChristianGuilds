@@ -26,6 +26,21 @@
             </div>
 
             <div class="page-section">
+                <h3 class="section-header">{{ __('guild.description') }}</h3>
+                <label for="description" class="block text-cgwhite text-sm mb-2">
+                    {{ __('guild.description') }}
+                </label>
+    
+                <textarea name="description" id="description" class="form-field w-full">{!! $guild->description !!}</textarea>
+    
+                @error('description')
+                    <p class="text-red-500 text-xs italic mt-4">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <div class="page-section">
                 <h3 class="section-header">{{ __('guild.server') }}</h3>
                 @if ($guild->game->realms->count())
                     <select name="server_id" id="server" class="form-field">
@@ -51,7 +66,7 @@
                         {{ __('guild.server_name') }}
                     </label>
 
-                    <input name="server_name" id="server_name" class="form-field" value="{{ $guild->server_name }}">
+                    <input name="server_name" id="server_name" class="form-field w-full" value="{{ $guild->server_name }}">
 
                     @error('server_name')
                         <p class="text-red-500 text-xs italic mt-4">
@@ -60,6 +75,7 @@
                     @enderror
                 </div>
             </div>
+    
         </div>
 
         <div class="page-section">

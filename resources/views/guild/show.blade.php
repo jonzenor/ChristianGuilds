@@ -18,7 +18,8 @@
         </div>
 
         <div class="col-span-6 md:col-span-4 xl:col-span-5 row-span-2 relative">
-            {!! getGuildPage($guild->id, 'info') !!}
+            {{-- getGuildPage($guild->id, 'info') --}}
+            {!! $guild->description !!}
 
             @can('manage-guild', $guild->id)
                 <div class="page-section bottom-0 absolute">

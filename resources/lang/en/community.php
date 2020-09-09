@@ -9,6 +9,14 @@ return [
     'created'       => 'Community Created!',
     'owner'         => 'Community Owner',
 
+    'communities'   => 'Communities',
+    'count'         => 'Total Communities: :count',
+    'view_all'      => 'View All Communities',
+    'manage'        => 'Manage Community',
+    'date_created'  => 'Created',
+    'id'            => 'Community ID',
+    'list'          => 'Community List',
+
     'description'   => 'Description',
     'description_label'     => 'What is a Community?',
     'description_explain'   => 'Communities are groups of guilds that are joined together for their leadership and member communities.
