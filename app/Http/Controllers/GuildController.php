@@ -248,12 +248,13 @@ class GuildController extends Controller
         $this->validate($request, [
             'name' => 'string|required|max:255',
             'server_name' => 'string|nullable|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+            'description' => 'string|nullable|min:' . config('site.input_desc_min') . '|max:' . config('site.input_desc_max'),
         ]);
 
         $this->logEvent('Guild Update', 'Updating guild information from ' . json_encode($guild) . ' to ' . json_encode($request->all()));
 
         $guild->name = $request->name;
-
+        $guild->description = $request->description;
         $guild->server_name = $request->server_name;
 
         if (isset($request->server_id)) {
