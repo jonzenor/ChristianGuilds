@@ -21,7 +21,7 @@ class GuildController extends Controller
     public function index()
     {
         if (Gate::denies('manage-guilds')) {
-            $this->logEvent('PERMISSION DENIED', 'Attempted to access a guild edit page without permissions', 'notice');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access the Guild ACP page without permissions', 'notice');
             return abort(404);
         }
 

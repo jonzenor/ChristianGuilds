@@ -41,6 +41,23 @@
             </div>
         @endcan
 
+        @can('manage-guilds')
+            <div>
+                <h2 class="section-header">{{ __('community.communities') }}</h2>
+                <div class="page-section">
+                    <ul>
+                        @foreach ($communities as $community)
+                            <li class="list-item"> <a href="{{ route('community', $community->id) }}" class="link"> <i class="fad fa-pennant px-2 text-cgwhite text-lg"></i> {{ $community->name }}</a>
+                        @endforeach
+                    </ul>
+                </div>
+
+                <div class="page-section">
+                    <i class="fad fa-users-crown text-xl"></i> <span class="highlight"> {{ __('community.count', ['count' => $count['communities']]) }}</span><br />[ <a href="{{ route('community-list') }}" class="link">{{ __('community.view_all') }}</a> ]
+                </div>
+
+            </div>
+        @endcan
 
         @can('manage-roles')
             <div>

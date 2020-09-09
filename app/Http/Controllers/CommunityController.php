@@ -11,6 +11,21 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class CommunityController extends Controller
 {
+    public function index()
+    {
+        if (Gate::denies('manage-guilds')) {
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access the Community ACP page without permissions', 'notice');
+            return abort(404);
+        }
+
+        $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
+        $communities = $this->getPaginatedCommunities($page);
+
+        return view('community.index')->with([
+            'communities' => $communities,
+        ]);
+    }
+
     public function create()
     {
         if (Gate::denies('create-community')) {

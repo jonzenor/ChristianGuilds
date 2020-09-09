@@ -149,6 +149,26 @@ class Controller extends BaseController
         });
     }
 
+    public function getCommunityCount()
+    {
+        return Cache::rememberForever('Communities:count', function () {
+            return Community::all()->count();
+        });
+    }
+
+    public function getLatestCommunities()
+    {
+        return Cache::remember('Communities:Latest', $this->cache_for, function () {
+            return Community::orderBy('created_at', 'desc')->limit(config('acp.items_limit'))->get();
+        });
+    }
+
+    public function getPaginatedCommunities($page)
+    {
+        return Cache::remember('Communities:page:' . $page, $this->cache_for, function () {
+            return Community::orderBy('name')->paginate(config('acp.paginate_games'));
+        });
+    }
 
     // Game related cache functions
 

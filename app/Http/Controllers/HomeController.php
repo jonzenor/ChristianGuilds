@@ -51,12 +51,16 @@ class HomeController extends Controller
         $guilds = $this->getLatestGuilds();
         $count['guilds'] = $this->getGuildCount();
 
+        $communities = $this->getLatestCommunities();
+        $count['communities'] = $this->getCommunityCount();
+
         $count['games_pending'] = $this->getPendingGamesCount();
 
         return view('acp.index')->with([
             'users' => $users,
             'roles' => $roles,
             'guilds' => $guilds,
+            'communities' => $communities,
             'count' => $count,
         ]);
     }

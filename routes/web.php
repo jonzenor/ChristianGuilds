@@ -65,8 +65,10 @@ Route::get('/guild/{id}', 'GuildController@show')->name('guild');
 Route::get('/guild/{id}/edit', 'GuildController@edit')->name('guild-edit')->middleware('auth', '2fa');
 Route::post('/guild/{id}/edit', 'GuildController@update')->name('guild-update')->middleware('auth', '2fa');
 
+Route::get('acp/communities', 'CommunityController@index')->name('community-list')->middleware('auth', '2fa');
 Route::get('/community/create', 'CommunityController@create')->name('community-create')->middleware('auth', '2fa');
 Route::post('/community/create', 'CommunityController@store')->name('community-create')->middleware('auth', '2fa');
+Route::get('/community/{id}/edit', 'CommunityController@edit')->name('community-edit')->middleware('auth', '2fa');
 
 Route::get('/community/{id}', 'CommunityController@show')->name('community');
 
