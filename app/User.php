@@ -58,6 +58,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Guild', 'guild_members');
     }
 
+    public function communities()
+    {
+        return $this->belongsToMany('App\Community', 'community_members');
+    }
+
     public function getCreatedAtAttribute($value)
     {
         return Carbon::parse($value)->format('m/d/Y');
