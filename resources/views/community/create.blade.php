@@ -20,7 +20,7 @@
                     {{ __('community.name') }}:
                 </label>
     
-                <input type="text" name="name" class="form-field w-full @error('name')  border-red-500 @enderror" name="name" @if (old('name')) value="{{ old('name') }}" @endif required>
+                <input type="text" name="name" class="form-field w-full @error('name') border-red-500 @enderror" name="name" @if (old('name')) value="{{ old('name') }}" @endif required>
 
                 @error('name')
                     <p class="text-red-500 text-xs italic mt-4">
@@ -36,7 +36,7 @@
                     {{ __('community.description') }}:
                 </label>
     
-                <textarea name="description" class="form-field w-full @error('description')  border-red-500 @enderror" description="description">@if (old('description')) value="{{ old('description') }}" @endif</textarea>
+                <textarea name="description" class="form-field w-full @error('description') border-red-500 @enderror" description="description">@if (old('description')){{ old('description') }}@endif</textarea>
 
                 @error('description')
                     <p class="text-red-500 text-xs italic mt-4">
