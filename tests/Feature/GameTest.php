@@ -331,4 +331,26 @@ class GameTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('game.servers');
     }
+
+    /** @test */
+    public function game_create_does_not_allow_other_genre()
+    {
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('game-add'));
+
+        $response->assertDontSeeText("Other - Other");
+    }
+
+    /** @test */
+    public function game_edit_does_not_allow_other_genre()
+    {
+        $game = $this->createGame();
+        $admin = $this->createAdminUser();
+
+        $response = $this->actingAs($admin)->get(route('game-edit', $game->id));
+
+        $response->assertDontSeeText("Other - Other");
+    }
+    
 }
