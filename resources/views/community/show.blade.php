@@ -11,7 +11,9 @@
         </div>
 
         <div class="col-span-6 md:col-span-4 xl:col-span-5 row-span-2 relative">
-            Something will be here soon maybe... ? HI!
+            <p>
+                {!! $community->description !!}
+            </p>
         </div>
 
         <div class="col-span-6 md:col-span-2 xl:col-span-1">

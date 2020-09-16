@@ -32,7 +32,9 @@
 
                 <select name="genre" class="form-field w-full @error('genre') border-red-500 @enderror">
                     @foreach ($genres as $genre)
-                        <option value="{{ $genre->id }}" @if (old('genre') == $genre->id) selected @endif>{{ $genre->short_name }} - {{ $genre->name }}</option>
+                        @if ($genre->short_name != "Other")
+                            <option value="{{ $genre->id }}" @if (old('genre') == $genre->id) selected @endif>{{ $genre->short_name }} - {{ $genre->name }}</option>
+                        @endif
                     @endforeach
                 </select>
 
