@@ -8,14 +8,15 @@ use App\User;
 use App\Guild;
 use App\Realm;
 use App\Genre;
+use App\Server;
 use App\Community;
+use App\UserSettings;
 use App\Mail\newUser;
 use App\Mail\NewGuild;
-use App\UserSettings;
 use App\ContactTopics;
 use App\ContactSettings;
 use App\Mail\AlertMessage;
-use App\Server;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
@@ -23,6 +24,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\DB;
 
 class Controller extends BaseController
 {
@@ -31,6 +33,209 @@ class Controller extends BaseController
     use ValidatesRequests;
 
     private $cache_for = 1440;
+
+    //*******************//
+    // Search Functions //
+    //*****************//
+    public function searchGuilds($query)
+    {
+        return Cache::remember('Search:Guild:' . $query, config('site.cache_search_time'), function () use ($query) {
+            $this->logEvent('Search Guild', 'Caching results for search ' . $query);
+            return \App\Guild::search($query)->get();
+        });
+    }
+
+    public function searchGames($query)
+    {
+        return Cache::remember('Search:Game:' . $query, config('site.cache_search_time'), function () use ($query) {
+            $this->logEvent('Search Game', 'Caching results for search ' . $query);
+            return \App\Game::search($query)->get();
+        });
+    }
+
+
+    //*************************//
+    // Send Message Functions //
+    //***********************//
+    public function sendAdminNotification($type, $data = null)
+    {
+        // Select admins
+        $admins = $this->getAdminUsers();
+
+        foreach ($admins as $admin) {
+            if ($type == "new_user") {
+                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_user')->get();
+
+                foreach ($contactSettings as $setting) {
+                    if ($setting->mode == "email") {
+                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
+                        Mail::to($admin)->send(new NewUser($data));
+                    }
+
+                    if ($setting->mode == "pushover") {
+                        $message = __('pushover.new_user_body', ['user' => $data->name]);
+                        $title = __('pushover.new_user_title');
+
+                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
+
+                        $this->sendPushover($admin, $message, $title);
+                    }
+                }
+            }
+
+            if ($type == "new_guild") {
+                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_guild')->get();
+
+                foreach ($contactSettings as $setting) {
+                    if ($setting->mode == "email") {
+                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
+                        Mail::to($admin)->send(new NewGuild($data));
+                    }
+
+                    if ($setting->mode == "pushover") {
+                        $message = __('pushover.new_guild_body', ['guild' => $data->name, 'owner' => $data->owner->name, 'game' => $data->game->name]);
+                        $title = __('pushover.new_guild_title');
+
+                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
+
+                        $this->sendPushover($admin, $message, $title);
+                    }
+                }
+            }
+
+
+            if ($type == "alert") {
+                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_user')->get();
+
+                foreach ($contactSettings as $setting) {
+                    if ($setting->mode == "email") {
+                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
+                        Mail::to($admin)->send(new AlertMessage($data));
+                    }
+
+                    if ($setting->mode == "pushover") {
+                        $message = __('pushover.alert_body', ['user' => $data->name]);
+                        $title = __('pushover.alert_title');
+
+                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
+
+                        $this->sendPushover($admin, $message, $title);
+                    }
+                }
+            }
+        }
+    }
+
+    public function sendPushover($user, $message, $title = null)
+    {
+        $key = config('services.pushover.key');
+        $user_settings = UserSettings::where('user_id', '=', $user->id)->first();
+
+        if (!$title) {
+            $title = "Christian Guilds";
+        }
+
+        curl_setopt_array($ch = curl_init(), array(
+            CURLOPT_URL => "https://api.pushover.net/1/messages.json",
+            CURLOPT_POSTFIELDS => array(
+                "token" => $key,
+                "user" => $user_settings->pushover_key,
+                "message" => $message,
+                "title" => $title,
+            ),
+            CURLOPT_SAFE_UPLOAD => true,
+            CURLOPT_RETURNTRANSFER => true,
+        ));
+
+        curl_exec($ch);
+        curl_close($ch);
+    }
+
+
+    //*****************************/
+    // Google ReCaptcha analysis //
+    //***************************/
+    public function recaptchaCheck($recaptcha)
+    {
+        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $remoteip = $_SERVER['REMOTE_ADDR'];
+        $data = [
+            'secret' => config('services.recaptcha.secret'),
+            'response' => $recaptcha,
+            'remoteip' => $remoteip
+        ];
+
+        $options = [
+            'http' => [
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($data)
+            ]
+        ];
+
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        $resultJson = json_decode($result);
+
+        return $resultJson;
+    }
+
+    //***************************/
+    // Other Helpful Functions //
+    //*************************/
+
+    public function getIp()
+    {
+        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) {
+            if (array_key_exists($key, $_SERVER) === true) {
+                foreach (explode(',', $_SERVER[$key]) as $ip) {
+                    $ip = trim($ip); // just to be safe
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+                        return $ip;
+                    }
+                }
+            }
+        }
+    }
+    
+    public function logEvent($type, $message, $level = 'info')
+    {
+        if (auth()->user()) {
+            $user = auth()->user()->name;
+            $user_id = auth()->user()->id;
+        } else {
+            $user = "GUEST";
+            $user_id = "0";
+        }
+        $text = "[" . $type . "] [USER: " . $user . " ID: " . $user_id . "] [URL: " . request()->path() . "] " . $message;
+
+        if ($level == 'info') {
+            Log::channel('app')->info($text);
+        }
+
+        if ($level == 'notice') {
+            Log::channel('app')->notice($text);
+        }
+
+        if ($level == 'warning') {
+            Log::channel('app')->warning($text);
+        }
+    }
+
+    public function createCommunityInvite($id)
+    {
+        $key = Str::random(32);
+
+        DB::table('community_guild_invites')->insert([
+            ['community_id' => $id, 'code' => $key],
+        ]);
+
+        $this->logEvent('GUILD INVITE CREATED', 'Created guild invite for community ' . $id, 'info');
+    }
+
+    //*********************/
+    // Caching Functions //
+    //*******************/
 
     public function getUser($id)
     {
@@ -342,194 +547,6 @@ class Controller extends BaseController
 
         if ($what == "genre") {
             Cache::forget('Genre:' . $id);
-        }
-    }
-
-    //*******************//
-    // Search Functions //
-    //*****************//
-    public function searchGuilds($query)
-    {
-        return Cache::remember('Search:Guild:' . $query, config('site.cache_search_time'), function () use ($query) {
-            $this->logEvent('Search Guild', 'Caching results for search ' . $query);
-            return \App\Guild::search($query)->get();
-        });
-    }
-
-    public function searchGames($query)
-    {
-        return Cache::remember('Search:Game:' . $query, config('site.cache_search_time'), function () use ($query) {
-            $this->logEvent('Search Game', 'Caching results for search ' . $query);
-            return \App\Game::search($query)->get();
-        });
-    }
-
-
-    //*************************//
-    // Send Message Functions //
-    //***********************//
-    public function sendAdminNotification($type, $data = null)
-    {
-        // Select admins
-        $admins = $this->getAdminUsers();
-
-        foreach ($admins as $admin) {
-            if ($type == "new_user") {
-                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_user')->get();
-
-                foreach ($contactSettings as $setting) {
-                    if ($setting->mode == "email") {
-                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
-                        Mail::to($admin)->send(new NewUser($data));
-                    }
-
-                    if ($setting->mode == "pushover") {
-                        $message = __('pushover.new_user_body', ['user' => $data->name]);
-                        $title = __('pushover.new_user_title');
-
-                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
-
-                        $this->sendPushover($admin, $message, $title);
-                    }
-                }
-            }
-
-            if ($type == "new_guild") {
-                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_guild')->get();
-
-                foreach ($contactSettings as $setting) {
-                    if ($setting->mode == "email") {
-                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
-                        Mail::to($admin)->send(new NewGuild($data));
-                    }
-
-                    if ($setting->mode == "pushover") {
-                        $message = __('pushover.new_guild_body', ['guild' => $data->name, 'owner' => $data->owner->name, 'game' => $data->game->name]);
-                        $title = __('pushover.new_guild_title');
-
-                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
-
-                        $this->sendPushover($admin, $message, $title);
-                    }
-                }
-            }
-
-
-            if ($type == "alert") {
-                $contactSettings = ContactSettings::where('user_id', '=', $admin->id)->where('topic', '=', 'new_user')->get();
-
-                foreach ($contactSettings as $setting) {
-                    if ($setting->mode == "email") {
-                        Log::channel('app')->info("[Email] Sending " . $type . " Message to " . $admin->name);
-                        Mail::to($admin)->send(new AlertMessage($data));
-                    }
-
-                    if ($setting->mode == "pushover") {
-                        $message = __('pushover.alert_body', ['user' => $data->name]);
-                        $title = __('pushover.alert_title');
-
-                        Log::channel('app')->info("[Pushover] Sending " . $type . " Message to " . $admin->name);
-
-                        $this->sendPushover($admin, $message, $title);
-                    }
-                }
-            }
-        }
-    }
-
-    public function sendPushover($user, $message, $title = null)
-    {
-        $key = config('services.pushover.key');
-        $user_settings = UserSettings::where('user_id', '=', $user->id)->first();
-
-        if (!$title) {
-            $title = "Christian Guilds";
-        }
-
-        curl_setopt_array($ch = curl_init(), array(
-            CURLOPT_URL => "https://api.pushover.net/1/messages.json",
-            CURLOPT_POSTFIELDS => array(
-                "token" => $key,
-                "user" => $user_settings->pushover_key,
-                "message" => $message,
-                "title" => $title,
-            ),
-            CURLOPT_SAFE_UPLOAD => true,
-            CURLOPT_RETURNTRANSFER => true,
-        ));
-
-        curl_exec($ch);
-        curl_close($ch);
-    }
-
-
-    //*****************************/
-    // Google ReCaptcha analysis //
-    //***************************/
-    public function recaptchaCheck($recaptcha)
-    {
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
-        $remoteip = $_SERVER['REMOTE_ADDR'];
-        $data = [
-            'secret' => config('services.recaptcha.secret'),
-            'response' => $recaptcha,
-            'remoteip' => $remoteip
-        ];
-
-        $options = [
-            'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($data)
-            ]
-        ];
-
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        $resultJson = json_decode($result);
-
-        return $resultJson;
-    }
-
-    //***************************/
-    // Other Helpful Functions //
-    //*************************/
-
-    public function getIp()
-    {
-        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) {
-            if (array_key_exists($key, $_SERVER) === true) {
-                foreach (explode(',', $_SERVER[$key]) as $ip) {
-                    $ip = trim($ip); // just to be safe
-                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
-                        return $ip;
-                    }
-                }
-            }
-        }
-    }
-    
-    public function logEvent($type, $message, $level = 'info')
-    {
-        if (auth()->user()) {
-            $user = auth()->user()->name;
-            $user_id = auth()->user()->id;
-        } else {
-            $user = "GUEST";
-            $user_id = "0";
-        }
-        $text = "[" . $type . "] [USER: " . $user . " ID: " . $user_id . "] [URL: " . request()->path() . "] " . $message;
-
-        if ($level == 'info') {
-            Log::channel('app')->info($text);
-        }
-
-        if ($level == 'notice') {
-            Log::channel('app')->notice($text);
-        }
-
-        if ($level == 'warning') {
-            Log::channel('app')->warning($text);
         }
     }
 }

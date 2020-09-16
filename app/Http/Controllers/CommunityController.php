@@ -62,6 +62,10 @@ class CommunityController extends Controller
             'position'  => 'owner',
         ]);
 
+        for ($i = 0; $i < config('site.community_create_invites'); $i++) {
+            $this->createCommunityInvite($community->id);
+        }
+
         Alert::success(__('community.created'));
         $this->logEvent('Community Created', 'Community ' . $community->name . ' created successfully with ID ' . $community->id);
 
