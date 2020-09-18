@@ -6,11 +6,11 @@
 
     <hr />
 
-    <form action="{{ route('guild-update', $guild->id) }}" method="post">
-        @csrf
+    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+        <div class="page-section">
+            <form action="{{ route('guild-update', $guild->id) }}" method="post">
+                @csrf
 
-        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-            <div class="page-section">
                 <h3 class="section-header">{{ __('guild.details') }}</h3>
                 <label for="name" class="block text-cgwhite text-sm mb-2">
                     {{ __('Name') }}:
@@ -23,10 +23,9 @@
                         {{ $message }}
                     </p>
                 @enderror
-            </div>
 
-            <div class="page-section">
-                <h3 class="section-header">{{ __('guild.description') }}</h3>
+                <br /><br />
+
                 <label for="description" class="block text-cgwhite text-sm mb-2">
                     {{ __('guild.description') }}
                 </label>
@@ -38,10 +37,9 @@
                         {{ $message }}
                     </p>
                 @enderror
-            </div>
 
-            <div class="page-section">
-                <h3 class="section-header">{{ __('guild.server') }}</h3>
+                <br />
+
                 @if ($guild->game->realms->count())
                     <select name="server_id" id="server" class="form-field">
                         <option value="0">{{ __('guild.no_server_selected') }}</option>
@@ -74,14 +72,51 @@
                         </p>
                     @enderror
                 </div>
-            </div>
-    
+
+                <br />
+
+                <input type="submit" value="{{ __('guild.update') }}" class="button-primary">
+                <a href="{{ route('guild', $guild->id) }}" class="button-secondary">{{ __('site.cancel') }}</a>
+
+            </form>
         </div>
 
         <div class="page-section">
-            <input type="submit" value="{{ __('guild.update') }}" class="button-primary">
-            <a href="{{ route('guild', $guild->id) }}" class="button-secondary">{{ __('site.cancel') }}</a>
+            <h3 class="section-header">{{ __('guild.community_membership') }}</h3>
+
+            @if (!$guild->community_id)
+                <h4 class="section-subheader">{{ __('guild.community_join') }}</h4>
+
+                <div><p>{!! __('guild.community_explain') !!}</p></div>
+
+                <br />
+
+                <form action="{{ route('community-join', $guild->id) }}" method="post">
+                    @csrf
+
+                    <div>
+                        <label for="invite_code" class="block text-cgwhite text-sm mb-2">
+                            {{ __('guild.invite_code') }}
+                        </label>
+
+                        <input name="invite_code" id="invite_code" class="form-field w-full" placeholder="{{ __('guild.invite_placeholder') }}">
+
+                        @error('invite_code')
+                            <p class="text-red-500 text-xs italic mt-4">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <br />
+
+                    <input type="submit" value="{{ __('guild.join_community') }}" class="button-primary">
+
+                </form>
+            @endif
         </div>
-    </form>
+
+    </div>
+
 
 @endsection

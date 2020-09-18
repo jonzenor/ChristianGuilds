@@ -226,7 +226,7 @@ class Controller extends BaseController
     {
         $key = Str::random(32);
 
-        DB::table('community_guild_invites')->insert([
+        DB::table('guild_invites')->insert([
             ['community_id' => $id, 'code' => $key],
         ]);
 

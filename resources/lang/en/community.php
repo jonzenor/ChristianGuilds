@@ -19,9 +19,19 @@ return [
     'list'          => 'Community List',
 
     'edit'          => 'Edit Community',
-    'edit_title'    => 'Edit Community',
+    'edit_title'    => 'Manage Community',
     'update_button' => 'Save Changes',
     'updated'       => 'Community updated',
+    'details'       => 'Community Details',
+
+    'guilds'        => 'Community Guilds',
+    'invites'       => 'Guild Invites',
+    'invites_explain'   => 'Give one of these invite codes to a guild to have them join this community.',
+    'invalid_code'      => 'The invite code given was invalid.',
+    'join'          => 'Join the Community',
+    'join_confirm'  => 'You have been invited to join the community <strong class="highlight">:community</strong>. Are you sure you want to join?',
+    'join_confirm_button'   => 'Yes, Join This Community!',
+    'joined'        => 'Community Joined!',
 
     'description'   => 'Description',
     'description_label'     => 'What is a Community?',

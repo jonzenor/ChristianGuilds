@@ -38,6 +38,7 @@ class PopulateGameGenresTable extends Migration
 
     public function get_genre_list()
     {
+        $genres[] = array('short_name' => 'BIBLE', 'name' => 'Biblical Discipleship');
         $genres[] = array('short_name' => 'MMORPG', 'name' => 'Massively Multiplayer Online Role Playing Game');
         $genres[] = array('short_name' => 'FPS', 'name' => 'First Person Shooter');
         $genres[] = array('short_name' => 'Sandbox', 'name' => 'Sandbox');

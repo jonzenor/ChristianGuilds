@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Community;
 use DB;
 use Gate;
-use App\Guild;
 use App\Game;
 use App\Page;
+use App\Guild;
+use App\GuildInvite;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -246,7 +248,7 @@ class GuildController extends Controller
         }
 
         $this->validate($request, [
-            'name' => 'string|required|max:255',
+            'name' => 'string|required|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
             'server_name' => 'string|nullable|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
             'description' => 'string|nullable|min:' . config('site.input_desc_min') . '|max:' . config('site.input_desc_max'),
         ]);
@@ -290,5 +292,83 @@ class GuildController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function joinCommunity(Request $request, $id)
+    {
+        if (Gate::denies('manage-guild', $id)) {
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access ' . request()->path(), 'notice');
+            return abort(404);
+        }
+
+        $guild = $this->getGuild($id);
+
+        if (!$guild) {
+            $this->logEvent('Invalid Guild', 'Attempted to access ' . request()->path() . ', but the guild does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $this->validate($request, [
+            'invite_code' => 'string|required|min:32|max:32',
+        ]);
+
+        $invite = GuildInvite::where('code', '=', $request->invite_code)->first();
+
+        if (!$invite) {
+            $this->logEvent('Invalid Community Invite', 'Attempted to use invite code ' . $request->invite_code . ' for Guild ID ' . $guild->id, 'notice');
+            Alert::error(__('community.invalid_code'));
+            return redirect()->route('guild', $guild->id);
+        }
+
+        $community = Community::find($invite->community_id);
+
+        return view('community.join', [
+            'guild' => $guild,
+            'community' => $community,
+            'invite' => $invite,
+        ]);
+    }
+
+    public function joinCommunityConfirm(Request $request, $id)
+    {
+        if (Gate::denies('manage-guild', $id)) {
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access ' . request()->path(), 'notice');
+            return abort(404);
+        }
+
+        $guild = $this->getGuild($id);
+
+        if (!$guild) {
+            $this->logEvent('Invalid Guild', 'Attempted to access ' . request()->path() . ', but the guild does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $this->validate($request, [
+            'code' => 'string|required|min:32|max:32',
+        ]);
+
+        $invite = GuildInvite::where('code', '=', $request->code)->first();
+
+        if (!$invite) {
+            $this->logEvent('Invalid Community Invite', 'Attempted to use invite code ' . $request->code . ' for Guild ID ' . $guild->id, 'notice');
+            Alert::error(__('community.invalid_code'));
+            return redirect()->route('guild', $guild->id);
+        }
+
+        $community = Community::find($invite->community_id);
+
+        $guild->community_id = $community->id;
+        $guild->save();
+
+        $invite->guild_id = $guild->id;
+        $invite->save();
+
+        $this->logEvent('Community Joined', 'Guild ' . json_encode($guild) . ' has joined Community ' . json_encode($community) . ' using invite code ' . $invite->code, 'info');
+        Alert::success(__('community.joined'));
+
+        $this->clearCache('community', $community->id);
+        $this->clearCache('guild', $guild->id);
+
+        return redirect()->route('guild', $guild->id);
     }
 }
