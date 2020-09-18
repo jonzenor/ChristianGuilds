@@ -14,10 +14,16 @@
             <p>
                 {!! $community->description !!}
             </p>
+
+            @can('manage-community', $community->id)
+                <div class="page-section bottom-0 absolute">
+                    <a href="{{ route('community-edit', $community->id) }}" class="button-primary">{{ __('community.edit') }}</a>
+                </div>
+            @endcan
         </div>
 
         <div class="col-span-6 md:col-span-2 xl:col-span-1">
-            <h3 class="section-header">{{ __('guild.leaders') }}</h3>
+            <h3 class="section-header">{{ __('community.leaders') }}</h3>
             <ul>
                 @foreach ($community->members as $member)
                     @if ($member->pivot->position == "owner" || $member->pivot->position == "leader")

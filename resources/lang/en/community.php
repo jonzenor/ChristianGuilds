@@ -8,6 +8,7 @@ return [
     'create_yours'  => 'Create Your Community',
     'created'       => 'Community Created!',
     'owner'         => 'Community Owner',
+    'leaders'       => 'Community Leaders',
 
     'communities'   => 'Communities',
     'count'         => 'Total Communities: :count',
@@ -16,6 +17,11 @@ return [
     'date_created'  => 'Created',
     'id'            => 'Community ID',
     'list'          => 'Community List',
+
+    'edit'          => 'Edit Community',
+    'edit_title'    => 'Edit Community',
+    'update_button' => 'Save Changes',
+    'updated'       => 'Community updated',
 
     'description'   => 'Description',
     'description_label'     => 'What is a Community?',

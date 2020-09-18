@@ -499,6 +499,23 @@ class Controller extends BaseController
             }
         }
 
+        if ($what == "community") {
+            Cache::forget('Community:' . $id);
+        }
+
+        if ($what == "communities") {
+            Cache::forget('Communities:count');
+            Cache::forget('Communities:Latest');
+
+            $pages = ceil(($this->getCommunityCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Communities');
+
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Communities:page:' . $i);
+            }
+        }
+
         if ($what == "games") {
             Cache::forget('Games:count');
 

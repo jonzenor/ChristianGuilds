@@ -69,6 +69,7 @@ Route::get('acp/communities', 'CommunityController@index')->name('community-list
 Route::get('/community/create', 'CommunityController@create')->name('community-create')->middleware('auth', '2fa');
 Route::post('/community/create', 'CommunityController@store')->name('community-create')->middleware('auth', '2fa');
 Route::get('/community/{id}/edit', 'CommunityController@edit')->name('community-edit')->middleware('auth', '2fa');
+Route::post('/community/{id}/edit', 'CommunityController@update')->name('community-update')->middleware('auth', '2fa');
 
 Route::get('/community/{id}', 'CommunityController@show')->name('community');
 
