@@ -141,4 +141,9 @@ class HomeController extends Controller
             'guilds' => $guilds,
         ]);
     }
+
+    public function mission()
+    {
+        return view('site.mission');
+    }
 }

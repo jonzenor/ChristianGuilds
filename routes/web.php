@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GuildController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -65,10 +66,14 @@ Route::get('/guild/{id}', 'GuildController@show')->name('guild');
 Route::get('/guild/{id}/edit', 'GuildController@edit')->name('guild-edit')->middleware('auth', '2fa');
 Route::post('/guild/{id}/edit', 'GuildController@update')->name('guild-update')->middleware('auth', '2fa');
 
+Route::post('/guild/{id}/joinCommunity', 'GuildController@joinCommunity')->name('community-join')->middleware('auth', '2fa');
+Route::post('/guild/{id}/joinCommunityConfirmed', 'GuildController@joinCommunityConfirm')->name('community-join-confirm')->middleware('auth', '2fa');
+
 Route::get('acp/communities', 'CommunityController@index')->name('community-list')->middleware('auth', '2fa');
 Route::get('/community/create', 'CommunityController@create')->name('community-create')->middleware('auth', '2fa');
 Route::post('/community/create', 'CommunityController@store')->name('community-create')->middleware('auth', '2fa');
 Route::get('/community/{id}/edit', 'CommunityController@edit')->name('community-edit')->middleware('auth', '2fa');
+Route::post('/community/{id}/edit', 'CommunityController@update')->name('community-update')->middleware('auth', '2fa');
 
 Route::get('/community/{id}', 'CommunityController@show')->name('community');
 
@@ -88,14 +93,4 @@ Route::group(['prefix' => '2fa'], function () {
     })->name('2faVerify')->middleware('2fa');
 });
 
-// test middleware
-Route::get('/test_middleware', function () {
-    return "2FA middleware work!";
-})->middleware(['auth', '2fa']);
-
-Route::get('/send_test_email', 'HomeController@sendTestEmail');
-
-Route::get('/test_email', function () {
-    $user = App\User::find(4);
-    return new App\Mail\newUser($user);
-});
+Route::get('/ourMission', 'HomeController@mission')->name('our-mission');

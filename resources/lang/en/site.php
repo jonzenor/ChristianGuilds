@@ -19,6 +19,8 @@ return [
 
     'search_results'        => 'Search Results',
     'other_restricted'      => 'The name "Other" is a restricted name...',
+    'nevermind'             => 'Nevermind',
+    'learn_more'            => 'Learn More...',
 
     'permission_denied_label' => '[PERMISSION DENIED]',
     'permission_denied_explain' => 'Permission Denied.',

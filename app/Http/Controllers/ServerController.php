@@ -131,6 +131,11 @@ class ServerController extends Controller
             return abort(404);
         }
 
+        $this->validate($request, [
+            'name' => 'string|required|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+            'type' => 'string|required|min:' . config('site.input_short_genre_min') . '|max:' . config('site.input_short_genre_max'),
+        ]);
+
         $realm->name = $request->name;
         $realm->type = $request->type;
 

@@ -165,6 +165,28 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('create-community', function ($user) {
             return true;
         });
+
+        Gate::define('manage-community', function ($user, $community) {
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+
+            if ($this->isGameMaster($user)) {
+                return true;
+            }
+
+            $member = DB::table('community_members')->where('community_id', '=', $community)->where('user_id', '=', $user->id)->first();
+
+            if (!$member) {
+                return false;
+            }
+
+            if ($member->position == 'owner' || $member->position == 'manager') {
+                return true;
+            }
+
+            return false;
+        });
     }
 
     private function isAdmin($user)

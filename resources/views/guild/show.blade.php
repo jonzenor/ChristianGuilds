@@ -10,6 +10,10 @@
         <h3 class="page-subtitle">{{ __('guild.server') }}: {{ $guild->server_name }}</h3>
     @endif
 
+    @if ($guild->community)
+        <h3 class="page-subtitle"><a href="{{ route('community', $guild->community->id) }}" class="link">{{ $guild->community->name }}</a> {{ __('guild.community_member') }}</h3>
+    @endif
+
     <hr />
 
     <div class="grid grid-cols-6 gap-4 m-8">

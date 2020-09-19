@@ -226,7 +226,7 @@ class Controller extends BaseController
     {
         $key = Str::random(32);
 
-        DB::table('community_guild_invites')->insert([
+        DB::table('guild_invites')->insert([
             ['community_id' => $id, 'code' => $key],
         ]);
 
@@ -496,6 +496,23 @@ class Controller extends BaseController
             
             for ($i = 0; $i <= $pages; $i++) {
                 Cache::forget('Guilds:page:' . $i);
+            }
+        }
+
+        if ($what == "community") {
+            Cache::forget('Community:' . $id);
+        }
+
+        if ($what == "communities") {
+            Cache::forget('Communities:count');
+            Cache::forget('Communities:Latest');
+
+            $pages = ceil(($this->getCommunityCount()) / config('acp.paginate_games'));
+
+            Cache::forget('Communities');
+
+            for ($i = 0; $i <= $pages; $i++) {
+                Cache::forget('Communities:page:' . $i);
             }
         }
 

@@ -8,7 +8,7 @@ return [
     'game'                  => 'Game',
     'next_step'             => 'Next Step...',
     'game_selected'         => 'Game Selected',
-    'details'               => 'Details',
+    'details'               => 'Guild Details',
     'name'                  => 'Guild Name',
     'complete_steps'        => 'Complete Guild Registration',
 
@@ -43,4 +43,11 @@ return [
     'info_slug'         => 'info', // Must be all lowercase
     'info_content'      => 'Welcome to your new guild!',
 
+    'community_membership'  => 'Community Membership',
+    'community_join'        => 'Join a community',
+    'community_explain'     => 'You are not part of a community. Join one to link your guild to a large network of guilds working under one umbrella or <i>master guild</i>.',
+    'invite_code'           => 'Community Invite Code',
+    'invite_placeholder'    => '32 character code',
+    'join_community'        => 'Join the community',
+    'community_member'      => 'Community Member',
 ];

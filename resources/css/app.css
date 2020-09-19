@@ -172,3 +172,7 @@ hr {
 .grid-stack:xl {
     @apply grid-cols-3;
 }
+
+p {
+    @apply my-6 leading-relaxed;
+}

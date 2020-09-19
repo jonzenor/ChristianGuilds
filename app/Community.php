@@ -29,4 +29,9 @@ class Community extends Model
 
         return $readable;
     }
+
+    public function invites()
+    {
+        return $this->hasMany('App\GuildInvite');
+    }
 }

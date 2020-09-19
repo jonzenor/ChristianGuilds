@@ -52,7 +52,7 @@ abstract class TestCase extends BaseTestCase
             'user_id' => $user->id,
             'guild_id' => $guild->id,
             'position' => 'owner',
-            'title' => 'Test Game Manager',
+            'title' => 'Test Guild Manager',
         ]);
         
         $guild->encoded_name = str_replace("'", "&#039;", $guild->name);
@@ -60,5 +60,21 @@ abstract class TestCase extends BaseTestCase
         return $guild;
     }
 
+    public function createCommunity($user)
+    {
+        $community = factory(\App\Community::class)->create();
+        $community->owner_id = $user->id;
+        $community->save();
+        
+        DB::table('community_members')->insert([
+            'user_id' => $user->id,
+            'community_id' => $community->id,
+            'position' => 'owner',
+        ]);
+        
+        $community->encoded_name = str_replace("'", "&#039;", $community->name);
+
+        return $community;
+    }
 
 }

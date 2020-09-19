@@ -170,7 +170,7 @@ class GuildTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('site.search');
         
-        // We can't actually get search results back without feeding data to the search engine...
+        // We can't actually get search results back without feeding fake test data to the search engine...
         //$response->assertSee(route('guild', $guild->id));
     }
 

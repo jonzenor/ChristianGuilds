@@ -16,6 +16,7 @@ class PopulateRolesTable extends Migration
         DB::table('roles')->insert([
             ['name' => 'Admin', 'color' => "red-700", 'context' => 'global'],
             ['name' => 'Game Master', 'color' => 'green-700', 'context' => 'global'],
+            ['name' => 'Guild Master', 'color' => 'orange-700', 'context' => 'global'],
             ['name' => 'Community Manager', 'color' => 'blue-700', 'context' => 'global'],
         ]);
     }
@@ -28,7 +29,8 @@ class PopulateRolesTable extends Migration
     public function down()
     {
         DB::table('roles')->where('name', '=', 'Admin')->delete();
-        DB::table('roles')->where('name', '=', 'Game Masger')->delete();
+        DB::table('roles')->where('name', '=', 'Game Master')->delete();
+        DB::table('roles')->where('name', '=', 'Guild Master')->delete();
         DB::table('roles')->where('name', '=', 'Community Manager')->delete();
     }
 }
