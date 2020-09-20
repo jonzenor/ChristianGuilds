@@ -86,6 +86,13 @@
 
             @if ($guild->community_id)
                 <a href="{{ route('community', $guild->community->id) }}" class="link">{{ $guild->community->name }}</a>
+
+                @can('own-guild', $guild->id)
+                    <div>
+                        <a href="{{ route('community-leave', $guild->id) }}" class="button-red">Leave community</a>
+                    </div>
+                @endcan
+
             @else
                 <h4 class="section-subheader">{{ __('guild.community_join') }}</h4>
 
