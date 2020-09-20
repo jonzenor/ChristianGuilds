@@ -30,7 +30,7 @@
                     {{ __('guild.description') }}
                 </label>
     
-                <textarea name="description" id="description" class="form-field w-full">{!! $guild->description !!}</textarea>
+                <textarea name="description" id="description" class="form-field w-full">@if (old('description')){!! old('description') !!}@else{!! $guild->description !!}@endif</textarea>
     
                 @error('description')
                     <p class="text-red-500 text-xs italic mt-4">
@@ -64,7 +64,7 @@
                         {{ __('guild.server_name') }}
                     </label>
 
-                    <input name="server_name" id="server_name" class="form-field w-full" value="{{ $guild->server_name }}">
+                    <input name="server_name" id="server_name" class="form-field w-full" value="@if (old('server_name')){{ old('server_name') }}@else{{ $guild->server_name }}@endif">
 
                     @error('server_name')
                         <p class="text-red-500 text-xs italic mt-4">
