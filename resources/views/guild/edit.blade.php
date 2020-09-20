@@ -84,7 +84,9 @@
         <div class="page-section">
             <h3 class="section-header">{{ __('guild.community_membership') }}</h3>
 
-            @if (!$guild->community_id)
+            @if ($guild->community_id)
+                <a href="{{ route('community', $guild->community->id) }}" class="link">{{ $guild->community->name }}</a>
+            @else
                 <h4 class="section-subheader">{{ __('guild.community_join') }}</h4>
 
                 <div><p>{!! __('guild.community_explain') !!}</p></div>

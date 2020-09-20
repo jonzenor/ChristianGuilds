@@ -33,7 +33,7 @@ return [
     'join_confirm_button'   => 'Yes, Join This Community!',
     'joined'        => 'Community Joined!',
 
-    'description'   => 'Description',
+    'description'   => 'Community Description',
     'description_label'     => 'What is a Community?',
     'description_explain'   => 'Communities are groups of guilds that are joined together for their leadership and member communities.
                         A community can manage <strong>up to 4 guilds</strong> (additional guilds available later...). Guilds
