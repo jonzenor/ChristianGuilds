@@ -68,6 +68,8 @@ Route::post('/guild/{id}/edit', 'GuildController@update')->name('guild-update')-
 
 Route::post('/guild/{id}/joinCommunity', 'GuildController@joinCommunity')->name('community-join')->middleware('auth', '2fa');
 Route::post('/guild/{id}/joinCommunityConfirmed', 'GuildController@joinCommunityConfirm')->name('community-join-confirm')->middleware('auth', '2fa');
+Route::get('/guild/{id}/leaveCommunity', 'GuildController@leaveCommunity')->name('community-leave')->middleware('auth', '2fa');
+Route::post('/guild/{id}/leaveCommunityConfirmed', 'GuildController@leaveCommunityConfirm')->name('community-leave-confirm')->middleware('auth', '2fa');
 
 Route::get('acp/communities', 'CommunityController@index')->name('community-list')->middleware('auth', '2fa');
 Route::get('/community/create', 'CommunityController@create')->name('community-create')->middleware('auth', '2fa');

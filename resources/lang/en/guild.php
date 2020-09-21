@@ -49,5 +49,5 @@ return [
     'invite_code'           => 'Community Invite Code',
     'invite_placeholder'    => '32 character code',
     'join_community'        => 'Join the community',
-    'community_member'      => 'Community Member',
+    'community_member'      => 'Community Guild',
 ];

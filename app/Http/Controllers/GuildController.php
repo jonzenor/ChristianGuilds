@@ -371,4 +371,65 @@ class GuildController extends Controller
 
         return redirect()->route('guild', $guild->id);
     }
+
+    public function leaveCommunity($id)
+    {
+        if (Gate::denies('own-guild', $id)) {
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access ' . request()->path(), 'notice');
+            return abort(404);
+        }
+
+        $guild = $this->getGuild($id);
+
+        if (!$guild) {
+            $this->logEvent('Invalid Guild', 'Attempted to access ' . request()->path() . ', but the guild does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $invite = GuildInvite::where('guild_id', '=', $guild->id)->first();
+
+        return view('community.leave', [
+            'guild' => $guild,
+            'invite' => $invite,
+        ]);
+    }
+
+    public function leaveCommunityConfirm(Request $request, $id)
+    {
+        if (Gate::denies('own-guild', $id)) {
+            $this->logEvent('PERMISSION DENIED', 'Attempted to force guild to leave its community.', 'notice');
+            return abort(404);
+        }
+
+        $guild = $this->getGuild($id);
+
+        if (!$guild) {
+            $this->logEvent('Invalid Guild', 'Attempted to force guild to leave its community, but the guild does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $invite = GuildInvite::where('guild_id', '=', $guild->id)->first();
+
+        if (!$invite) {
+            $this->logEvent('Invalid Community', 'Attempted to leave a community but is not a member of one.', 'notice');
+            Alert::error(__('community.invalid_invite'));
+            return redirect()->route('guild', $guild->id);
+        }
+
+        $community = Community::find($invite->community_id);
+
+        $guild->community_id = null;
+        $guild->save();
+
+        $invite->guild_id = null;
+        $invite->save();
+
+        $this->logEvent('Community Abandoned', 'Guild ' . json_encode($guild) . ' has left Community ' . json_encode($community), 'info');
+        Alert::success(__('community.abandoned'));
+
+        $this->clearCache('community', $community->id);
+        $this->clearCache('guild', $guild->id);
+
+        return redirect()->route('guild', $guild->id);
+    }
 }

@@ -125,6 +125,22 @@ input.button-secondary {
     @apply py-1;
 }
 
+.button-red {
+    @apply px-4 bg-red-700 text-cgwhite shadow font-bold rounded-lg cursor-pointer mr-3;
+}
+
+.button-red:hover {
+    @apply bg-red-900 text-cgwhite;
+}
+
+input.button-red {
+    @apply py-1;
+}
+
+a.button-red {
+    @apply py-2;
+}
+
 hr {
     @apply text-cgpurple-400 border-cgpurple-400 w-11/12 mx-auto;
 }

@@ -42,7 +42,15 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
 
+            if ($this->isGuildMaster($user)) {
+                return true;
+            }
+
             if ($this->isGameMaster($user)) {
+                return true;
+            }
+
+            if ($this->isCommunityManager($user)) {
                 return true;
             }
 
@@ -133,7 +141,7 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
 
-            if ($this->isGameMaster($user)) {
+            if ($this->isGuildMaster($user)) {
                 return true;
             }
 
@@ -145,7 +153,7 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
 
-            if ($this->isGameMaster($user)) {
+            if ($this->isGuildMaster($user)) {
                 return true;
             }
 
@@ -162,6 +170,20 @@ class AuthServiceProvider extends ServiceProvider
             return false;
         });
 
+        Gate::define('own-guild', function ($user, $guild) {
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+
+            $member = DB::table('guild_members')->where('guild_id', '=', $guild)->where('user_id', '=', $user->id)->first();
+
+            if ($member->position == 'owner') {
+                return true;
+            }
+
+            return false;
+        });
+
         Gate::define('create-community', function ($user) {
             return true;
         });
@@ -171,7 +193,7 @@ class AuthServiceProvider extends ServiceProvider
                 return true;
             }
 
-            if ($this->isGameMaster($user)) {
+            if ($this->isGuildMaster($user)) {
                 return true;
             }
 
@@ -201,6 +223,14 @@ class AuthServiceProvider extends ServiceProvider
     {
         return Cache::remember('User:' . $user->id . ':is:Game Master', $this->cache_time, function () use ($user) {
             $gm = Role::where('name', '=', 'Game Master')->first();
+            return $user->roles->contains($gm);
+        });
+    }
+
+    private function isGuildMaster($user)
+    {
+        return Cache::remember('User:' . $user->id . ':is:Guild Master', $this->cache_time, function () use ($user) {
+            $gm = Role::where('name', '=', 'Guild Master')->first();
             return $user->roles->contains($gm);
         });
     }

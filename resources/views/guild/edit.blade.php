@@ -30,7 +30,7 @@
                     {{ __('guild.description') }}
                 </label>
     
-                <textarea name="description" id="description" class="form-field w-full">{!! $guild->description !!}</textarea>
+                <textarea name="description" id="description" class="form-field w-full">@if (old('description')){!! old('description') !!}@else{!! $guild->description !!}@endif</textarea>
     
                 @error('description')
                     <p class="text-red-500 text-xs italic mt-4">
@@ -64,7 +64,7 @@
                         {{ __('guild.server_name') }}
                     </label>
 
-                    <input name="server_name" id="server_name" class="form-field w-full" value="{{ $guild->server_name }}">
+                    <input name="server_name" id="server_name" class="form-field w-full" value="@if (old('server_name')){{ old('server_name') }}@else{{ $guild->server_name }}@endif">
 
                     @error('server_name')
                         <p class="text-red-500 text-xs italic mt-4">
@@ -84,7 +84,16 @@
         <div class="page-section">
             <h3 class="section-header">{{ __('guild.community_membership') }}</h3>
 
-            @if (!$guild->community_id)
+            @if ($guild->community_id)
+                <a href="{{ route('community', $guild->community->id) }}" class="link">{{ $guild->community->name }}</a>
+
+                @can('own-guild', $guild->id)
+                    <div>
+                        <a href="{{ route('community-leave', $guild->id) }}" class="button-red">Leave community</a>
+                    </div>
+                @endcan
+
+            @else
                 <h4 class="section-subheader">{{ __('guild.community_join') }}</h4>
 
                 <div><p>{!! __('guild.community_explain') !!}</p></div>
