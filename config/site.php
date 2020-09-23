@@ -16,6 +16,7 @@ return [
     'input_short_genre_max' => 32,
 
     'input_pushover_length' => 30,
+    'input_search_length' => 32,
 
     'community_guilds_limit' => 5,
     'community_create_invites' => 3,

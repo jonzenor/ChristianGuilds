@@ -122,7 +122,7 @@ class HomeController extends Controller
         }
 
         $this->validate($request, [
-            'search' => 'string|required',
+            'search' => 'string|required|max:' . config('site.input_search_length'),
         ]);
 
         $keywords = explode(':', $request->search);

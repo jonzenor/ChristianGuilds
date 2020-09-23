@@ -127,6 +127,12 @@
                         </div>
                     </form>
 
+                    @error('search')
+                        <p class="text-red-500 text-xs italic mt-4">
+                            {{ $message }}
+                        </p>
+                    @enderror
+                    
                     @guest
                         <li class="mr-6">
                             <a class="nav-links" href="{{ route('login') }}">{{ __('Login') }}</a>
