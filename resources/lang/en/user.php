@@ -55,6 +55,8 @@ return [
     'profile_info'          => 'Profle Information',
     'email'                 => 'Email Address',
 
+    'pushover_explain'      => '<a href="https://support.pushover.net/i7-what-is-pushover-and-how-do-i-use-it" target="_blank" class="link">What Is Pushover?</a>',
+
     '2fa_explain'       =>
         'Two Factor Authentication (2FA) strengthens security to certain parts of the site by requiring two methods
          (AKA factors) to verify your identity. Two Factor Authentication (2FA) protects against phishing, social

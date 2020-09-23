@@ -15,6 +15,7 @@ use App\Mail\newUser;
 use App\Mail\NewGuild;
 use App\ContactTopics;
 use App\ContactSettings;
+use App\GuildInvite;
 use App\Mail\AlertMessage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -50,6 +51,14 @@ class Controller extends BaseController
         return Cache::remember('Search:Game:' . $query, config('site.cache_search_time'), function () use ($query) {
             $this->logEvent('Search Game', 'Caching results for search ' . $query);
             return \App\Game::search($query)->get();
+        });
+    }
+
+    public function searchCommunities($query)
+    {
+        return Cache::remember('Search:Community:' . $query, config('site.cache_search_time'), function () use ($query) {
+            $this->logEvent('Search Community', 'Caching results for search ' . $query);
+            return \App\Community::search($query)->get();
         });
     }
 
@@ -224,7 +233,18 @@ class Controller extends BaseController
 
     public function createCommunityInvite($id)
     {
-        $key = Str::random(32);
+        $unique = 0;
+
+        while (!$unique) {
+            $key = Str::random(32);
+
+            $invite = null;
+            $invite = GuildInvite::where('code', '=', $key)->first();
+
+            if (!$invite) {
+                $unique = 1;
+            }
+        }
 
         DB::table('guild_invites')->insert([
             ['community_id' => $id, 'code' => $key],

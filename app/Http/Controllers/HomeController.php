@@ -111,16 +111,18 @@ class HomeController extends Controller
     {
         $guilds = "";
         $games = "";
+        $communities = "";
 
         if (!$request->search) {
             return view('site.search')->with([
                 'games' => $games,
                 'guilds' => $guilds,
+                'community' => $communities,
             ]);
         }
 
         $this->validate($request, [
-            'search' => 'string|required',
+            'search' => 'string|required|max:' . config('site.input_search_length'),
         ]);
 
         $keywords = explode(':', $request->search);
@@ -131,14 +133,18 @@ class HomeController extends Controller
             $guilds = $this->searchGuilds($keywords[1]);
         } elseif ($keywords[0] == "game") {
             $games = $this->searchGames($keywords[1]);
+        } elseif ($keywords[0] == "community") {
+            $communities = $this->searchCommunities($keywords[1]);
         } else {
             $guilds = $this->searchGuilds($request->search);
             $games = $this->searchGames($request->search);
+            $communities = $this->searchCommunities($request->search);
         }
 
         return view('site.search')->with([
             'games' => $games,
             'guilds' => $guilds,
+            'communities' => $communities,
         ]);
     }
 

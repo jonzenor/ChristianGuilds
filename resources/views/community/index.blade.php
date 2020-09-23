@@ -19,7 +19,7 @@
             @foreach ($communities as $community)
                 <tr class="my-3">
                     <td class="px-4">{{ $community->id }}</td>
-                    <td class="px-4"><a href="{{ route('community', $community->id) }}" class="link">{{ $community->name }}</a></td>
+                    <td class="px-4"><a href="{{ route('community', $community->id) }}" class="link">{{ \Illuminate\Support\Str::limit($community->name, config('site.truncate_length'), $end='...') }}</a></td>
                     <td class="px-4"><a href="{{ route('profile', $community->owner->id) }}" class="link">{{ $community->owner->name }}</a></td>
                     <td class="px-4">{{ ucwords($community->created_at) }}</td>
                     {{-- <td class="px-4"><a href="{{ route('community-edit', $community->id) }}" class="link"><i class="fal fa-edit"></i></a></td> --}}

@@ -12,7 +12,7 @@
                 <div class="page-section">
                     <ul>
                         @foreach ($users as $user)
-                            <li class="list-item"> <a href="{{ route('profile', $user->id) }}" class="link"> <i class="fad fa-user px-2 text-cgwhite"></i> {{ $user->name }}</a>
+                            <li class="list-item"> <a href="{{ route('profile', $user->id) }}" class="link"> <i class="fad fa-user px-2 text-cgwhite"></i> {{ \Illuminate\Support\Str::limit($user->name, config('site.truncate_length'), $end='...') }}</a>
                         @endforeach
                     </ul>
                 </div>
@@ -29,7 +29,7 @@
                 <div class="page-section">
                     <ul>
                         @foreach ($guilds as $guild)
-                            <li class="list-item"> <a href="{{ route('guild', $guild->id) }}" class="link"> <i class="fad fa-pennant px-2 text-cgwhite text-lg"></i> {{ $guild->name }}</a>
+                            <li class="list-item"> <a href="{{ route('guild', $guild->id) }}" class="link"> <i class="fad fa-pennant px-2 text-cgwhite text-lg"></i> {{ \Illuminate\Support\Str::limit($guild->name, config('site.truncate_length'), $end='...') }}</a>
                         @endforeach
                     </ul>
                 </div>
@@ -47,7 +47,7 @@
                 <div class="page-section">
                     <ul>
                         @foreach ($communities as $community)
-                            <li class="list-item"> <a href="{{ route('community', $community->id) }}" class="link"> <i class="fad fa-pennant px-2 text-cgwhite text-lg"></i> {{ $community->name }}</a>
+                            <li class="list-item"> <a href="{{ route('community', $community->id) }}" class="link"> <i class="fad fa-pennant px-2 text-cgwhite text-lg"></i> {{ \Illuminate\Support\Str::limit($community->name, config('site.truncate_length'), $end='...') }}</a>
                         @endforeach
                     </ul>
                 </div>

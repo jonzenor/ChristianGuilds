@@ -20,7 +20,7 @@
             @foreach ($guilds as $guild)
                 <tr class="my-3">
                     <td class="px-4">{{ $guild->id }}</td>
-                    <td class="px-4"><a href="{{ route('guild', $guild->id) }}" class="link">{{ $guild->name }}</a></td>
+                    <td class="px-4"><a href="{{ route('guild', $guild->id) }}" class="link">{{ \Illuminate\Support\Str::limit($guild->name, config('site.truncate_length'), $end='...') }}</a></td>
                     <td class="px-4">{{ $guild->game->name }}</td>
                     <td class="px-4"><a href="{{ route('profile', $guild->owner->id) }}" class="link">{{ $guild->owner->name }}</a></td>
                     <td class="px-4">{{ ucwords($guild->created_at) }}</td>

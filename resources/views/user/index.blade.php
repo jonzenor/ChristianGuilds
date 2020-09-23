@@ -7,7 +7,7 @@
 
     <div class="page-section block md:hidden">
         @foreach ($users as $user)
-            <h2 class="text-cggreen-500 text-3xl m-3 font-bold"><a href="{{ route('profile', $user->id) }}">{{ $user->name }}</a></h2>
+            <h2 class="text-cggreen-500 text-3xl m-3 font-bold"><a href="{{ route('profile', $user->id) }}">{{ \Illuminate\Support\Str::limit($user->name, config('site.truncate_length'), $end='...') }}</a></h2>
 
             @if ($user->loginSecurity && $user->loginSecurity->google2fa_enable == 1)
                 <i class="fas fa-shield-check text-green-600 text-2xl"></i>
@@ -43,7 +43,7 @@
             @foreach ($users as $user)
                 <tr class="my-3">
                     <td class="px-4">{{ $user->id }}</td>
-                    <td class="px-4"><a href="{{ route('profile', $user->id) }}" class="link">{{ $user->name }}</a></td>
+                    <td class="px-4"><a href="{{ route('profile', $user->id) }}" class="link">{{ \Illuminate\Support\Str::limit($user->name, config('site.truncate_length'), $end='...') }}</a></td>
                     <td class="px-4">
                         @if ($user->loginSecurity && $user->loginSecurity->google2fa_enable == 1)
                             <i class="fas fa-shield-check text-green-600 text-2xl"></i>
@@ -66,4 +66,9 @@
     <div class="w-1/4 mx-auto text-center">
         {{ $users->links() }}
     </div>
+
+    <div class="page-section">
+        <a href="{{ route('acp') }}" class="button-secondary">{{ __('site.acp') }}</a>
+    </div>
+
 @endsection

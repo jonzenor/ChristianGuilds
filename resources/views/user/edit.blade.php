@@ -43,6 +43,8 @@
                         {{ $message }}
                     </p>
                 @enderror
+
+                <p>{!! __('user.pushover_explain') !!}</p>
             </div>
 
             <table>
