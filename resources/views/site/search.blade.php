@@ -4,7 +4,18 @@
     <h1 class="page-header">{{ __('site.search_results') }}</h1>
     <hr>
 
-    @if ($guilds)
+    @if ($communities->count())
+        <div class="page-section">
+            <h2 class="section-header">{{ __('community.communities') }}</h2>
+            @foreach ($communities as $community)
+                <div class="page-section">
+                    <i class="fad fa-pennant px-2 text-cgwhite text-lg"></i> <a href="{{ route('community', $community->id) }}" class="link">{{ $community->name }}</a>
+                </div>
+            @endforeach
+        </div>
+    @endif
+
+    @if ($guilds->count())
         <div class="page-section">
             <h2 class="section-header">{{ __('guild.guilds') }}</h2>
             @foreach ($guilds as $guild)
@@ -15,7 +26,7 @@
         </div>
     @endif
 
-    @if ($games)
+    @if ($games->count())
         <div class="page-section">
             <h2 class="section-header">{{ __('game.games') }}</h2>
             @foreach ($games as $game)

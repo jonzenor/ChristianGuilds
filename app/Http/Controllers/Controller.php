@@ -54,6 +54,14 @@ class Controller extends BaseController
         });
     }
 
+    public function searchCommunities($query)
+    {
+        return Cache::remember('Search:Community:' . $query, config('site.cache_search_time'), function () use ($query) {
+            $this->logEvent('Search Community', 'Caching results for search ' . $query);
+            return \App\Community::search($query)->get();
+        });
+    }
+
 
     //*************************//
     // Send Message Functions //

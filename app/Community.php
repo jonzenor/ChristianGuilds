@@ -3,10 +3,13 @@
 namespace App;
 
 use Carbon\Carbon;
+use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Community extends Model
 {
+    use Searchable;
+
     public function members()
     {
         return $this->belongsToMany('App\User', 'community_members', 'community_id', 'user_id')->withPivot('position');
