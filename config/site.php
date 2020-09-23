@@ -19,4 +19,6 @@ return [
 
     'community_guilds_limit' => 5,
     'community_create_invites' => 3,
+
+    'truncate_length' => 32,
 ];
