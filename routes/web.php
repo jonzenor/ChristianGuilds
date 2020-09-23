@@ -96,3 +96,5 @@ Route::group(['prefix' => '2fa'], function () {
 });
 
 Route::get('/ourMission', 'HomeController@mission')->name('our-mission');
+
+Route::get('/testInviteGeneration', 'HomeController@test')->name('test');
