@@ -127,11 +127,13 @@
                         </div>
                     </form>
 
-                    @error('search')
-                        <p class="text-red-500 text-xs italic mt-4">
-                            {{ $message }}
-                        </p>
-                    @enderror
+                    @if(isset($errors))
+                        @error('search')
+                            <p class="text-red-500 text-xs italic mt-4">
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    @endif
                     
                     @guest
                         <li class="mr-6">
