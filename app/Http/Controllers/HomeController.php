@@ -145,6 +145,7 @@ class HomeController extends Controller
             'games' => $games,
             'guilds' => $guilds,
             'communities' => $communities,
+            'search' => $request->search,
         ]);
     }
 

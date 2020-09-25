@@ -2,6 +2,10 @@
 
 @section('content')
     <h1 class="page-header">{{ __('site.search_results') }}</h1>
+
+    @if (isset($search))
+        <h2 class="page-subheader">{{ $search }}</h2>
+    @endif
     <hr>
 
     @if ($communities->count())

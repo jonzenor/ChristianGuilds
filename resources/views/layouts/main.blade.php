@@ -116,7 +116,7 @@
 
                         <div class="pr-6">
                             <div class="bg-white flex items-center rounded-full shadow-xl">
-                                <input name="search" class="rounded-l-full w-full text-cggray-700 leading-tight focus:outline-none pl-3" id="search" type="text" placeholder="Search">
+                                <input name="search" class="rounded-l-full w-full text-cggray-700 leading-tight focus:outline-none pl-3" id="search" type="text" placeholder="Search" @if (isset($search)) value="{{ $search }}" @endif>
                               
                                 <div class="pl-3 pr-1 py-1">
                                     <button type="submit" class="bg-cgblue-500 text-cgwhite rounded-full hover:bg-cgblue-400 focus:outline-none flex items-center justify-center p-2">
