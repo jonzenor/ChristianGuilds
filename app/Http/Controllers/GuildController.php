@@ -87,7 +87,7 @@ class GuildController extends Controller
         // STEP 3 == Save new game for user in a temp var
         if ($request->step == "3") {
             $this->validate($request, [
-                'name' => 'string|required',
+                'name' => 'string|required|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
                 'genre' => 'integer|required',
             ]);
 
@@ -107,7 +107,7 @@ class GuildController extends Controller
         if ($request->step == "4") {
             $this->validate($request, [
                 'game' => 'integer|required',
-                'name' => 'string|required|max:256',
+                'name' => 'string|required|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
                 'game_name' => 'string|required',
                 'genre_id' => 'integer|required',
             ]);
