@@ -375,18 +375,23 @@ class GuildController extends Controller
     public function leaveCommunity($id)
     {
         if (Gate::denies('own-guild', $id)) {
-            $this->logEvent('PERMISSION DENIED', 'Attempted to access ' . request()->path(), 'notice');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access leave Community page without permission.', 'notice');
             return abort(404);
         }
 
         $guild = $this->getGuild($id);
 
         if (!$guild) {
-            $this->logEvent('Invalid Guild', 'Attempted to access ' . request()->path() . ', but the guild does not exist.', 'warning');
+            $this->logEvent('Invalid Guild', 'Attempted to access a guild that does not exist.', 'warning');
             return abort(404);
         }
 
         $invite = GuildInvite::where('guild_id', '=', $guild->id)->first();
+
+        if (!$invite) {
+            $this->logEvent('Invalid Invite', 'Attempted to leave community when not joined to one. ' . json_encode($guild), 'warning');
+            return abort(404);
+        }
 
         return view('community.leave', [
             'guild' => $guild,

@@ -49,5 +49,16 @@ class CommunityTest extends TestCase
 
         $this->assertDatabaseHas('communities', $data);
     }
+
+    /** @test */
+    public function leaving_wrong_community_fails_gracefully()
+    {
+        $user = $this->createUser();
+        $guild = $this->createGuild($user);
+
+        $response = $this->actingAs($user)->get('/guild/' . $guild->id . '/leaveCommunity');
+
+        $response->assertStatus(404);
+    }
     
 }
