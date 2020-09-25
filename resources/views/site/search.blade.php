@@ -2,9 +2,13 @@
 
 @section('content')
     <h1 class="page-header">{{ __('site.search_results') }}</h1>
+
+    @if (isset($search))
+        <h2 class="page-subheader">{{ $search }}</h2>
+    @endif
     <hr>
 
-    @if ($communities->count())
+    @if ($communities && $communities->count())
         <div class="page-section">
             <h2 class="section-header">{{ __('community.communities') }}</h2>
             @foreach ($communities as $community)
@@ -15,7 +19,7 @@
         </div>
     @endif
 
-    @if ($guilds->count())
+    @if ($guilds && $guilds->count())
         <div class="page-section">
             <h2 class="section-header">{{ __('guild.guilds') }}</h2>
             @foreach ($guilds as $guild)
@@ -26,7 +30,7 @@
         </div>
     @endif
 
-    @if ($games->count())
+    @if ($games && $games->count())
         <div class="page-section">
             <h2 class="section-header">{{ __('game.games') }}</h2>
             @foreach ($games as $game)

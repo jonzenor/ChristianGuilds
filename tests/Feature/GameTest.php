@@ -352,5 +352,4 @@ class GameTest extends TestCase
 
         $response->assertDontSeeText("Other - Other");
     }
-    
 }

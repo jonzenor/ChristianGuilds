@@ -25,11 +25,10 @@ Route::post('/profile/{id}/edit', 'UserController@update')->name('profile-update
 
 Route::post('/profile/{id}/addRole', 'UserController@addRole')->name('add-role')->middleware('auth', '2fa');
 Route::get('/profile/{id}/delRole/{role}', 'UserController@delRole')->name('remove-role')->middleware('auth', '2fa');
-Route::post('/profile/{id}/delRole/{role}', 'UserController@delRoleConfirm')->name('remove-role-confirm')
-    ->middleware('auth', '2fa');
+Route::post('/profile/{id}/delRole/{role}', 'UserController@delRoleConfirm')->name('remove-role-confirm')->middleware('auth', '2fa');
 
-Route::post('/search', 'HomeController@search')->name('search');
 Route::get('/search', 'HomeController@search')->name('search');
+Route::post('/search', 'HomeController@search')->name('search');
 
 Route::get('/acp', 'HomeController@acp')->name('acp')->middleware('auth', '2fa');
 Route::get('/acp/users', 'UserController@index')->name('user-list')->middleware('auth', '2fa');
@@ -52,14 +51,14 @@ Route::post('/acp/games/pending/{id}/genre', 'GameController@setPendingGenre')->
 Route::post('/acp/games/pending/{id}/reject', 'GameController@rejectPending')->name('game-reject-pending')->middleware('auth', '2fa');
 Route::get('/acp/games/add', 'GameController@create')->name('game-add')->middleware('auth', '2fa');
 Route::post('/acp/games/add', 'GameController@store')->name('game-create')->middleware('auth', '2fa');
-Route::post('/acp/game/edit/{id}', 'GameController@update')->name('game-update')->middleware('auth', '2fa');
+Route::post('/acp/game/{id}/edit', 'GameController@update')->name('game-update')->middleware('auth', '2fa');
 Route::get('/acp/genres', 'GenreController@index')->name('genre-list')->middleware('auth', '2fa');
-Route::get('/acp/genre/edit/{id}', 'GenreController@edit')->name('genre-edit')->middleware('auth', '2fa');
-Route::post('/acp/genre/edit/{id}', 'GenreController@update')->name('genre-update')->middleware('auth', '2fa');
+Route::get('/acp/genre/{id}/edit', 'GenreController@edit')->name('genre-edit')->middleware('auth', '2fa');
+Route::post('/acp/genre/{id}/edit', 'GenreController@update')->name('genre-update')->middleware('auth', '2fa');
 Route::get('/acp/genre/add', 'GenreController@create')->name('genre-add')->middleware('auth', '2fa');
 Route::post('/acp/genre/add', 'GenreController@store')->name('genre-create')->middleware('auth', '2fa');
 
-Route::get('/guilds', 'GuildController@index')->name('guild-list')->middleware('auth', '2fa');
+Route::get('/acp/guilds', 'GuildController@index')->name('guild-list')->middleware('auth', '2fa');
 Route::get('/guild/create', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
 Route::post('/guild/create', 'GuildController@create')->name('guild-create')->middleware('auth', '2fa');
 Route::get('/guild/{id}', 'GuildController@show')->name('guild');

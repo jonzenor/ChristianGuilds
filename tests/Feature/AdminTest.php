@@ -37,10 +37,10 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $response = $this->actingAs($user)->get(route('acp'));
-        $response->assertRedirect(route('home'));
+        $response->assertStatus(404);
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('acp'));
-        $response->assertSee(__('site.permission_denied'));
+        $response->assertStatus(404);
     }
 
     /** @test */
@@ -99,10 +99,10 @@ class AdminTest extends TestCase
         $user = $this->createUser();
 
         $response = $this->actingAs($user)->get(route('user-list'));
-        $response->assertRedirect(route('home'));
+        $response->assertStatus(404);
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('user-list'));
-        $response->assertSee(__('site.permission_denied'));        
+        $response->assertStatus(404);
     }
 
     /** @test */

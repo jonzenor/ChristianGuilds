@@ -26,6 +26,33 @@ abstract class TestCase extends BaseTestCase
         return $user;
     }
 
+    public function createGameMasterUser()
+    {
+        $user = factory(\App\User::class)->create();
+        $gm = \App\Role::where('name', '=', 'Game Master')->first();
+        $user->roles()->attach($gm->id);
+
+        return $user;
+    }
+
+    public function createGuildMasterUser()
+    {
+        $user = factory(\App\User::class)->create();
+        $gm = \App\Role::where('name', '=', 'Guild Master')->first();
+        $user->roles()->attach($gm->id);
+
+        return $user;
+    }
+
+    public function createCommunityManagerUser()
+    {
+        $user = factory(\App\User::class)->create();
+        $gm = \App\Role::where('name', '=', 'Community Manager')->first();
+        $user->roles()->attach($gm->id);
+
+        return $user;
+    }
+
     public function createGame()
     {
         $game = factory(\App\Game::class)->create();
@@ -33,6 +60,24 @@ abstract class TestCase extends BaseTestCase
 
         return $game;
     }
+
+    public function createPendingGame($user)
+    {
+        #$game = factory(\App\Game::class)->create();
+        $game = new \App\Game;
+        $game->status = "pending";
+        $game->genre_id = 2;
+        $game->name = "Test Pending Game";
+        $game->save();
+
+        $guild = $this->createGuild($user);
+        $setGuild = \App\Guild::find($guild->id);
+        $setGuild->game_id = $game->id;
+        $setGuild->save();
+
+        return $game;
+    }
+
 
     public function createGenre()
     {

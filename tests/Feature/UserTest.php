@@ -69,7 +69,7 @@ class UserTest extends TestCase
 
         $response = $this->actingAs($user)->followingRedirects()->get(route('profile-edit', $profile->id));
 
-        $response->assertSee(__('site.permission_denied'));
+        $response->assertStatus(404);
     }
 
     /**  */
