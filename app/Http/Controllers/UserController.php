@@ -2,24 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Alert;
-use App\ContactSettings;
-use App\ContactTopics;
 use Gate;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
+use Alert;
 use App\UserSettings;
+use App\ContactTopics;
+use App\ContactSettings;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class UserController extends Controller
 {
     public function index()
     {
         if (Gate::denies('manage-users')) {
-            toast(__('site.permission_denied'), 'warning');
-            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access the Users ACP page without permissions', 'notice');
+            return abort(404);
         }
 
         $page = (isset($_GET['page'])) ? $_GET['page'] : 1;
@@ -56,9 +55,8 @@ class UserController extends Controller
     public function edit($id)
     {
         if (Gate::denies('edit-user', $id)) {
-            toast(__('site.permission_denied'), 'warning');
-            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access the Users Edit page without permissions', 'notice');
+            return abort(404);
         }
 
         $user = $this->getUser($id);

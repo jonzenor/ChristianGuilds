@@ -26,6 +26,33 @@ abstract class TestCase extends BaseTestCase
         return $user;
     }
 
+    public function createGameMasterUser()
+    {
+        $user = factory(\App\User::class)->create();
+        $gm = \App\Role::where('name', '=', 'Game Master')->first();
+        $user->roles()->attach($gm->id);
+
+        return $user;
+    }
+
+    public function createGuildMasterUser()
+    {
+        $user = factory(\App\User::class)->create();
+        $gm = \App\Role::where('name', '=', 'Guild Master')->first();
+        $user->roles()->attach($gm->id);
+
+        return $user;
+    }
+
+    public function createCommunityManagerUser()
+    {
+        $user = factory(\App\User::class)->create();
+        $gm = \App\Role::where('name', '=', 'Community Manager')->first();
+        $user->roles()->attach($gm->id);
+
+        return $user;
+    }
+
     public function createGame()
     {
         $game = factory(\App\Game::class)->create();

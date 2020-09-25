@@ -35,9 +35,8 @@ class HomeController extends Controller
     public function acp()
     {
         if (Gate::denies('view-acp')) {
-            toast('Permission Denied', 'warning');
-            Log::channel('app')->notice("[PERMISSION DENIED] User " . auth()->user()->name . " (ID: " . auth()->user()->id . ") attempted to access " . request()->path());
-            return redirect()->route('home');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access the ACP page without permissions', 'notice');
+            return abort(404);
         }
 
         $users = $this->getLatestUsers();
