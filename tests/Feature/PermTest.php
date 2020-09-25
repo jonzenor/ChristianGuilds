@@ -15,10 +15,13 @@ class PermTest extends TestCase
     private $admin;
     private $user;
     private $user2;
-    private $guild;
     private $gameMaster;
     private $guildMaster;
     private $communityManager;
+
+    private $guild;
+    private $community;
+    private $pendingGame;
 
     public function setUp(): void
     {
@@ -29,10 +32,13 @@ class PermTest extends TestCase
         $this->admin = $this->createAdminUser();
         $this->user = $this->createUser();
         $this->user2 = $this->createUser();
-        $this->guild = $this->createGuild($this->user2);
         $this->gameMaster = $this->createGameMasterUser();
         $this->guildMaster = $this->createGuildMasterUser();
         $this->communityManager = $this->createCommunityManagerUser();
+        
+        $this->guild = $this->createGuild($this->user2);
+        $this->community = $this->createCommunity($this->user2);
+        $this->pendingGame = $this->createPendingGame($this->user2);
     }
 
     //**********************//
@@ -162,6 +168,7 @@ class PermTest extends TestCase
      */
     public function verify_admin_can_access_game_master_pages($adminPage)
     {
+        $this->withoutExceptionHandling();
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->admin)->get($adminPage);
         $response->assertStatus(200);
@@ -173,6 +180,7 @@ class PermTest extends TestCase
      */
     public function verify_game_masters_can_access_game_master_pages($adminPage)
     {
+        $this->withoutExceptionHandling();
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->gameMaster)->get($adminPage);
         $response->assertStatus(200);
@@ -356,6 +364,59 @@ class PermTest extends TestCase
         $response->assertRedirect('login');
     }
 
+    //*************************************//
+    // Ensure Public Pages Are Accessible //
+    //***********************************//
+
+    /**
+     * @test
+     * @dataProvider publicPageList
+     */
+    public function verify_guests_can_access_public_pages($adminPage)
+    {
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->get($adminPage);
+        $response->assertStatus(200);
+    }
+
+    /**
+     * @test
+     * @dataProvider publicPageList
+     */
+    public function verify_users_can_access_public_pages($adminPage)
+    {
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->actingas($this->user)->get($adminPage);
+        $response->assertStatus(200);
+    }
+
+    //**********************************************//
+    // Ensure Login Protected Pages Are Accessible //
+    //********************************************//
+
+    /**
+     * @test
+     * @dataProvider restrictedPageList
+     */
+    public function verify_guests_cannot_access_restricted_pages($adminPage)
+    {
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->get($adminPage);
+        $response->assertRedirect('login');
+    }
+
+    /**
+     * @test
+     * @dataProvider restrictedPageList
+     */
+    public function verify_users_can_access_restricted_pages($adminPage)
+    {
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->actingas($this->user)->get($adminPage);
+        $response->assertStatus(200);
+    }
+
+
     //*********************************//
     // Functions to help with testing //
     //*******************************//
@@ -366,6 +427,7 @@ class PermTest extends TestCase
         $string = str_replace("{game}", '3', $string);
         $string = str_replace("{genre}", '4', $string);
         $string = str_replace("{guild}", $this->guild->id, $string);
+        $string = str_replace("{community}", $this->community->id, $string);
 
         return $string;
     }
@@ -387,6 +449,7 @@ class PermTest extends TestCase
             ['/acp/communities'],
 
             ['/guild/{guild}/edit'],
+            ['/community/{community}/edit'],
         ];
     }
     
@@ -397,12 +460,35 @@ class PermTest extends TestCase
             ['/acp/genres'],
 
             ['/game/{game}/edit'],
-            ['/acp/genre/{genre}/edit']
+            ['/acp/games/pending'],
+
+            ['/acp/genre/{genre}/edit'],
+            ['/acp/genre/add'],
         ];
     }
 
     public function communityManagerOnlyPageList()
     {
         return [];
+    }
+
+    public function publicPageList()
+    {
+        return [
+            ['/'],
+            ['/search'],
+            ['/profile/{user}'],
+            ['/guild/{guild}'],
+            ['/community/{community}'],
+            ['/game/{game}'],
+#            ['/game/genre/{genre}'],
+        ];
+    }
+
+    public function restrictedPageList()
+    {
+        return [
+            ['/guild/create'],
+        ];
     }
 }

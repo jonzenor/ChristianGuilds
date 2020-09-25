@@ -61,6 +61,24 @@ abstract class TestCase extends BaseTestCase
         return $game;
     }
 
+    public function createPendingGame($user)
+    {
+        #$game = factory(\App\Game::class)->create();
+        $game = new \App\Game;
+        $game->status = "pending";
+        $game->genre_id = 2;
+        $game->name = "Test Pending Game";
+        $game->save();
+
+        $guild = $this->createGuild($user);
+        $setGuild = \App\Guild::find($guild->id);
+        $setGuild->game_id = $game->id;
+        $setGuild->save();
+
+        return $game;
+    }
+
+
     public function createGenre()
     {
         $genre = factory(\App\Genre::class)->create();

@@ -20,5 +20,6 @@ $factory->define(Game::class, function (Faker $faker) {
     return [
         'name' => $name,
         'genre_id' => $genre->id,
+        'status' => 'confirmed',
     ];
 });

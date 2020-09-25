@@ -116,7 +116,7 @@ class HomeController extends Controller
             return view('site.search')->with([
                 'games' => $games,
                 'guilds' => $guilds,
-                'community' => $communities,
+                'communities' => $communities,
             ]);
         }
 
