@@ -64,6 +64,7 @@ Route::post('/guild/create', 'GuildController@create')->name('guild-create')->mi
 Route::get('/guild/{id}', 'GuildController@show')->name('guild');
 Route::get('/guild/{id}/edit', 'GuildController@edit')->name('guild-edit')->middleware('auth', '2fa');
 Route::post('/guild/{id}/edit', 'GuildController@update')->name('guild-update')->middleware('auth', '2fa');
+Route::get('/guild/{id}/apps', 'AppController@guildIndex')->name('guild-apps')->middleware('auth', '2fa');
 
 Route::post('/guild/{id}/joinCommunity', 'GuildController@joinCommunity')->name('community-join')->middleware('auth', '2fa');
 Route::post('/guild/{id}/joinCommunityConfirmed', 'GuildController@joinCommunityConfirm')->name('community-join-confirm')->middleware('auth', '2fa');

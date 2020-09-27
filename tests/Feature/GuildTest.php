@@ -135,7 +135,6 @@ class GuildTest extends TestCase
         $response->assertStatus(404);
     }
     
-
     // Pending games show on the ACP page
 
     // Pending games show in the pending games page
@@ -148,13 +147,7 @@ class GuildTest extends TestCase
 
     // Game Manager can approve the game
 
-    // Users can edit the guild information
-
-    // Admins can edit the guild information
-
     // Guests cannot load the guild create page
-
-    // users cannot edit a guild they are not owner of
 
     // Guild public page loads for all users
 
@@ -185,6 +178,19 @@ class GuildTest extends TestCase
         $response = $this->actingAs($user)->get(route('guild', $guild->id));
 
         $response->assertDontSee(route('guild-edit', $guild->id));
+    }
+
+    /** @test */
+    public function guild_master_can_load_apps_page()
+    {
+        $this->withoutExceptionHandling();
+        $guildmaster = $this->createUser();
+        $guild = $this->createGuild($guildmaster);
+
+        $response = $this->actingAs($guildmaster)->get(route('guild-apps', $guild->id));
+
+        $response->assertStatus(200);
+        $response->assertViewIs('guild.apps');
     }
 
 }

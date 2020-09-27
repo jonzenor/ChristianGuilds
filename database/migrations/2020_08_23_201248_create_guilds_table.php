@@ -22,6 +22,7 @@ class CreateGuildsTable extends Migration
             $table->bigInteger('server_id')->nullable();
             $table->string('server_name')->nullable();
             $table->bigInteger('community_id')->nullable();
+            $table->string('role_type')->default('simple');
             $table->timestamps();
         });
     }

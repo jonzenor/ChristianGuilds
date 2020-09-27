@@ -30,6 +30,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
+        Gate::before(function ($user, $ability) {
+            if ($this->isAdmin($user)) {
+                return true;
+            }
+        });
+ 
         Gate::define('is-self', function ($user, $profile) {
             if ($user->id == $profile->id) {
                 return true;
@@ -149,10 +155,6 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-guild', function ($user, $guild) {
-            if ($this->isAdmin($user)) {
-                return true;
-            }
-
             if ($this->isGuildMaster($user)) {
                 return true;
             }

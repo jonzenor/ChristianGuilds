@@ -449,6 +449,7 @@ class PermTest extends TestCase
             ['/acp/communities'],
 
             ['/guild/{guild}/edit'],
+            ['/guild/{guild}/apps'],
             ['/community/{community}/edit'],
         ];
     }
