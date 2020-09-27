@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCommunitiesTable extends Migration
+class CreateAppsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateCommunitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('communities', function (Blueprint $table) {
+        Schema::create('apps', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->mediumText('description');
-            $table->bigInteger('owner_id');
-            $table->string('role_type')->default('simple');
+            $table->bigInteger('org_id');
+            $table->string('org_type');
+            $table->string('title');
+            $table->string('visibility')->default('private');
+            $table->bigInteger('promotion_rank');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateCommunitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('communities');
+        Schema::dropIfExists('apps');
     }
 }
