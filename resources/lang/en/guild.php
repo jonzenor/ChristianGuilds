@@ -50,4 +50,12 @@ return [
     'invite_placeholder'    => '32 character code',
     'join_community'        => 'Join the community',
     'community_member'      => 'Community Guild',
+
+    'apps'                  => 'Applications',
+    'app_explain'           => 'An application allows you to get information from a user before allowing them to join your guild or accept another position within the guild.',
+    'app_create'            => 'Create Application',
+
+    'member'                => 'Guild Member',
+    'manager'               => 'Guild Manager',
+    'owner'                 => 'Guild Owner',
 ];

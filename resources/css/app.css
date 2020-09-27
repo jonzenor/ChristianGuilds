@@ -77,6 +77,10 @@
     @apply w-full py-2;
 }
 
+.form-label {
+    @apply block text-cgwhite text-sm mb-2;
+}
+
 .button-primary {
     @apply px-4 bg-cgpurple-600 text-white font-bold rounded-lg cursor-pointer mr-3;
 }

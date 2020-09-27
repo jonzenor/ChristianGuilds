@@ -190,10 +190,16 @@
 
     <div class="grid grid-cols-6 gap-4 m-8">
         <div class="col-span-6 md:col-span-2 xl:col-span-1">
-            Side Bar
+            @can('manage-guild', $guild->id)
+                <ul>
+                    <li> <a href="{{ route('guild-apps', $guild->id) }}" class="link">{{ __('guild.apps') }}</a> </li>
+                </ul>
+            @endcan
         </div>
 
-        @yield('content')
+        <div class="col-span-6 md:col-span-4 xl:col-span-5 row-span-2 relative">
+            @yield('content')
+        </div>
 
         <div class="col-span-6 md:col-span-2 xl:col-span-1">
             <h3 class="section-header">{{ __('guild.leaders') }}</h3>
