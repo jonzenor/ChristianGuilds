@@ -247,12 +247,36 @@ class PermTest extends TestCase
 
     /** 
      * @test 
+     * @dataProvider guildMasterOnlyFormList
+     */
+    public function verify_admin_can_access_guild_master_forms($adminPage)
+    {
+        $data['name'] = "";
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->actingAs($this->admin)->post($adminPage, $data);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** 
+     * @test 
      * @dataProvider guildMasterOnlyPageList
      */
     public function verify_game_masters_cannot_access_guild_master_pages($adminPage)
     {
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->gameMaster)->get($adminPage);
+        $response->assertStatus(404);
+    }
+
+    /** 
+     * @test 
+     * @dataProvider guildMasterOnlyFormList
+     */
+    public function verify_game_masters_cannot_access_guild_master_forms($adminPage)
+    {
+        $data['name'] = " ";
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->actingAs($this->gameMaster)->post($adminPage, $data);
         $response->assertStatus(404);
     }
 
@@ -269,12 +293,36 @@ class PermTest extends TestCase
 
     /** 
      * @test 
+     * @dataProvider guildMasterOnlyFormList
+     */
+    public function verify_guild_masters_can_access_guild_master_forms($adminPage)
+    {
+        $data['name'] = " ";
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->actingAs($this->guildMaster)->post($adminPage, $data);
+        $response->assertSessionHasErrors('name');
+    }
+
+    /** 
+     * @test 
      * @dataProvider guildMasterOnlyPageList
      */
     public function verify_community_managers_cannot_access_guild_master_pages($adminPage)
     {
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->communityManager)->get($adminPage);
+        $response->assertStatus(404);
+    }
+
+    /** 
+     * @test 
+     * @dataProvider guildMasterOnlyFormList
+     */
+    public function verify_community_managers_cannot_access_guild_master_forms($adminPage)
+    {
+        $data['name'] = "Test data";
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->actingAs($this->communityManager)->post($adminPage, $data);
         $response->assertStatus(404);
     }
 
@@ -289,6 +337,18 @@ class PermTest extends TestCase
         $response->assertStatus(404);
     }
 
+    /** 
+     * @test 
+     * @dataProvider guildMasterOnlyFormList
+     */
+    public function verify_standard_user_cannot_access_guild_master_forms($adminPage)
+    {
+        $data['name'] = "Test data";
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->actingAs($this->user)->post($adminPage, $data);
+        $response->assertStatus(404);
+    }
+
     /**
      * @test
      * @dataProvider guildMasterOnlyPageList
@@ -299,6 +359,19 @@ class PermTest extends TestCase
         $response = $this->get($adminPage);
         $response->assertRedirect('login');
     }
+
+    /**
+     * @test
+     * @dataProvider guildMasterOnlyFormList
+     */
+    public function verify_guests_cannot_access_guild_master_forms($adminPage)
+    {
+        $data['name'] = "Test data";
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->post($adminPage, $data);
+        $response->assertRedirect('login');
+    }
+
 
     //*******************************//
     // Community Manager Pages Test //
@@ -450,7 +523,16 @@ class PermTest extends TestCase
 
             ['/guild/{guild}/edit'],
             ['/guild/{guild}/apps'],
+            ['/guild/{guild}/app/create'],
+            
             ['/community/{community}/edit'],
+        ];
+    }
+
+    public function guildMasterOnlyFormList()
+    {
+        return [
+            ['/guild/{guild}/app/create'],
         ];
     }
     

@@ -14,12 +14,26 @@ class Page404Test extends TestCase
      * @test
      * @dataProvider pageList
      */
-    public function verify_guests_cannot_access_restricted_pages($page)
+    public function verify_page_invalid_ids_show_404($page)
     {
         $admin = $this->createAdminUser();
 
         $page = $this->replaceIDs($page);
         $response = $this->actingAs($admin)->get($page);
+        $response->assertStatus(404);
+    }
+
+    /**
+     * @test
+     * @dataProvider formList
+     */
+    public function verify_form_submission_invalid_ids_show_404($page)
+    {
+        $admin = $this->createAdminUser();
+        $page = $this->replaceIDs($page);
+        $data['name'] = "Test data";
+
+        $response = $this->actingAs($admin)->post($page, $data);
         $response->assertStatus(404);
     }
 
@@ -34,18 +48,25 @@ class Page404Test extends TestCase
         return $string;
     }
 
-
     public function pageList()
     {
         return [
             ['/guild/{guild}'],
             ['/guild/{guild}/edit'],
             ['/guild/{guild}/apps'],
+            ['/guild/{guild}/app/create'],
 
             ['/community/{community}'],
             ['/community/{community}/edit'],
             //['/community/{community}/apps'],
 
+        ];
+    }
+
+    public function formList()
+    {
+        return [
+            ['/guild/{guild}/app/create'],
         ];
     }
 }

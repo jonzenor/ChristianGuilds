@@ -183,7 +183,6 @@ class GuildTest extends TestCase
     /** @test */
     public function guild_master_can_load_apps_page()
     {
-        $this->withoutExceptionHandling();
         $guildmaster = $this->createUser();
         $guild = $this->createGuild($guildmaster);
 
@@ -193,4 +192,34 @@ class GuildTest extends TestCase
         $response->assertViewIs('guild.apps');
     }
 
+    /** @test */
+    public function guild_master_can_load_apps_create_page()
+    {
+        $guildmaster = $this->createUser();
+        $guild = $this->createGuild($guildmaster);
+
+        $response = $this->actingAs($guildmaster)->get(route('guild-app-create', $guild->id));
+        $response->assertStatus(200);
+        $response->assertViewIs('guild.app.create');
+    }
+
+    /** @test */
+    public function app_creation_page_saves_app()
+    {
+        $guildmaster = $this->createUser();
+        $guild = $this->createGuild($guildmaster);
+
+        $data['name'] = 'Test App';
+        $data['promote_to'] = '1';
+        $data['visibility'] = 'public';
+
+        $response = $this->actingAs($guildmaster)->post(route('guild-app-create', $guild->id), $data);
+
+        $data['title'] = $data['name'];
+        $data['promotion_rank'] = $data['promote_to'];
+        unset($data['promote_to']);
+        unset($data['name']);        
+
+        $this->assertDatabaseHas('apps', $data);
+    }
 }

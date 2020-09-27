@@ -2,12 +2,17 @@
 
 @section('content')
 
-        <div class="col-span-6 md:col-span-4 xl:col-span-5 row-span-2 relative">
-            List of apps
+    <div class="page-section">
+        <p>{{ __('guild.app_explain') }}</p>
+    </div>
+    List of apps
 
-            Create apps button
+    Create apps button
 
-            Edit Apps
-        </div>
+    Edit Apps
+
+    <div class="page-section">
+        <a href="{{ route('guild-app-create', $guild->id) }}" class="button-primary">{{ __('guild.app_create') }}</a>
+    </div>
 
 @endsection
