@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\App;
 use DB;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -122,4 +123,18 @@ abstract class TestCase extends BaseTestCase
         return $community;
     }
 
+    public function createGuildApplication($org, $type, $visibility = "public")
+    {
+        $application = new App();
+
+        $application->title = "Test Application";
+        $application->org_id = $org->id;
+        $application->org_type = $type;
+        $application->visibility = $visibility;
+        $application->promotion_rank = 1;
+
+        $application->save();
+
+        return $application;
+    }
 }

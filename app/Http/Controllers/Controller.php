@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\App;
 use App\Game;
 use App\Role;
 use App\User;
@@ -481,6 +482,12 @@ class Controller extends BaseController
         });
     }
 
+    public function getApp($id)
+    {
+        return Cache::remember('Application:' . $id, $this->cache_for, function () use ($id) {
+            return App::find($id);
+        });
+    }
 
     public function clearCache($what, $id = null)
     {

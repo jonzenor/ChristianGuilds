@@ -22,6 +22,7 @@ class PermTest extends TestCase
     private $guild;
     private $community;
     private $pendingGame;
+    private $application;
 
     public function setUp(): void
     {
@@ -39,6 +40,7 @@ class PermTest extends TestCase
         $this->guild = $this->createGuild($this->user2);
         $this->community = $this->createCommunity($this->user2);
         $this->pendingGame = $this->createPendingGame($this->user2);
+        $this->application = $this->createGuildApplication($this->guild, "guild", "public");
     }
 
     //**********************//
@@ -501,6 +503,7 @@ class PermTest extends TestCase
         $string = str_replace("{genre}", '4', $string);
         $string = str_replace("{guild}", $this->guild->id, $string);
         $string = str_replace("{community}", $this->community->id, $string);
+        $string = str_replace("{app}", $this->application->id, $string);
 
         return $string;
     }
@@ -524,6 +527,8 @@ class PermTest extends TestCase
             ['/guild/{guild}/edit'],
             ['/guild/{guild}/apps'],
             ['/guild/{guild}/app/create'],
+
+            ['/application/{app}/manage'],
             
             ['/community/{community}/edit'],
         ];
