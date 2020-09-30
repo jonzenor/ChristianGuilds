@@ -5,7 +5,14 @@
     <div class="page-section">
         <p>{{ __('guild.app_explain') }}</p>
     </div>
-    List of apps
+    
+    <div class="page-section">
+        <ul>
+            @foreach ($guild->apps as $app)
+                <li> <a href="{{ route('app-manage', $app->id) }}" class="link">{{ $app->title }}</a></li>
+            @endforeach
+        </ul>
+    </div>
 
     Create apps button
 

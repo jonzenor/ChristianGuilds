@@ -47,4 +47,9 @@ class Guild extends Model
     {
         return $this->belongsToMany('App\User', 'guild_members', 'guild_id', 'user_id')->withPivot('position');
     }
+
+    public function apps()
+    {
+        return $this->hasMany('App\App', 'org_id')->where('org_type', '=', 'guild');
+    }
 }

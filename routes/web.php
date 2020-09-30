@@ -78,7 +78,7 @@ Route::group(['prefix' => 'application', 'as' => 'app-',
         '2fa',
     ],
 ], function () {
-    Route::get('/manage', 'AppController@manage')->name('manage');
+    Route::get('/{id}/manage', 'AppController@manage')->name('manage');
 });
 
 Route::group([

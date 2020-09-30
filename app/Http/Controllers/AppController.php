@@ -86,4 +86,26 @@ class AppController extends Controller
         
         return redirect()->route('app-manage', $app->id);
     }
+
+    public function manage($id)
+    {
+        $app = $this->getApp($id);
+
+        if (!$app) {
+            $this->logEvent('Invalid Application', 'Attempted to access app management for an application that does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $guild = $this->getGuild($app->org_id);
+
+        if (Gate::denies('manage-guild', $guild->id)) {
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access guild app create page.', 'notice');
+            return abort(404);
+        }
+
+        return view('guild.app.manage', [
+            'app' => $app,
+            'guild' => $guild,
+        ]);
+    }
 }
