@@ -58,6 +58,7 @@ class Page404Test extends TestCase
             ['/guild/{guild}/app/create'],
 
             ['/application/{app}/manage'],
+            ['/application/{app}/edit'],
 
             ['/community/{community}'],
             ['/community/{community}/edit'],
@@ -70,6 +71,8 @@ class Page404Test extends TestCase
     {
         return [
             ['/guild/{guild}/app/create'],
+            ['/application/{app}/question/add'],
+            ['/application/{app}/update'],
         ];
     }
 }

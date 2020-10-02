@@ -592,5 +592,9 @@ class Controller extends BaseController
         if ($what == "genre") {
             Cache::forget('Genre:' . $id);
         }
+
+        if ($what == "app") {
+            Cache::forget('Application:' . $id);
+        }
     }
 }

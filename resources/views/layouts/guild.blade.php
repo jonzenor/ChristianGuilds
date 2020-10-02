@@ -192,9 +192,18 @@
         <div class="col-span-6 md:col-span-2 xl:col-span-1">
             @can('manage-guild', $guild->id)
                 <ul>
-                    <li> <a href="{{ route('guild-apps', $guild->id) }}" class="link">{{ __('guild.apps') }}</a> </li>
+                    <li> <a href="{{ route('guild-apps', $guild->id) }}" class="link">{{ __('guild.manage_apps') }}</a> </li>
                 </ul>
             @endcan
+
+            <h3 class="sidebar-header">{{ __('guild.apps') }}</h3>
+            <ul>
+                @foreach ($guild->apps as $app)
+                    @if ($app->visibility == "public")
+                        <li> {{ $app->title }}</li>
+                    @endif
+                @endforeach
+            </ul>
         </div>
 
         <div class="col-span-6 md:col-span-4 xl:col-span-5 row-span-2 relative">

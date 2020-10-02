@@ -17,6 +17,7 @@ class CreateQuestionsTable extends Migration
             $table->id();
             $table->bigInteger('app_id');
             $table->string('type')->default('text');
+            $table->integer('number');
             $table->string('text');
             $table->timestamps();
         });
