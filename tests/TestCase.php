@@ -127,7 +127,7 @@ abstract class TestCase extends BaseTestCase
     {
         $application = new App();
 
-        $application->title = "Test Application";
+        $application->title = "Test " . $visibility . " " . $type . " Application";
         $application->org_id = $org->id;
         $application->org_type = $type;
         $application->visibility = $visibility;

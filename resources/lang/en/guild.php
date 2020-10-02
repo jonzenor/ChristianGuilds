@@ -54,6 +54,7 @@ return [
     'apps'                  => 'Applications',
     'app_explain'           => 'An application allows you to get information from a user before allowing them to join your guild or accept another position within the guild.',
     'app_create'            => 'Create Application',
+    'manage_apps'           => 'Manage Guild Applications',
 
     'member'                => 'Guild Member',
     'manager'               => 'Guild Manager',

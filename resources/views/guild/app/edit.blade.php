@@ -1,8 +1,10 @@
 @extends('layouts.guild')
 
 @section('content')
-
-    <form action="{{ route('guild-app-create', $guild->id) }}" method="post">
+    <div class="page-section">
+        <h2 class="section-header">{{ __('app.edit') }} - {{ $app->title }}</h2>
+    </div>
+    <form action="{{ route('app-update', $app->id) }}" method="post">
         @csrf
 
         <div class="flex flex-wrap mb-6 md:w-1/2 lg:w-1/3">
@@ -10,7 +12,7 @@
                 {{ __('app.name') }}
             </label>
 
-            <input id="name" type="text" class="form-field w-full @error('name')  border-red-500 @enderror" name="name" @if (old('name')) value="{{ old('name') }}" @endif required autocomplete="off" autofocus>
+            <input id="name" type="text" name="name" class="form-field w-full @error('name')  border-red-500 @enderror" @if (old('name')) value="{{ old('name') }}" @else value="{{ $app->title }}" @endif required autocomplete="off" autofocus>
 
             @error('name')
                 <p class="text-red-500 text-xs italic mt-4">
@@ -25,8 +27,8 @@
             </label>
 
             <select name="visibility" class="form-field w-full @error('visibility') border-red-500 @enderror">
-                <option value="private" @if (old('visibility') && old('visibility') == "private") selected @endif>{{ __('app.private') }}</option>
-                <option value="public" @if (old('visibility') && old('visibility') == "public") selected @endif>{{ __('app.public') }}</option>
+                <option value="private" @if (old('visibility') && old('visibility') == "private") selected @elseif ($app->visibility == "private") selected @endif>{{ __('app.private') }}</option>
+                <option value="public" @if (old('visibility') && old('visibility') == "public") selected @elseif ($app->visibility == "public") selected @endif>{{ __('app.public') }}</option>
             </select>
 
             @error('visibility')
@@ -42,8 +44,8 @@
             </label>
             @if ($guild->role_type == "simple")
                 <select name="promote_to" class="form-field w-full @error('promote_to') border-red-500 @enderror">
-                    <option value="1" @if (old('promote_to') && old('promote_to') == "1") selected @endif>{{ __('guild.member') }}</option>
-                    <option value="2" @if (old('promote_to') && old('promote_to') == "2") selected @endif>{{ __('guild.manager') }}</option>
+                    <option value="1" @if (old('promote_to') && old('promote_to') == "1") selected @elseif ($app->promotion_rank == '1') selected @endif>{{ __('guild.member') }}</option>
+                    <option value="2" @if (old('promote_to') && old('promote_to') == "2") selected @elseif ($app->promotion_rank == '2') selected @endif>{{ __('guild.manager') }}</option>
                 </select>
             @endif
 
@@ -58,7 +60,7 @@
         </div>
 
         <div class="flex flex-wrap mb-6 md:w-1/2 lg:w-1/3">
-            <input type="submit" value="{{ __('app.add_question') }}" class="button-primary">
+            <input type="submit" value="{{ __('app.update') }}" class="button-primary">
             <a href="{{ route('guild-apps', $guild->id) }}" class="button-secondary">{{ __('site.cancel') }}</a>
         </div>
 

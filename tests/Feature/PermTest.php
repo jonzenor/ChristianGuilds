@@ -253,10 +253,12 @@ class PermTest extends TestCase
      */
     public function verify_admin_can_access_guild_master_forms($adminPage)
     {
-        $data['name'] = "";
+        $field = $this->getValidFormField($adminPage);
+        $data[$field] = " ";
+
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->admin)->post($adminPage, $data);
-        $response->assertSessionHasErrors('name');
+        $response->assertSessionHasErrors($field);
     }
 
     /** 
@@ -276,7 +278,9 @@ class PermTest extends TestCase
      */
     public function verify_game_masters_cannot_access_guild_master_forms($adminPage)
     {
-        $data['name'] = " ";
+        $field = $this->getValidFormField($adminPage);
+        $data[$field] = " ";
+
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->gameMaster)->post($adminPage, $data);
         $response->assertStatus(404);
@@ -299,10 +303,12 @@ class PermTest extends TestCase
      */
     public function verify_guild_masters_can_access_guild_master_forms($adminPage)
     {
-        $data['name'] = " ";
+        $field = $this->getValidFormField($adminPage);
+        $data[$field] = " ";
+        
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->guildMaster)->post($adminPage, $data);
-        $response->assertSessionHasErrors('name');
+        $response->assertSessionHasErrors($field);
     }
 
     /** 
@@ -322,7 +328,9 @@ class PermTest extends TestCase
      */
     public function verify_community_managers_cannot_access_guild_master_forms($adminPage)
     {
-        $data['name'] = "Test data";
+        $field = $this->getValidFormField($adminPage);
+        $data[$field] = "Test Data";
+
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->communityManager)->post($adminPage, $data);
         $response->assertStatus(404);
@@ -345,7 +353,9 @@ class PermTest extends TestCase
      */
     public function verify_standard_user_cannot_access_guild_master_forms($adminPage)
     {
-        $data['name'] = "Test data";
+        $field = $this->getValidFormField($adminPage);
+        $data[$field] = "Test Data";
+
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->actingAs($this->user)->post($adminPage, $data);
         $response->assertStatus(404);
@@ -368,7 +378,9 @@ class PermTest extends TestCase
      */
     public function verify_guests_cannot_access_guild_master_forms($adminPage)
     {
-        $data['name'] = "Test data";
+        $field = $this->getValidFormField($adminPage);
+        $data[$field] = "Test Data";
+
         $adminPage = $this->replaceIDs($adminPage);
         $response = $this->post($adminPage, $data);
         $response->assertRedirect('login');
@@ -508,6 +520,15 @@ class PermTest extends TestCase
         return $string;
     }
 
+    public function getValidFormField($string)
+    {
+        if (strpos($string, 'application/{app}/question/add')) {
+            return 'text';
+        }
+
+        return 'name';
+    }
+
     public function adminOnlyPageList()
     {
         return [
@@ -529,6 +550,7 @@ class PermTest extends TestCase
             ['/guild/{guild}/app/create'],
 
             ['/application/{app}/manage'],
+            ['/application/{app}/edit'],
             
             ['/community/{community}/edit'],
         ];
@@ -538,6 +560,8 @@ class PermTest extends TestCase
     {
         return [
             ['/guild/{guild}/app/create'],
+            ['/application/{app}/question/add'],
+            ['/application/{app}/update'],
         ];
     }
     
