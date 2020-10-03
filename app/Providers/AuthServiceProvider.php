@@ -191,10 +191,6 @@ class AuthServiceProvider extends ServiceProvider
         });
 
         Gate::define('manage-community', function ($user, $community) {
-            if ($this->isAdmin($user)) {
-                return true;
-            }
-
             if ($this->isGuildMaster($user)) {
                 return true;
             }
@@ -206,6 +202,22 @@ class AuthServiceProvider extends ServiceProvider
             }
 
             if ($member->position == 'owner' || $member->position == 'manager') {
+                return true;
+            }
+
+            return false;
+        });
+
+        Gate::define('submission->view', function ($user, $submission) {
+            if ($this->isGuildMaster($user)) {
+                return true;
+            }
+
+            if ($user->id == $submission->user_id) {
+                return true;
+            }
+
+            if ($this->isManagerOfGuild($user, $submission)) {
                 return true;
             }
 
@@ -243,5 +255,21 @@ class AuthServiceProvider extends ServiceProvider
             $cm = Role::where('name', '=', 'Community Manager')->first();
             return $user->roles->contains($cm);
         });
+    }
+
+    private function isManagerOfGuild($user, $guild)
+    {
+        if ($guild->role_type == "simple") {
+            return Cache::remember('User:' . $user->id . ':Guild:' . $guild->id . ':is:Manager', $this->cache_time, function () use ($user, $guild) {
+                $gm = DB::table('guild_members')->where('guild_id', '=', $guild->id)->where('user_id', '=', $user->id)->first();
+                if ($gm->position == "owner" || $gm->position == "manager") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+        }
+
+        return false;
     }
 }

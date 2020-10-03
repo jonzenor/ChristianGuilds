@@ -79,6 +79,7 @@ Route::group(['prefix' => 'application', 'as' => 'app-',
     ],
 ], function () {
     Route::get('/{id}', 'AppController@submit')->name('submit');
+    Route::get('/submission/{id}', 'AppController@submission')->name('submission');
     Route::post('/{id}/submit', 'AppController@submitAnswers')->name('submit-answers');
     Route::get('/{id}/edit', 'AppController@edit')->name('edit');
     Route::get('/{id}/manage', 'AppController@manage')->name('manage');

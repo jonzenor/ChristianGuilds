@@ -25,4 +25,8 @@ return [
     'updated'       => 'Application Updated Successfully',
 
     'submit'        => 'Submit Application',
+    'submitted'     => 'Application submitted successfully',
+    'date_submitted' => 'Date Submitted',
+
+    'answers'       => 'Answers',
 ];

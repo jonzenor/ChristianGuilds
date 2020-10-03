@@ -111,6 +111,34 @@ class AppTest extends TestCase
         $response->assertViewIs('guild.app.submit');
     }
 
+    /** @test */
+    public function submitting_an_application_saves()
+    {
+        $app2 = $this->createGuildApplication($this->guild, 'guild', 'public');
+        $qdata['text'] = "What is your favorite color?";
+        $this->actingAs($this->guildmanager)->post(route('app-question-add', $app2->id), $qdata);
+
+        $app = \App\App::find($app2->id);
+        $data['name'] = "Johnny";
+        foreach ($app->questions as $question) {
+            $data['question-' . $question->id] = "Some random text.";
+        }
+
+        $this->actingAs($this->guildmanager)->post(route('app-submit-answers', $app2->id), $data);
+        $this->assertDatabaseCount('submissions', 1);
+    }
+
+    /** @test */
+    public function user_can_view_their_own_submission()
+    {
+        $userNew = $this->createUser();
+        $submission = $this->submitGuildApplication($this->application, $userNew);
+
+        $response = $this->actingAs($userNew)->get(route('app-submission', $submission->id));
+        $response->assertStatus(200);
+        $response->assertViewIs('guild.app.submission');
+    }
+
     // Test that guild members don't see guild membership apps
 
     // Test that guild managers don't see guild manager apps

@@ -18,6 +18,8 @@ use App\ContactTopics;
 use App\ContactSettings;
 use App\GuildInvite;
 use App\Mail\AlertMessage;
+use App\Question;
+use App\Submission;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -486,6 +488,20 @@ class Controller extends BaseController
     {
         return Cache::remember('Application:' . $id, $this->cache_for, function () use ($id) {
             return App::find($id);
+        });
+    }
+
+    public function getQuestionsInOrder($id)
+    {
+        return Cache::remember('Application:' . $id . ':Questions', $this->cache_for, function () use ($id) {
+            return Question::where('app_id', '=', $id)->orderBy('number')->get();
+        });
+    }
+
+    public function getSubmission($id)
+    {
+        return Cache::remember('Submission:' . $id, $this->cache_for, function () use ($id) {
+            return Submission::find($id);
         });
     }
 

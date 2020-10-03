@@ -15,6 +15,7 @@ class PermTest extends TestCase
     private $admin;
     private $user;
     private $user2;
+    private $userRequesting;
     private $gameMaster;
     private $guildMaster;
     private $communityManager;
@@ -23,6 +24,7 @@ class PermTest extends TestCase
     private $community;
     private $pendingGame;
     private $application;
+    private $submission;
 
     public function setUp(): void
     {
@@ -33,6 +35,7 @@ class PermTest extends TestCase
         $this->admin = $this->createAdminUser();
         $this->user = $this->createUser();
         $this->user2 = $this->createUser();
+        $this->userRequesting = $this->createUser();
         $this->gameMaster = $this->createGameMasterUser();
         $this->guildMaster = $this->createGuildMasterUser();
         $this->communityManager = $this->createCommunityManagerUser();
@@ -41,48 +44,68 @@ class PermTest extends TestCase
         $this->community = $this->createCommunity($this->user2);
         $this->pendingGame = $this->createPendingGame($this->user2);
         $this->application = $this->createGuildApplication($this->guild, "guild", "public");
+        $this->submission = $this->submitGuildApplication($this->application, $this->userRequesting);
     }
 
     //**********************//
     // ACP Index Page Test //
     //********************//
     
-    /** @test */
+    /** 
+     * @test 
+     * @group acp_test
+     **/
     public function admin_can_access_acp()
     {
         $response = $this->actingAs($this->admin)->get('/acp');
         $response->assertStatus(200);
     }
 
-    /** @test */
+    /** 
+     * @test 
+     * @group acp_test
+     **/
     public function guild_master_can_access_acp()
     {
         $response = $this->actingAs($this->guildMaster)->get('/acp');
         $response->assertStatus(200);
     
     }
-    /** @test */
+
+    /** 
+     * @test 
+     * @group acp_test
+     **/
     public function game_master_can_access_acp()
     {
         $response = $this->actingAs($this->gameMaster)->get('/acp');
         $response->assertStatus(200);
     }
 
-    /** @test */
+    /** 
+     * @test 
+     * @group acp_test
+     **/
     public function community_manager_can_access_acp()
     {
         $response = $this->actingAs($this->communityManager)->get('/acp');
         $response->assertStatus(200);
     }
 
-    /** @test */
+    /** 
+     * @test 
+     * @group acp_test
+     **/
     public function users_cannot_access_acp()
     {
         $response = $this->actingAs($this->user)->get('/acp');
         $response->assertStatus(404);
     }
 
-    /** @test */
+    /** 
+     * @test 
+     * @group acp_test
+     **/
     public function guests_cannot_access_acp()
     {
         $response = $this->get('/acp');
@@ -96,6 +119,7 @@ class PermTest extends TestCase
     
     /** 
      * @test 
+     * @group adminOnly
      * @dataProvider adminOnlyPageList
      */
     public function verify_admin_can_access_admin_pages($adminPage)
@@ -107,6 +131,7 @@ class PermTest extends TestCase
 
     /** 
      * @test 
+     * @group adminOnly
      * @dataProvider adminOnlyPageList
      */
     public function verify_game_masters_cannot_access_admin_pages($adminPage)
@@ -118,6 +143,7 @@ class PermTest extends TestCase
 
     /** 
      * @test 
+     * @group adminOnly
      * @dataProvider adminOnlyPageList
      */
     public function verify_guild_masters_cannot_access_admin_pages($adminPage)
@@ -129,6 +155,7 @@ class PermTest extends TestCase
 
     /** 
      * @test 
+     * @group adminOnly
      * @dataProvider adminOnlyPageList
      */
     public function verify_community_managers_cannot_access_admin_pages($adminPage)
@@ -140,6 +167,7 @@ class PermTest extends TestCase
 
     /** 
      * @test 
+     * @group adminOnly
      * @dataProvider adminOnlyPageList
      */
     public function verify_standard_user_cannot_access_admin_pages($adminPage)
@@ -150,7 +178,8 @@ class PermTest extends TestCase
     }
 
     /**
-     * @test
+     * @test 
+     * @group adminOnly
      * @dataProvider adminOnlyPageList
      */
     public function verify_guests_cannot_access_admin_pages($adminPage)
@@ -165,7 +194,8 @@ class PermTest extends TestCase
     //***********************//
     
     /** 
-     * @test 
+     * @test
+     * @group gameMasterOnly
      * @dataProvider gameMasterOnlyPageList
      */
     public function verify_admin_can_access_game_master_pages($adminPage)
@@ -177,7 +207,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group gameMasterOnly
      * @dataProvider gameMasterOnlyPageList
      */
     public function verify_game_masters_can_access_game_master_pages($adminPage)
@@ -189,7 +220,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group gameMasterOnly
      * @dataProvider gameMasterOnlyPageList
      */
     public function verify_guild_masters_cannot_access_game_master_pages($adminPage)
@@ -200,7 +232,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group gameMasterOnly
      * @dataProvider gameMasterOnlyPageList
      */
     public function verify_community_managers_cannot_access_game_master_pages($adminPage)
@@ -211,7 +244,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group gameMasterOnly
      * @dataProvider gameMasterOnlyPageList
      */
     public function verify_standard_user_cannot_access_game_master_pages($adminPage)
@@ -223,6 +257,7 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @group gameMasterOnly
      * @dataProvider gameMasterOnlyPageList
      */
     public function verify_guests_cannot_access_game_master_pages($adminPage)
@@ -237,7 +272,8 @@ class PermTest extends TestCase
     //************************//
     
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyPageList
      */
     public function verify_admin_can_access_guild_master_pages($adminPage)
@@ -248,7 +284,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyFormList
      */
     public function verify_admin_can_access_guild_master_forms($adminPage)
@@ -262,7 +299,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyPageList
      */
     public function verify_game_masters_cannot_access_guild_master_pages($adminPage)
@@ -273,7 +311,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyFormList
      */
     public function verify_game_masters_cannot_access_guild_master_forms($adminPage)
@@ -287,7 +326,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyPageList
      */
     public function verify_guild_masters_can_access_guild_master_pages($adminPage)
@@ -298,7 +338,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyFormList
      */
     public function verify_guild_masters_can_access_guild_master_forms($adminPage)
@@ -312,7 +353,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyPageList
      */
     public function verify_community_managers_cannot_access_guild_master_pages($adminPage)
@@ -323,7 +365,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyFormList
      */
     public function verify_community_managers_cannot_access_guild_master_forms($adminPage)
@@ -337,7 +380,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyPageList
      */
     public function verify_standard_user_cannot_access_guild_master_pages($adminPage)
@@ -348,7 +392,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyFormList
      */
     public function verify_standard_user_cannot_access_guild_master_forms($adminPage)
@@ -363,6 +408,7 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyPageList
      */
     public function verify_guests_cannot_access_guild_master_pages($adminPage)
@@ -374,6 +420,7 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @group guildMasterOnly
      * @dataProvider guildMasterOnlyFormList
      */
     public function verify_guests_cannot_access_guild_master_forms($adminPage)
@@ -392,6 +439,7 @@ class PermTest extends TestCase
     //*****************************//
     
     /** 
+     * @group communityManagerOnly
      * @dataProvider communityManagerOnlyPageList
      */
     public function verify_admin_can_access_community_manager_pages($adminPage)
@@ -402,6 +450,7 @@ class PermTest extends TestCase
     }
 
     /** 
+     * @group communityManagerOnly
      * @dataProvider communityManagerOnlyPageList
      */
     public function verify_game_masters_cannot_access_community_manager_pages($adminPage)
@@ -412,6 +461,7 @@ class PermTest extends TestCase
     }
 
     /** 
+     * @group communityManagerOnly
      * @dataProvider communityManagerOnlyPageList
      */
     public function verify_guild_masters_cannot_access_community_manager_pages($adminPage)
@@ -422,6 +472,7 @@ class PermTest extends TestCase
     }
 
     /** 
+     * @group communityManagerOnly
      * @dataProvider communityManagerOnlyPageList
      */
     public function verify_community_managers_can_access_community_manager_pages($adminPage)
@@ -432,6 +483,7 @@ class PermTest extends TestCase
     }
 
     /** 
+     * @group communityManagerOnly
      * @dataProvider communityManagerOnlyPageList
      */
     public function verify_standard_user_cannot_access_community_manager_pages($adminPage)
@@ -441,7 +493,8 @@ class PermTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /**
+    /** 
+     * @group communityManagerOnly
      * @dataProvider communityManagerOnlyPageList
      */
     public function verify_guests_cannot_access_community_manager_pages($adminPage)
@@ -457,6 +510,7 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @group publicPages
      * @dataProvider publicPageList
      */
     public function verify_guests_can_access_public_pages($adminPage)
@@ -468,6 +522,7 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @group publicPages
      * @dataProvider publicPageList
      */
     public function verify_users_can_access_public_pages($adminPage)
@@ -483,6 +538,7 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @group restrictedPages
      * @dataProvider restrictedPageList
      */
     public function verify_guests_cannot_access_restricted_pages($adminPage)
@@ -494,6 +550,7 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @group restrictedPages
      * @dataProvider restrictedFormList
      */
     public function verify_guests_cannot_access_restricted_forms($adminPage)
@@ -508,6 +565,7 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @group restrictedPages
      * @dataProvider restrictedPageList
      */
     public function verify_users_can_access_restricted_pages($adminPage)
@@ -518,7 +576,8 @@ class PermTest extends TestCase
     }
 
     /** 
-     * @test 
+     * @test
+     * @group restrictedPages
      * @dataProvider restrictedFormList
      */
     public function verify_users_can_access_restricted_forms($adminPage)
@@ -543,6 +602,7 @@ class PermTest extends TestCase
         $string = str_replace("{guild}", $this->guild->id, $string);
         $string = str_replace("{community}", $this->community->id, $string);
         $string = str_replace("{app}", $this->application->id, $string);
+        $string = str_replace("{submission}", $this->submission->id, $string);
 
         return $string;
     }
@@ -582,6 +642,7 @@ class PermTest extends TestCase
 
             ['/application/{app}/manage'],
             ['/application/{app}/edit'],
+            ['/application/submission/{submission}'],
             
             ['/community/{community}/edit'],
         ];
