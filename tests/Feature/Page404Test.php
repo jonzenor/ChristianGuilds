@@ -44,7 +44,7 @@ class Page404Test extends TestCase
         $string = str_replace("{genre}", '999', $string);
         $string = str_replace("{guild}", '999999999999', $string);
         $string = str_replace("{community}", '9999', $string);
-        $string = str_replace("{app}", '9999', $string);
+        $string = str_replace("{id}", '9999', $string);
 
         return $string;
     }
@@ -57,13 +57,14 @@ class Page404Test extends TestCase
             ['/guild/{guild}/apps'],
             ['/guild/{guild}/app/create'],
 
-            ['/application/{app}/manage'],
-            ['/application/{app}/edit'],
+            ['/application/{id}/manage'],
+            ['/application/{id}/edit'],
+            ['/application/{id}'],
+            ['/application/submission/{id}'],
 
             ['/community/{community}'],
             ['/community/{community}/edit'],
             //['/community/{community}/apps'],
-
         ];
     }
 
@@ -73,6 +74,7 @@ class Page404Test extends TestCase
             ['/guild/{guild}/app/create'],
             ['/application/{app}/question/add'],
             ['/application/{app}/update'],
+            ['/application/{app}/submit'],
         ];
     }
 }

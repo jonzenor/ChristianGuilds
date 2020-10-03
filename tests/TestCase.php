@@ -2,7 +2,10 @@
 
 namespace Tests;
 
+use App\Answer;
 use App\App;
+use App\Question;
+use App\Submission;
 use DB;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
@@ -135,6 +138,34 @@ abstract class TestCase extends BaseTestCase
 
         $application->save();
 
+        $question = new Question();
+        $question->text = "Is this a test?";
+        $question->number = 1;
+        $question->app_id = $application->id;
+        $question->save();
+
         return $application;
+    }
+
+    public function submitGuildApplication($app, $user)
+    {
+        $data['name'] = "Johnny";
+
+        $submission = new Submission();
+        $submission->app_id = $app->id;
+        $submission->user_id = $user->id;
+        $submission->name = $data['name'];
+        $submission->status = 'pending';
+        $submission->save();
+
+        foreach ($app->questions as $question) {
+            $answer = new Answer();
+            $answer->submission_id = $submission->id;
+            $answer->question_id = $question->id;
+            $answer->text = "Some Random Answer";
+            $answer->save();
+        }
+
+        return $submission;
     }
 }

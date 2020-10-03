@@ -196,14 +196,16 @@
                 </ul>
             @endcan
 
-            <h3 class="sidebar-header">{{ __('guild.apps') }}</h3>
-            <ul>
-                @foreach ($guild->apps as $app)
-                    @if ($app->visibility == "public")
-                        <li> {{ $app->title }}</li>
-                    @endif
-                @endforeach
-            </ul>
+            <div class="page-section">
+                <h3 class="sidebar-header">{{ __('app.available') }}</h3>
+                <ul>
+                    @foreach ($guild->apps as $app)
+                        @if ($app->visibility == "public")
+                            <li> <a href="{{ route('app-submit', $app->id) }}" class="link">{{ $app->title }}</a></li>
+                        @endif
+                    @endforeach
+                </ul>
+            </div>
         </div>
 
         <div class="col-span-6 md:col-span-4 xl:col-span-5 row-span-2 relative">
