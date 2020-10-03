@@ -494,6 +494,20 @@ class PermTest extends TestCase
 
     /**
      * @test
+     * @dataProvider restrictedFormList
+     */
+    public function verify_guests_cannot_access_restricted_forms($adminPage)
+    {
+        $field = $this->getValidFormField($adminPage);
+        $data[$field] = "Test Data";
+
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->post($adminPage, $data);
+        $response->assertRedirect('login');
+    }
+
+    /**
+     * @test
      * @dataProvider restrictedPageList
      */
     public function verify_users_can_access_restricted_pages($adminPage)
@@ -503,6 +517,19 @@ class PermTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /** 
+     * @test 
+     * @dataProvider restrictedFormList
+     */
+    public function verify_users_can_access_restricted_forms($adminPage)
+    {
+        $field = $this->getValidFormField($adminPage);
+        $data[$field] = " ";
+
+        $adminPage = $this->replaceIDs($adminPage);
+        $response = $this->actingAs($this->admin)->post($adminPage, $data);
+        $response->assertSessionHasErrors($field);
+    }
 
     //*********************************//
     // Functions to help with testing //
@@ -524,6 +551,10 @@ class PermTest extends TestCase
     {
         if (strpos($string, 'application/{app}/question/add')) {
             return 'text';
+        }
+
+        if (strpos($string, 'application/{app}/submit')) {
+            return 'name';
         }
 
         return 'name';
@@ -597,10 +628,20 @@ class PermTest extends TestCase
         ];
     }
 
+    // Restricted pages are those that require a user to be logged in
+    // i.e. anybody except guest
     public function restrictedPageList()
     {
         return [
             ['/guild/create'],
+            ['/application/{app}'],
+        ];
+    }
+
+    public function restrictedFormList()
+    {
+        return [
+            ['/application/{app}/submit'],
         ];
     }
 }

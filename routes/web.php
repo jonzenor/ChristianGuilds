@@ -78,9 +78,12 @@ Route::group(['prefix' => 'application', 'as' => 'app-',
         '2fa',
     ],
 ], function () {
-    Route::get('/{id}/manage', 'AppController@manage')->name('manage');
+    Route::get('/{id}', 'AppController@submit')->name('submit');
+    Route::post('/{id}/submit', 'AppController@submitAnswers')->name('submit-answers');
     Route::get('/{id}/edit', 'AppController@edit')->name('edit');
+    Route::get('/{id}/manage', 'AppController@manage')->name('manage');
     Route::post('/{id}/update', 'AppController@update')->name('update');
+
     Route::post('/{id}/question/add', 'AppController@addQuestion')->name('question-add');
 });
 

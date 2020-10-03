@@ -173,14 +173,14 @@ class AppController extends Controller
         $app = $this->getApp($id);
 
         if (!$app) {
-            $this->logEvent('Invalid Application', 'Attempted to access app management for an application that does not exist.', 'warning');
+            $this->logEvent('Invalid Application', 'Attempted to add a question to an application that does not exist.', 'warning');
             return abort(404);
         }
 
         $guild = $this->getGuild($app->org_id);
 
         if (Gate::denies('manage-guild', $guild->id)) {
-            $this->logEvent('PERMISSION DENIED', 'Attempted to access guild app create page.', 'notice');
+            $this->logEvent('PERMISSION DENIED', 'Attempted to access guild app add question page.', 'notice');
             return abort(404);
         }
 
@@ -200,5 +200,39 @@ class AppController extends Controller
         $this->clearCache('app', $app->id);
 
         return redirect()->route('app-manage', $app->id);
+    }
+
+    public function submit($id)
+    {
+        $app = $this->getApp($id);
+
+        if (!$app) {
+            $this->logEvent('Invalid Application', 'Attempted to access an application that does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $guild = $this->getGuild($app->org_id);
+
+        return view('guild.app.submit', [
+            'app' => $app,
+            'guild' => $guild,
+        ]);
+    }
+
+    public function submitAnswers(Request $request, $id)
+    {
+        $app = $this->getApp($id);
+
+        if (!$app) {
+            $this->logEvent('Invalid Application', 'Attempted to access an application that does not exist.', 'warning');
+            return abort(404);
+        }
+
+        $guild = $this->getGuild($app->org_id);
+
+        $this->validate($request, [
+            'name' => 'string|required|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+            'question-*' => 'string|required|min:' . config('site.input_name_min') . '|max:' . config('site.input_name_max'),
+        ]);
     }
 }

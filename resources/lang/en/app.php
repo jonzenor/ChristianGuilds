@@ -9,6 +9,7 @@ return [
     'visibility'    => 'Application Visibility',
     'public'        => 'Public',
     'private'       => 'Private',
+    'available'     => 'Available Applications',
 
     'promote_to' => 'Promote User To',
     'promote_to_explain'    => 'If the applicant is accepted, what role will they be promoted to?',
@@ -22,4 +23,6 @@ return [
     'edit'          => 'Edit Application',
     'update'        => 'Update Application',
     'updated'       => 'Application Updated Successfully',
+
+    'submit'        => 'Submit Application',
 ];

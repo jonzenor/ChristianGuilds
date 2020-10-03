@@ -11,6 +11,7 @@ return [
     'permission_denied'     => 'Permission Denied',
     'enabled'               => 'Enabled',
     'disabled'              => 'Disabled',
+    'name'                  => 'Name',
 
     'global_roles'          => 'Global Site Roles',
     'view_global_roles'     => 'View All Global Roles',

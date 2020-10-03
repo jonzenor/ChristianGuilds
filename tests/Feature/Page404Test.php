@@ -59,11 +59,11 @@ class Page404Test extends TestCase
 
             ['/application/{app}/manage'],
             ['/application/{app}/edit'],
+            ['/application/{app}'],
 
             ['/community/{community}'],
             ['/community/{community}/edit'],
             //['/community/{community}/apps'],
-
         ];
     }
 

@@ -2,8 +2,8 @@
 
 @section('content')
 
+    <h2 class="section-header">{{ $app->title }}</h2>
     <div class="page-section">
-        <h2 class="section-header">{{ $app->title }}</h2>
         <p>{{ __('app.visibility') }}: {{ __('app.' . $app->visibility) }}</p>
         <p>{{ __('app.promote_to') }}: 
             @if ($guild->role_type == "simple")
@@ -19,6 +19,8 @@
 
     <div class="page-section">
         <h3 class="section-subheader">{{ __('app.questions') }}</h3>
+        
+        <p>{{ __('site.name') }}</p>
 
         @foreach($app->questions as $question)
             <p>{{ $question->number }}. {{ $question->text }}</p>
